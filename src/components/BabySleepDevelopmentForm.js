@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     ChevronLeft,
     Baby,
@@ -21,14 +21,21 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
     const [step, setStep] = useState(0);
     const [formData, setFormData] = useState({});
     const [isNextDisabled, setIsNextDisabled] = useState(false);
+    const [clickedOption, setClickedOption] = useState(null);
+    const bottomRef = useRef(null);
 
     useEffect(() => {
-        // Disable scrolling
         document.body.style.overflow = 'hidden';
         return () => {
             document.body.style.overflow = 'unset';
         };
     }, []);
+
+    useEffect(() => {
+        if (bottomRef.current) {
+            bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [step]);
 
     const handleNext = () => {
         if (step < questions.length - 1) {
@@ -54,11 +61,13 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
 
     const handleOptionClick = (key, value, type) => {
         setIsNextDisabled(true);
+        setClickedOption(value);
         updateFormData(key, value, type);
         setTimeout(() => {
             setIsNextDisabled(false);
+            setClickedOption(null);
             handleNext();
-        }, 500); // 500ms delay before moving to next step
+        }, 500);
     };
 
     const questions = [
@@ -528,19 +537,16 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
     };
 
     const renderQuestion = (q) => {
-        if (!q) return null; // Add this check to prevent errors when q is undefined
+        if (!q) return null;
         switch (q.type) {
             case "clickable":
                 return (
-                    <div className="space-y-2">
+                    <div className="space-y-4">
                         {q.options.map((option) => (
                             <button
                                 key={option}
-                                onClick={() => {
-                                    updateFormData(q.key, option, q.type);
-                                    handleNext();
-                                }}
-                                className="w-full p-3 text-left bg-white rounded-lg shadow hover:bg-gray-50 transition-colors flex items-center justify-between"
+                                onClick={() => handleOptionClick(q.key, option, q.type)}
+                                className={`w-full p-4 text-left bg-white rounded-lg shadow hover:bg-gray-50 transition-colors flex items-center justify-between text-lg ${clickedOption === option ? 'animate-pulse ring-2 ring-blue-500' : ''}`}
                             >
                                 <span>{option}</span>
                                 <div className="w-6 h-6 border-2 border-gray-300 rounded-full"></div>
@@ -550,15 +556,19 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                 );
             case "multiSelect":
                 return (
-                    <div className="space-y-2">
+                    <div className="space-y-4">
                         {q.options.map((option) => (
-                            <label key={option} className="flex items-center justify-between p-3 bg-white rounded-lg shadow w-full">
+                            <label key={option} className={`flex items-center justify-between p-4 bg-white rounded-lg shadow w-full text-lg ${clickedOption === option ? 'animate-pulse ring-2 ring-blue-500' : ''}`}>
                                 <span>{option}</span>
                                 <input
                                     type="checkbox"
                                     value={option}
                                     checked={(formData[q.key] || []).includes(option)}
-                                    onChange={() => updateFormData(q.key, option, q.type)}
+                                    onChange={() => {
+                                        setClickedOption(option);
+                                        updateFormData(q.key, option, q.type);
+                                        setTimeout(() => setClickedOption(null), 500);
+                                    }}
                                     className="form-checkbox h-6 w-6 text-blue-600 rounded-full"
                                 />
                             </label>
@@ -607,54 +617,54 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         }
     };
 
-    const totalSteps = questions.length;
-    const progress = Math.min(Math.floor((step / totalSteps) * 100), 100);
+    const totalSteps = 5;
+    const currentStep = Math.min(Math.floor((step / questions.length) * totalSteps) + 1, totalSteps);
 
     const showNextButton = ['multiSelect', 'education', 'future', 'weight', 'age', 'sleepDurationGoal'].includes(questions[step]?.type);
 
     return (
-        <div className="flex justify-center items-start min-h-screen bg-gradient-to-br from-pink-100 to-blue-100 p-4 overflow-hidden">
-            <div className="w-full max-w-md flex flex-col h-screen bg-white rounded-lg shadow-lg p-6 pt-0">
-                <div className="flex-grow overflow-y-auto">
-                    <div className="sticky top-0 bg-white z-10 pt-6">
-                        <div className="flex items-center mb-6">
-                            {step > 0 && (
-                                <button onClick={handlePrevious} className="p-2 rounded-full hover:bg-gray-200 transition-colors">
-                                    <ChevronLeft className="w-6 h-6" />
-                                </button>
-                            )}
-                            <Baby className="text-pink-500 w-8 h-8 mr-2" />
-                            <h1 className="text-2xl font-bold text-blue-800 ml-4">Baby Sleep Program</h1>
-                        </div>
-
-                        <div className="mb-4 bg-gray-200 p-1 rounded-full">
-                            <div className="flex">
-                                <div
-                                    className="bg-blue-500 h-1 rounded-full"
-                                    style={{ width: `${progress}%` }}
-                                />
-                                <div
-                                    className="flex-1 h-1 rounded-full bg-gray-300"
-                                    style={{ width: `${100 - progress}%` }}
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="mb-6">
-                        {questions[step]?.question && (
-                            <h2 className="text-xl font-semibold mb-4 text-blue-800">{questions[step].question}</h2>
+        <div className="flex justify-center items-start min-h-screen bg-gradient-to-br from-pink-100 to-blue-100 p-0 overflow-hidden">
+            <div className="w-full max-w-md flex flex-col h-screen bg-white shadow-lg">
+                <div className="sticky top-0 bg-white z-10 p-4">
+                    <div className="flex items-center mb-4">
+                        {step > 0 && (
+                            <button onClick={handlePrevious} className="p-2 rounded-full hover:bg-gray-200 transition-colors">
+                                <ChevronLeft className="w-6 h-6" />
+                            </button>
                         )}
-                        {renderQuestion(questions[step])}
+                        <Baby className="text-pink-500 w-8 h-8 mr-2" />
+                        <h1 className="text-2xl font-bold text-blue-800 ml-4">Baby Sleep Program</h1>
+                    </div>
+                    <div className="bg-gray-200 p-1 rounded-full">
+                        <div className="flex">
+                            {[...Array(totalSteps)].map((_, index) => (
+                                <div
+                                    key={index}
+                                    className={`flex-1 h-2 rounded-full mx-0.5 ${
+                                        index < currentStep ? 'bg-blue-500' : 'bg-gray-300'
+                                    }`}
+                                />
+                            ))}
+                        </div>
                     </div>
                 </div>
 
+                <div className="flex-grow overflow-y-auto p-4">
+                    <div className="mb-6">
+                        {questions[step]?.question && (
+                            <h2 className="text-xl font-semibold mb-6 text-blue-800">{questions[step].question}</h2>
+                        )}
+                        {renderQuestion(questions[step])}
+                    </div>
+                    <div ref={bottomRef} />
+                </div>
+
                 {showNextButton && (
-                    <div className="sticky bottom-0 bg-white pt-4 pb-6">
+                    <div className="sticky bottom-0 bg-white p-4 border-t border-gray-200">
                         <button
                             onClick={handleNext}
                             disabled={isNextDisabled}
-                            className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold text-xl hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className={`w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${clickedOption ? 'animate-pulse ring-2 ring-blue-300' : ''}`}
                         >
                             NEXT STEP
                         </button>
