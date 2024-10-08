@@ -39,14 +39,19 @@ function App() {
     }
   }, [testMode]);
 
+  const handleWeightSubmit = (weight) => {
+    setFormData({ ...formData, weight });
+    setStep(1);
+  };
+
   const handleNameSubmit = (parentName, babyName) => {
     setFormData({ ...formData, parentName, babyName });
-    setStep(1);
+    setStep(2);
   };
 
   const handleSleepDevelopmentSubmit = (data) => {
     setFormData({ ...formData, ...data });
-    setStep(2);
+    setStep(3);
   };
 
   const handleMilestoneSubmit = (milestones) => {
@@ -55,29 +60,29 @@ function App() {
   };
 
   const handlePredictionContinue = () => {
-    setStep(7);
+    setStep(6);
   };
 
   const handleLoadingContinue = () => {
-    setStep(8);
+    setStep(7);
   };
 
   const handleEmailSubmit = (email) => {
     setFormData({ ...formData, email });
-    setStep(9);
+    setStep(8);
   };
 
   const handleCheckoutComplete = () => {
     console.log("Final form data:", formData);
-    setStep(10);
+    setStep(9);
   };
 
   const renderStep = () => {
     switch (step) {
       case 0:
-        return <ParentBabyNameInput onNameSubmit={handleNameSubmit} />;
+        return <BabySleepDevelopmentForm onSubmit={handleWeightSubmit} />;
       case 1:
-        return <BabySleepDevelopmentForm onSubmit={handleSleepDevelopmentSubmit} />;
+        return <ParentBabyNameInput onNameSubmit={handleNameSubmit} />;
       case 2:
         return <ParentBabyWellnessDashboard onViewSleepPlan={() => setStep(3)} />;
       case 3:
@@ -85,12 +90,9 @@ function App() {
       case 4:
         return <BabySleepImprovementPrediction onContinue={handlePredictionContinue} />;
       case 5:
-        return <BabySleepPlanLoading onComplete={() => setStep(6)} />;
+        return <BabySleepPlanLoading onComplete={handleLoadingContinue} />;
       case 6:
-        return <BabySleepPlanEmailInput onSubmit={(email) => {
-          setFormData({ ...formData, email });
-          setStep(7);
-        }} />;
+        return <BabySleepPlanEmailInput onSubmit={handleEmailSubmit} />;
       case 7:
         return (
             <BabySleepPlanReady
@@ -116,8 +118,6 @@ function App() {
         );
     }
   };
-
-
 
   return (
       <div className="App min-h-screen bg-gray-100 py-8">
