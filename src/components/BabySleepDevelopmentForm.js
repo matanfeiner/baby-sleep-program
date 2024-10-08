@@ -17,7 +17,6 @@ import WeightInput from './WeightInput';
 import AgeInput from './AgeInput';
 import SleepDurationGoalInput from './SleepDurationGoalInput';
 
-
 const BabySleepDevelopmentForm = ({ onSubmit }) => {
     const [step, setStep] = useState(0);
     const [formData, setFormData] = useState({});
@@ -29,6 +28,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             onSubmit(formData);
         }
     };
+
     const handlePrevious = () => setStep(step - 1);
 
     const updateFormData = (key, value, type) => {
@@ -509,7 +509,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
 
     };
 
-        const renderQuestion = (q) => {
+    const renderQuestion = (q) => {
         if (!q) return null; // Add this check to prevent errors when q is undefined
         switch (q.type) {
             case "clickable":
@@ -576,6 +576,12 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                         <h3 className="text-xl font-semibold mb-4">{q.title}</h3>
                         <img src={q.image} alt="Educational content" className="w-full rounded mb-4" />
                         <p className="mb-4">{q.content}</p>
+                        <button
+                            onClick={handleNext}
+                            className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition-colors mt-4"
+                        >
+                            Continue
+                        </button>
                     </div>
                 );
             default:
@@ -583,14 +589,14 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         }
     };
 
-    const totalSteps = 5;
-    const currentStep = Math.min(Math.floor((step / questions.length) * totalSteps) + 1, totalSteps);
+    const totalSteps = questions.length;
+    const progress = Math.min(Math.floor((step / totalSteps) * 100), 100);
 
     const showNextButton = ['multiSelect', 'education', 'future', 'weight', 'age', 'sleepDurationGoal'].includes(questions[step]?.type);
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-pink-100 to-blue-100 p-4">
-            <div className="w-full max-w-md flex flex-col min-h-[80vh]">
+            <div className="w-full max-w-md flex flex-col min-h-[80vh] bg-white rounded-lg shadow-lg p-6">
                 <div className="flex-grow">
                     <div className="flex items-center mb-6">
                         {step > 0 && (
@@ -602,16 +608,16 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                         <h1 className="text-2xl font-bold text-blue-800 ml-4">Baby Sleep Program</h1>
                     </div>
 
-                    <div className="mb-4 bg-white p-1 rounded-full">
+                    <div className="mb-4 bg-gray-200 p-1 rounded-full">
                         <div className="flex">
-                            {[...Array(totalSteps)].map((_, index) => (
-                                <div
-                                    key={index}
-                                    className={`flex-1 h-1 rounded-full mx-0.5 ${
-                                        index < currentStep ? 'bg-blue-500' : 'bg-gray-300'
-                                    }`}
-                                />
-                            ))}
+                            <div
+                                className="bg-blue-500 h-1 rounded-full"
+                                style={{ width: `${progress}%` }}
+                            />
+                            <div
+                                className="flex-1 h-1 rounded-full bg-gray-300"
+                                style={{ width: `${100 - progress}%` }}
+                            />
                         </div>
                     </div>
 
@@ -624,7 +630,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                 </div>
 
                 {showNextButton && (
-                    <div className="mt-auto pb-[15%]">
+                    <div className="mt-auto pb-6">
                         <button
                             onClick={handleNext}
                             className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold text-xl hover:bg-blue-600 transition-colors"
