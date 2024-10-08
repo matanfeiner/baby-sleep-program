@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     ChevronLeft,
     Baby,
@@ -20,6 +20,15 @@ import SleepDurationGoalInput from './SleepDurationGoalInput';
 const BabySleepDevelopmentForm = ({ onSubmit }) => {
     const [step, setStep] = useState(0);
     const [formData, setFormData] = useState({});
+    const [isNextDisabled, setIsNextDisabled] = useState(false);
+
+    useEffect(() => {
+        // Disable scrolling
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, []);
 
     const handleNext = () => {
         if (step < questions.length - 1) {
@@ -41,6 +50,15 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         } else {
             setFormData({ ...formData, [key]: value });
         }
+    };
+
+    const handleOptionClick = (key, value, type) => {
+        setIsNextDisabled(true);
+        updateFormData(key, value, type);
+        setTimeout(() => {
+            setIsNextDisabled(false);
+            handleNext();
+        }, 500); // 500ms delay before moving to next step
     };
 
     const questions = [
@@ -595,29 +613,31 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
     const showNextButton = ['multiSelect', 'education', 'future', 'weight', 'age', 'sleepDurationGoal'].includes(questions[step]?.type);
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-pink-100 to-blue-100 p-4">
-            <div className="w-full max-w-md flex flex-col min-h-[80vh] bg-white rounded-lg shadow-lg p-6">
-                <div className="flex-grow">
-                    <div className="flex items-center mb-6">
-                        {step > 0 && (
-                            <button onClick={handlePrevious} className="p-2 rounded-full hover:bg-gray-200 transition-colors">
-                                <ChevronLeft className="w-6 h-6" />
-                            </button>
-                        )}
-                        <Baby className="text-pink-500 w-8 h-8 mr-2" />
-                        <h1 className="text-2xl font-bold text-blue-800 ml-4">Baby Sleep Program</h1>
-                    </div>
+        <div className="flex justify-center items-start min-h-screen bg-gradient-to-br from-pink-100 to-blue-100 p-4 overflow-hidden">
+            <div className="w-full max-w-md flex flex-col h-screen bg-white rounded-lg shadow-lg p-6 pt-0">
+                <div className="flex-grow overflow-y-auto">
+                    <div className="sticky top-0 bg-white z-10 pt-6">
+                        <div className="flex items-center mb-6">
+                            {step > 0 && (
+                                <button onClick={handlePrevious} className="p-2 rounded-full hover:bg-gray-200 transition-colors">
+                                    <ChevronLeft className="w-6 h-6" />
+                                </button>
+                            )}
+                            <Baby className="text-pink-500 w-8 h-8 mr-2" />
+                            <h1 className="text-2xl font-bold text-blue-800 ml-4">Baby Sleep Program</h1>
+                        </div>
 
-                    <div className="mb-4 bg-gray-200 p-1 rounded-full">
-                        <div className="flex">
-                            <div
-                                className="bg-blue-500 h-1 rounded-full"
-                                style={{ width: `${progress}%` }}
-                            />
-                            <div
-                                className="flex-1 h-1 rounded-full bg-gray-300"
-                                style={{ width: `${100 - progress}%` }}
-                            />
+                        <div className="mb-4 bg-gray-200 p-1 rounded-full">
+                            <div className="flex">
+                                <div
+                                    className="bg-blue-500 h-1 rounded-full"
+                                    style={{ width: `${progress}%` }}
+                                />
+                                <div
+                                    className="flex-1 h-1 rounded-full bg-gray-300"
+                                    style={{ width: `${100 - progress}%` }}
+                                />
+                            </div>
                         </div>
                     </div>
 
@@ -630,10 +650,11 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                 </div>
 
                 {showNextButton && (
-                    <div className="mt-auto pb-6">
+                    <div className="sticky bottom-0 bg-white pt-4 pb-6">
                         <button
                             onClick={handleNext}
-                            className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold text-xl hover:bg-blue-600 transition-colors"
+                            disabled={isNextDisabled}
+                            className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold text-xl hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             NEXT STEP
                         </button>
