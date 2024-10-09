@@ -33,7 +33,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
 
     useEffect(() => {
         if (bottomRef.current) {
-            bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+            bottomRef.current.scrollIntoView({behavior: 'smooth'});
         }
     }, [step]);
 
@@ -53,9 +53,9 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             const updatedSelections = currentSelections.includes(value)
                 ? currentSelections.filter(item => item !== value)
                 : [...currentSelections, value];
-            setFormData({ ...formData, [key]: updatedSelections });
+            setFormData({...formData, [key]: updatedSelections});
         } else {
-            setFormData({ ...formData, [key]: value });
+            setFormData({...formData, [key]: value});
         }
     };
 
@@ -63,11 +63,18 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         setIsNextDisabled(true);
         setClickedOption(value);
         updateFormData(key, value, type);
+
+        if (window.navigator && window.navigator.vibrate) {
+            window.navigator.vibrate(50);
+        }
+
         setTimeout(() => {
             setIsNextDisabled(false);
             setClickedOption(null);
-            handleNext();
-        }, 500);
+            if (type === "clickable") {
+                handleNext();
+            }
+        }, 300);
     };
 
     const questions = [
@@ -482,55 +489,80 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
 
         switch (option) {
 
-            case "Sensitive back": return <AlertCircle />;
+            case "Sensitive back":
+                return <AlertCircle/>;
 
-            case "Sensitive knees": return <AlertCircle />;
+            case "Sensitive knees":
+                return <AlertCircle/>;
 
-            case "Almost every day": return <Sun />;
+            case "Almost every day":
+                return <Sun/>;
 
-            case "Several times per week": return <Moon />;
+            case "Several times per week":
+                return <Moon/>;
 
-            case "Several times per month": return <Coffee />;
+            case "Several times per month":
+                return <Coffee/>;
 
-            case "Never": return <X />;
+            case "Never":
+                return <X/>;
 
-            case "Breastfed": return <Heart />;
+            case "Breastfed":
+                return <Heart/>;
 
-            case "Formula-fed": return <Battery />;
+            case "Formula-fed":
+                return <Battery/>;
 
-            case "Solid foods": return <Apple />;
+            case "Solid foods":
+                return <Apple/>;
 
-            case "0-1 times": return <Moon />;
+            case "0-1 times":
+                return <Moon/>;
 
-            case "2-3 times": return <Moon />;
+            case "2-3 times":
+                return <Moon/>;
 
-            case "4-5 times": return <Moon />;
+            case "4-5 times":
+                return <Moon/>;
 
-            case "6+ times": return <Moon />;
+            case "6+ times":
+                return <Moon/>;
 
-            case "Less than 6 hours": return <Clock />;
+            case "Less than 6 hours":
+                return <Clock/>;
 
-            case "6-8 hours": return <Clock />;
+            case "6-8 hours":
+                return <Clock/>;
 
-            case "8-10 hours": return <Clock />;
+            case "8-10 hours":
+                return <Clock/>;
 
-            case "10-12 hours": return <Clock />;
+            case "10-12 hours":
+                return <Clock/>;
 
-            case "More than 12 hours": return <Clock />;
+            case "More than 12 hours":
+                return <Clock/>;
 
-            case "0-3 months": return <Calendar />;
+            case "0-3 months":
+                return <Calendar/>;
 
-            case "4-6 months": return <Calendar />;
+            case "4-6 months":
+                return <Calendar/>;
 
-            case "7-12 months": return <Calendar />;
+            case "7-12 months":
+                return <Calendar/>;
 
-            case "1-2 years": return <Calendar />;
+            case "1-2 years":
+                return <Calendar/>;
 
-            case "2-3 years": return <Calendar />;
+            case "2-3 years":
+                return <Calendar/>;
 
-            case "3+ years": return <Calendar />;
+            case "3+ years":
+                return <Calendar/>;
 
-            default: return null;
+            default:
+                return null;
 
         }
 
@@ -546,10 +578,16 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                             <button
                                 key={option}
                                 onClick={() => handleOptionClick(q.key, option, q.type)}
-                                className={`w-full p-4 text-left bg-white rounded-lg shadow hover:bg-gray-50 transition-colors flex items-center justify-between text-lg ${clickedOption === option ? 'animate-pulse ring-2 ring-blue-500' : ''}`}
+                                className={`w-full p-4 text-left bg-white rounded-lg shadow hover:bg-gray-50 active:bg-gray-100 transition-all flex items-center justify-between text-lg
+                                    ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98] animate-pulse' : ''}`}
                             >
                                 <span>{option}</span>
-                                <div className="w-6 h-6 border-2 border-gray-300 rounded-full"></div>
+                                <div className={`w-6 h-6 border-2 rounded-full transition-all duration-200 ease-in-out
+                                    ${clickedOption === option ? 'bg-blue-500 border-blue-500 scale-110' : 'border-gray-300'}`}>
+                                    {clickedOption === option && (
+                                        <div className="w-full h-full rounded-full bg-white scale-50"/>
+                                    )}
+                                </div>
                             </button>
                         ))}
                     </div>
@@ -558,58 +596,52 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                 return (
                     <div className="space-y-4">
                         {q.options.map((option) => (
-                            <label key={option} className={`flex items-center justify-between p-4 bg-white rounded-lg shadow w-full text-lg ${clickedOption === option ? 'animate-pulse ring-2 ring-blue-500' : ''}`}>
+                            <label key={option} className={`flex items-center justify-between p-4 bg-white rounded-lg shadow w-full text-lg transition-all
+                                ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98]' : ''}`}>
                                 <span>{option}</span>
                                 <input
                                     type="checkbox"
                                     value={option}
                                     checked={(formData[q.key] || []).includes(option)}
-                                    onChange={() => {
-                                        setClickedOption(option);
-                                        updateFormData(q.key, option, q.type);
-                                        setTimeout(() => setClickedOption(null), 500);
-                                    }}
-                                    className="form-checkbox h-6 w-6 text-blue-600 rounded-full"
+                                    onChange={() => handleOptionClick(q.key, option, q.type)}
+                                    className="form-checkbox h-6 w-6 text-blue-600 rounded-full transition-all duration-200 ease-in-out"
                                 />
                             </label>
                         ))}
                     </div>
                 );
             case 'weight':
-                return (
-                    <WeightInput
-                        value={formData[q.key]?.weight}
-                        onChange={(weight, unit) => updateFormData(q.key, { weight, unit })}
-                        defaultUnit="lbs"
-                    />
-                );
             case 'age':
-                return (
-                    <AgeInput
-                        value={formData[q.key]?.age}
-                        onChange={(age, unit) => updateFormData(q.key, { age, unit })}
-                    />
-                );
             case 'sleepDurationGoal':
-                return (
-                    <SleepDurationGoalInput
-                        value={formData[q.key]}
-                        onChange={(value) => updateFormData(q.key, value)}
-                    />
-                );
             case "education":
             case "future":
                 return (
                     <div className="bg-white p-4 rounded-lg shadow">
-                        <h3 className="text-xl font-semibold mb-4">{q.title}</h3>
-                        <img src={q.image} alt="Educational content" className="w-full rounded mb-4" />
-                        <p className="mb-4">{q.content}</p>
-                        <button
-                            onClick={handleNext}
-                            className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition-colors mt-4"
-                        >
-                            Continue
-                        </button>
+                        {q.type === 'weight' && (
+                            <WeightInput
+                                value={formData[q.key]?.weight}
+                                onChange={(weight, unit) => updateFormData(q.key, {weight, unit})}
+                                defaultUnit="lbs"
+                            />
+                        )}
+                        {q.type === 'age' && (
+                            <AgeInput
+                                value={formData[q.key]?.age}
+                                onChange={(age, unit) => updateFormData(q.key, {age, unit})}
+                            />
+                        )}
+                        {q.type === 'sleepDurationGoal' && (
+                            <SleepDurationGoalInput
+                                value={formData[q.key]}
+                                onChange={(value) => updateFormData(q.key, value)}
+                            />
+                        )}
+                        {(q.type === "education" || q.type === "future") && (
+                            <>
+                                <img src={q.image} alt="Educational content" className="w-full rounded mb-4"/>
+                                <p className="mb-4">{q.content}</p>
+                            </>
+                        )}
                     </div>
                 );
             default:
@@ -620,43 +652,49 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
     const totalSteps = 5;
     const currentStep = Math.min(Math.floor((step / questions.length) * totalSteps) + 1, totalSteps);
 
-    const showNextButton = ['multiSelect', 'education', 'future', 'weight', 'age', 'sleepDurationGoal'].includes(questions[step]?.type);
+    const showNextButton = ['multiSelect', 'weight', 'age', 'sleepDurationGoal', 'education', 'future'].includes(questions[step]?.type);
 
     return (
-        <div className="flex justify-center items-start min-h-screen bg-gradient-to-br from-pink-100 to-blue-100 p-0 overflow-hidden">
+        <div
+            className="flex justify-center items-start min-h-screen bg-gradient-to-br from-pink-100 to-blue-100 p-0 overflow-hidden">
             <div className="w-full max-w-md flex flex-col h-screen bg-white shadow-lg">
-                <div className="sticky top-0 bg-white z-10 p-4">
-                    <div className="flex items-center mb-4">
-                        {step > 0 && (
-                            <button onClick={handlePrevious} className="p-2 rounded-full hover:bg-gray-200 transition-colors">
-                                <ChevronLeft className="w-6 h-6" />
-                            </button>
-                        )}
-                        <Baby className="text-pink-500 w-8 h-8 mr-2" />
-                        <h1 className="text-2xl font-bold text-blue-800 ml-4">Baby Sleep Program</h1>
-                    </div>
-                    <div className="bg-gray-200 p-1 rounded-full">
-                        <div className="flex">
-                            {[...Array(totalSteps)].map((_, index) => (
-                                <div
-                                    key={index}
-                                    className={`flex-1 h-2 rounded-full mx-0.5 ${
-                                        index < currentStep ? 'bg-blue-500' : 'bg-gray-300'
-                                    }`}
-                                />
-                            ))}
+                <div className="sticky top-0 bg-white z-10 pt-safe">
+                    <div className="px-4 py-2 shadow-sm">
+                        <div className="flex items-center mb-2">
+                            {step > 0 && (
+                                <button onClick={handlePrevious}
+                                        className="p-2 rounded-full hover:bg-gray-200 active:bg-gray-300 transition-colors">
+                                    <ChevronLeft className="w-6 h-6"/>
+                                </button>
+                            )}
+                            <Baby className="text-pink-500 w-6 h-6 mr-2"/>
+                            <h1 className="text-xl font-bold text-blue-800 ml-2">Baby Sleep Program</h1>
+                        </div>
+                        <div className="bg-gray-200 p-1 rounded-full">
+                            <div className="flex">
+                                {[...Array(totalSteps)].map((_, index) => (
+                                    <div
+                                        key={index}
+                                        className={`flex-1 h-1 rounded-full mx-0.5 ${
+                                            index < currentStep ? 'bg-blue-500' : 'bg-gray-300'
+                                        }`}
+                                    />
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div className="flex-grow overflow-y-auto p-4">
-                    <div className="mb-6">
-                        {questions[step]?.question && (
-                            <h2 className="text-xl font-semibold mb-6 text-blue-800">{questions[step].question}</h2>
-                        )}
-                        {renderQuestion(questions[step])}
+                <div className="flex-grow overflow-y-auto">
+                    <div className="p-4">
+                        <div className="mb-6">
+                            {questions[step]?.question && (
+                                <h2 className="text-lg font-semibold mb-4 text-blue-800">{questions[step].question}</h2>
+                            )}
+                            {renderQuestion(questions[step])}
+                        </div>
+                        <div ref={bottomRef}/>
                     </div>
-                    <div ref={bottomRef} />
                 </div>
 
                 {showNextButton && (
@@ -664,7 +702,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                         <button
                             onClick={handleNext}
                             disabled={isNextDisabled}
-                            className={`w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${clickedOption ? 'animate-pulse ring-2 ring-blue-300' : ''}`}
+                            className={`w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${clickedOption ? 'ring-2 ring-blue-300' : ''}`}
                         >
                             NEXT STEP
                         </button>
@@ -673,6 +711,5 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             </div>
         </div>
     );
-};
-
+}
 export default BabySleepDevelopmentForm;
