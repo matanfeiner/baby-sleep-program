@@ -16,6 +16,7 @@ import {
 import WeightInput from './WeightInput';
 import AgeInput from './AgeInput';
 import SleepDurationGoalInput from './SleepDurationGoalInput';
+import rudderanalytics from '../rudderstack';
 
 const BabySleepDevelopmentForm = ({ onSubmit }) => {
     const [step, setStep] = useState(0);
@@ -39,13 +40,24 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
 
     const handleNext = () => {
         if (step < questions.length - 1) {
+            rudderanalytics.track('Next Question', {
+                currentQuestionIndex: step,
+                nextQuestionIndex: step + 1
+            });
             setStep(step + 1);
         } else {
+            rudderanalytics.track('Form Completed', formData);
             onSubmit(formData);
         }
     };
 
-    const handlePrevious = () => setStep(step - 1);
+    const handlePrevious = () => {
+        rudderanalytics.track('Previous Question', {
+            currentQuestionIndex: step,
+            previousQuestionIndex: step - 1
+        });
+        setStep(step - 1);
+    };
 
     const updateFormData = (key, value, type) => {
         if (type === "multiSelect") {
@@ -63,6 +75,12 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         setIsNextDisabled(true);
         setClickedOption(value);
         updateFormData(key, value, type);
+
+        rudderanalytics.track('Answer Submitted', {
+            question: key,
+            answer: value,
+            questionType: type
+        });
 
         if (window.navigator && window.navigator.vibrate) {
             window.navigator.vibrate(50);
