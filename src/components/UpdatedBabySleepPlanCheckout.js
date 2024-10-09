@@ -62,9 +62,9 @@ const UpdatedBabySleepPlanCheckout = () => {
             <h2 className="text-2xl font-bold text-center mb-6">Choose Your Plan</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <PlanOption duration="1-Week Trial" price={55.30} perDay={7.90} />
-                <PlanOption duration="4-Week Plan" price={151.20} perDay={5.40} popular={true} />
-                <PlanOption duration="12-Week Plan" price={294.00} perDay={3.50} />
+                <PlanOption duration="1-Week Trial" price={9.90} perDay={1.41} />
+                <PlanOption duration="4-Week Plan" price={15.00} perDay={0.53} popular={true} />
+                <PlanOption duration="12-Week Plan" price={30.00} perDay={0.35} />
             </div>
 
             <div className="bg-gray-100 p-6 rounded-lg mb-8">
