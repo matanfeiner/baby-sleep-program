@@ -19,17 +19,17 @@ import SleepDurationGoalInput from './SleepDurationGoalInput';
 import rudderanalytics from '../rudderstack';
 import { useFormData } from '../contexts/FormDataContext';
 // Import images
-import crawlingBaby from '../assets/images/nadavfe_full_body_picture_of_crawling_baby_on_a_white_screen_4e6550ea-55e7-4f2a-8ee7-2aaf10ca6de2.png';
-import playingHappyBaby from '../assets/images/nadavfe_full_body_picture_of_playing_happy_baby_on_a_white_scre_b8a00ff0-5e66-42e4-a7f8-2e749bcb5dec.png';
-import playingHappyBaby2 from '../assets/images/nadavfe_full_body_picture_of_playing_happy_baby_on_a_white_scre_d99ac995-c276-4a50-9e65-8fe72c0e32a8.png';
+import crawlingBaby from '../../public/images/nadavfe_full_body_picture_of_crawling_baby_on_a_white_screen_4e6550ea-55e7-4f2a-8ee7-2aaf10ca6de2.png';
+import playingHappyBaby from '../../public/images/nadavfe_full_body_picture_of_playing_happy_baby_on_a_white_scre_b8a00ff0-5e66-42e4-a7f8-2e749bcb5dec.png';
+import playingHappyBaby2 from '../../public/images/nadavfe_full_body_picture_of_playing_happy_baby_on_a_white_scre_d99ac995-c276-4a50-9e65-8fe72c0e32a8.png';
 import sleepingHappyBaby from '../../public/images/nadavfe_full_body_picture_of_sleeping_happy_baby_on_a_white_scr_8610e1b7-6455-4588-89d2-162d36826742.png';
 import standingHappyBaby from '../../public/images/nadavfe_full_body_picture_of_standing_happy_baby_on_a_white_scr_371213f7-5b4b-41f6-91da-b0977d346e40.png';
 import standingHappyBaby2 from '../../public/images/nadavfe_full_body_picture_of_standing_happy_baby_on_a_white_scr_21039812-6052-4f3e-8906-660f7cfe0c6a.png';
 import walkingHappyBaby from '../../public/images/nadavfe_full_body_picture_of_walking_happy_baby_on_a_white_scre_5070c7f5-831a-460c-90e5-9ee97748305c.png';
-import walkingHappyBaby2 from '../assets/images/nadavfe_full_body_picture_of_walking_happy_baby_on_a_white_scre_73997fd0-d52c-4856-b306-2776b5e5aec5.png';
+import walkingHappyBaby2 from '../../public/images/nadavfe_full_body_picture_of_walking_happy_baby_on_a_white_scre_73997fd0-d52c-4856-b306-2776b5e5aec5.png';
 import walkingHappyBaby3 from '../../public/images/nadavfe_full_body_picture_of_walking_happy_baby_on_a_white_scre_d732c37c-c7d1-4924-87b0-3c210e6b87d0.png';
 import sleepingBabyInCrib from '../../public/images/nadavfe_picture_of_sleeping_baby_in_a_crib_on_a_white_screen_4e040b55-58be-4283-a5c6-81b903cd839b.png';
-import sittingHappyBaby from '../assets/images/nadavfe_sitting_happy_baby_on_white_screen_1e1c64c1-68d8-41c5-9190-30ca0cee484c.png';
+import sittingHappyBaby from '../../public/images/nadavfe_sitting_happy_baby_on_white_screen_1e1c64c1-68d8-41c5-9190-30ca0cee484c.png';
 
 
 const BabySleepDevelopmentForm = ({ onSubmit }) => {
