@@ -105,7 +105,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         }, 300);
     };
 
-    const renderQuestion = (q) => {
+    const renderSleepQuestion = (q) => {
         if (!q) return null;
         switch (q.type) {
             case "clickable":
@@ -116,11 +116,11 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                                 key={option}
                                 onClick={() => handleOptionClick(q.key, option, q.type)}
                                 className={`w-full p-4 text-left bg-white rounded-lg shadow hover:bg-gray-50 active:bg-gray-100 transition-all flex items-center justify-between text-lg
-                                    ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98] animate-pulse' : ''}`}
+                                ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98] animate-pulse' : ''}`}
                             >
                                 <span>{option}</span>
                                 <div className={`w-6 h-6 border-2 rounded-full transition-all duration-200 ease-in-out
-                                    ${clickedOption === option ? 'bg-blue-500 border-blue-500 scale-110' : 'border-gray-300'}`}>
+                                ${clickedOption === option ? 'bg-blue-500 border-blue-500 scale-110' : 'border-gray-300'}`}>
                                     {clickedOption === option && (
                                         <div className="w-full h-full rounded-full bg-white scale-50"/>
                                     )}
@@ -134,7 +134,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                     <div className="space-y-4">
                         {q.options.map((option) => (
                             <label key={option} className={`flex items-center justify-between p-4 bg-white rounded-lg shadow w-full text-lg transition-all
-                                ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98]' : ''}`}>
+                            ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98]' : ''}`}>
                                 <span>{option}</span>
                                 <input
                                     type="checkbox"
@@ -601,161 +601,57 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         }
 
     };
-
-    const renderQuestion = (q) => {
-        if (!q) return null;
-        switch (q.type) {
-            case "clickable":
-                return (
-                    <div className="space-y-4">
-                        {q.options.map((option) => (
-                            <button
-                                key={option}
-                                onClick={() => handleOptionClick(q.key, option, q.type)}
-                                className={`w-full p-4 text-left bg-white rounded-lg shadow hover:bg-gray-50 active:bg-gray-100 transition-all flex items-center justify-between text-lg
-                                ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98] animate-pulse' : ''}`}
-                            >
-                                <span>{option}</span>
-                                <div className={`w-6 h-6 border-2 rounded-full transition-all duration-200 ease-in-out
-                                ${clickedOption === option ? 'bg-blue-500 border-blue-500 scale-110' : 'border-gray-300'}`}>
-                                    {clickedOption === option && (
-                                        <div className="w-full h-full rounded-full bg-white scale-50"/>
-                                    )}
-                                </div>
-                            </button>
-                        ))}
-                    </div>
-                );
-            case "multiSelect":
-                return (
-                    <div className="space-y-4">
-                        {q.options.map((option) => (
-                            <label key={option} className={`flex items-center justify-between p-4 bg-white rounded-lg shadow w-full text-lg transition-all
-                            ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98]' : ''}`}>
-                                <span>{option}</span>
-                                <input
-                                    type="checkbox"
-                                    value={option}
-                                    checked={(formData[q.key] || []).includes(option)}
-                                    onChange={() => handleOptionClick(q.key, option, q.type)}
-                                    className="form-checkbox h-6 w-6 text-blue-600 rounded-full transition-all duration-200 ease-in-out"
-                                />
-                            </label>
-                        ))}
-                    </div>
-                );
-            case 'weight':
-            case 'age':
-            case 'sleepDurationGoal':
-                return (
-                    <div className="bg-white p-4 rounded-lg shadow">
-                        {q.type === 'weight' && (
-                            <WeightInput
-                                value={formData[q.key]?.weight}
-                                onChange={(weight, unit) => updateFormData({ [q.key]: { weight, unit } })}
-                                defaultUnit="lbs"
-                            />
-                        )}
-                        {q.type === 'age' && (
-                            <AgeInput
-                                value={formData[q.key]?.age}
-                                onChange={(age, unit) => updateFormData({ [q.key]: { age, unit } })}
-                            />
-                        )}
-                        {q.type === 'sleepDurationGoal' && (
-                            <SleepDurationGoalInput
-                                value={formData[q.key]}
-                                onChange={(value) => updateFormData({ [q.key]: value })}
-                            />
-                        )}
-                    </div>
-                );
-            case "education":
-            case "future":
-                return (
-                    <div className="education-card bg-white p-6 rounded-lg shadow-lg">
-                        <img
-                            src={q.image}
-                            alt={q.alt || "Educational content"}
-                            className="w-full rounded-lg mb-6"
-                        />
-                        <div className="text-center">
-                            <p className="education-text text-2xl font-bold mb-4 text-blue-800 leading-tight">
-                                "{q.content}"
-                            </p>
-                            <p className="text-lg text-gray-700 italic flex items-center justify-center">
-                                <Moon className="w-5 h-5 mr-2 pulse-icon text-blue-500" />
-                                Baby Sleep Wisdom
-                            </p>
-                        </div>
-                    </div>
-                );
-            default:
-                return null;
-        }
-    };
-
     const totalSteps = 5;
     const currentStep = Math.min(Math.floor((step / questions.length) * totalSteps) + 1, totalSteps);
 
     const showNextButton = ['multiSelect', 'weight', 'age', 'sleepDurationGoal', 'education', 'future'].includes(questions[step]?.type);
 
-    return (
-        <div className="flex justify-center items-start min-h-screen bg-gradient-to-br from-pink-100 to-blue-100 p-0 overflow-hidden">
-            <div className="w-full max-w-md flex flex-col h-screen bg-white shadow-lg">
-                <div className="sticky top-0 bg-white z-10 pt-safe">
-                    <div className="px-4 py-2 shadow-sm">
-                        <div className="flex items-center mb-2">
-                            {step > 0 && (
-                                <button onClick={handlePrevious}
-                                        className="p-2 rounded-full hover:bg-gray-200 active:bg-gray-300 transition-colors">
-                                    <ChevronLeft className="w-6 h-6"/>
-                                </button>
-                            )}
-                            <Baby className="text-pink-500 w-6 h-6 mr-2"/>
-                            <h1 className="text-xl font-bold text-blue-800 ml-2">Baby Sleep Program</h1>
-                        </div>
-                        <div className="bg-gray-200 p-1 rounded-full">
-                            <div className="flex">
-                                {[...Array(totalSteps)].map((_, index) => (
-                                    <div
-                                        key={index}
-                                        className={`flex-1 h-1 rounded-full mx-0.5 ${
-                                            index < currentStep ? 'bg-blue-500' : 'bg-gray-300'
-                                        }`}
-                                    />
-                                ))}
-                            </div>
+    return <div className="flex justify-center items-start min-h-screen bg-gradient-to-br from-pink-100 to-blue-100 p-0 overflow-hidden">
+        <div className="w-full max-w-md flex flex-col h-screen bg-white shadow-lg">
+            <div className="sticky top-0 bg-white z-10 pt-safe">
+                <div className="px-4 py-2 shadow-sm">
+                    <div className="flex items-center mb-2">
+                        {step > 0 && <button onClick={handlePrevious}
+                                    className="p-2 rounded-full hover:bg-gray-200 active:bg-gray-300 transition-colors">
+                                <ChevronLeft className="w-6 h-6"/>
+                            </button>}
+                        <Baby className="text-pink-500 w-6 h-6 mr-2"/>
+                        <h1 className="text-xl font-bold text-blue-800 ml-2">Baby Sleep Program</h1>
+                    </div>
+                    <div className="bg-gray-200 p-1 rounded-full">
+                        <div className="flex">
+                            {[...Array(totalSteps)].map((_, index) => <div
+                                    key={index}
+                                    className={`flex-1 h-1 rounded-full mx-0.5 ${
+                                        index < currentStep ? 'bg-blue-500' : 'bg-gray-300'
+                                    }`}
+                                />)}
                         </div>
                     </div>
                 </div>
-
-                <div className="flex-grow overflow-y-auto">
-                    <div className="p-4">
-                        <div className="mb-6">
-                            {questions[step]?.question && (
-                                <h2 className="text-lg font-semibold mb-4 text-blue-800">{questions[step].question}</h2>
-                            )}
-                            {renderQuestion(questions[step])}
-                        </div>
-                        <div ref={bottomRef}/>
-                    </div>
-                </div>
-
-                {showNextButton && (
-                    <div className="sticky bottom-0 bg-white p-4 border-t border-gray-200">
-                        <button
-                            onClick={handleNext}
-                            disabled={isNextDisabled}
-                            className={`w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${clickedOption ? 'ring-2 ring-blue-300' : ''}`}
-                        >
-                            NEXT STEP
-                        </button>
-                    </div>
-                )}
             </div>
+
+            <div className="flex-grow overflow-y-auto">
+                <div className="p-4">
+                    <div className="mb-6">
+                        {questions[step]?.question && <h2 className="text-lg font-semibold mb-4 text-blue-800">{questions[step].question}</h2>}
+                        {renderSleepQuestion(questions[step])}
+                    </div>
+                    <div ref={bottomRef}/>
+                </div>
+            </div>
+
+            {showNextButton && <div className="sticky bottom-0 bg-white p-4 border-t border-gray-200">
+                    <button
+                        onClick={handleNext}
+                        disabled={isNextDisabled}
+                        className={`w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${clickedOption ? 'ring-2 ring-blue-300' : ''}`}
+                    >
+                        NEXT STEP
+                    </button>
+                </div>}
         </div>
-    );
+    </div>;
 
 }
 
