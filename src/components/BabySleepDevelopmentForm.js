@@ -31,7 +31,6 @@ import walkingHappyBaby3 from '../assets/images/nadavfe_full_body_picture_of_wal
 import sleepingBabyInCrib from '../assets/images/nadavfe_picture_of_sleeping_baby_in_a_crib_on_a_white_screen_4e040b55-58be-4283-a5c6-81b903cd839b.png';
 import sittingHappyBaby from '../assets/images/nadavfe_sitting_happy_baby_on_white_screen_1e1c64c1-68d8-41c5-919d-30ca0cee484c.png';
 
-
 const BabySleepDevelopmentForm = ({ onSubmit }) => {
     const { formData, updateFormData } = useFormData();
     const [step, setStep] = useState(0);
@@ -48,7 +47,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
 
     useEffect(() => {
         if (bottomRef.current) {
-            bottomRef.current.scrollIntoView({behavior: 'smooth'});
+            bottomRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     }, [step]);
 
@@ -106,11 +105,104 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         }, 300);
     };
 
+    const renderQuestion = (q) => {
+        if (!q) return null;
+        switch (q.type) {
+            case "clickable":
+                return (
+                    <div className="space-y-4">
+                        {q.options.map((option) => (
+                            <button
+                                key={option}
+                                onClick={() => handleOptionClick(q.key, option, q.type)}
+                                className={`w-full p-4 text-left bg-white rounded-lg shadow hover:bg-gray-50 active:bg-gray-100 transition-all flex items-center justify-between text-lg
+                                    ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98] animate-pulse' : ''}`}
+                            >
+                                <span>{option}</span>
+                                <div className={`w-6 h-6 border-2 rounded-full transition-all duration-200 ease-in-out
+                                    ${clickedOption === option ? 'bg-blue-500 border-blue-500 scale-110' : 'border-gray-300'}`}>
+                                    {clickedOption === option && (
+                                        <div className="w-full h-full rounded-full bg-white scale-50"/>
+                                    )}
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                );
+            case "multiSelect":
+                return (
+                    <div className="space-y-4">
+                        {q.options.map((option) => (
+                            <label key={option} className={`flex items-center justify-between p-4 bg-white rounded-lg shadow w-full text-lg transition-all
+                                ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98]' : ''}`}>
+                                <span>{option}</span>
+                                <input
+                                    type="checkbox"
+                                    value={option}
+                                    checked={(formData[q.key] || []).includes(option)}
+                                    onChange={() => handleOptionClick(q.key, option, q.type)}
+                                    className="form-checkbox h-6 w-6 text-blue-600 rounded-full transition-all duration-200 ease-in-out"
+                                />
+                            </label>
+                        ))}
+                    </div>
+                );
+            case 'weight':
+            case 'age':
+            case 'sleepDurationGoal':
+                return (
+                    <div className="bg-white p-4 rounded-lg shadow">
+                        {q.type === 'weight' && (
+                            <WeightInput
+                                value={formData[q.key]?.weight}
+                                onChange={(weight, unit) => updateFormData({ [q.key]: { weight, unit } })}
+                                defaultUnit="lbs"
+                            />
+                        )}
+                        {q.type === 'age' && (
+                            <AgeInput
+                                value={formData[q.key]?.age}
+                                onChange={(age, unit) => updateFormData({ [q.key]: { age, unit } })}
+                            />
+                        )}
+                        {q.type === 'sleepDurationGoal' && (
+                            <SleepDurationGoalInput
+                                value={formData[q.key]}
+                                onChange={(value) => updateFormData({ [q.key]: value })}
+                            />
+                        )}
+                    </div>
+                );
+            case "education":
+            case "future":
+                return (
+                    <div className="education-card bg-white p-6 rounded-lg shadow-lg">
+                        <img
+                            src={q.image}
+                            alt={q.alt || "Educational content"}
+                            className="w-full rounded-lg mb-6"
+                        />
+                        <div className="text-center">
+                            <p className="education-text text-2xl font-bold mb-4 text-blue-800 leading-tight">
+                                "{q.content}"
+                            </p>
+                            <p className="text-lg text-gray-700 italic flex items-center justify-center">
+                                <Moon className="w-5 h-5 mr-2 pulse-icon text-blue-500" />
+                                Baby Sleep Wisdom
+                            </p>
+                        </div>
+                    </div>
+                );
+            default:
+                return null;
+        }
+    };
+
     const questions = [
         {
-            question: "How many times do you wake up for your little one at night?",
+            question: "How many times do you wake up for your baby at night?",
             type: "clickable",
-            options: ["0-1", "2-3", "4-5", "6+"],
+            options: ["0", "2", "3", "4+"],
             key: "nightWakings"
         },
         {
@@ -126,19 +218,19 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             key: "timeCommitment"
         },
         {
-            question: "How old is your bundle of joy?",
+            question: "How old is your baby?",
             type: "clickable",
             options: ["0-3 months", "4-6 months", "7-12 months", "1-2 years", "2-3 years", "3+ years"],
             key: "childAge"
         },
         {
-            question: "Have you tried the Montessori method with your little one?",
+            question: "Have you tried the Ferber-Montessori method with your little one?",
             type: "clickable",
             options: ["Yes", "No", "I'm not familiar with it"],
             key: "montessoriMethod"
         },
         {
-            content: "Montessori sleep routines focus on creating a safe, accessible sleep environment for your little one.",
+            content: "The Ferber method is great for teaching babies to self-soothe gradually. You're going to find it very helpful!",
             type: "education",
             image: sleepingHappyBaby,
             alt: "Happy baby sleeping in a Montessori-style bed"
@@ -146,13 +238,13 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         {
             question: "Was your little one born full-term?",
             type: "clickable",
-            options: ["Yes, full-term (37-42 weeks)", "No, premature (before 37 weeks)", "No, post-term (after 42 weeks)", "Unsure"],
+            options: ["Yes, full-term", "No, premature", "No, post-term", "Unsure"],
             key: "birthTerm"
         },
         {
             question: "What else do you hope to achieve with this plan for your youngster?",
             type: "multiSelect",
-            options: ["Better sleep routine", "Improved nutrition", "Developmental milestones", "Behavior management"],
+            options: ["Improved nutrition", "Developmental milestones", "Behavior management"],
             key: "goals"
         },
         {
@@ -162,15 +254,15 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             key: "programCommitment"
         },
         {
-            question: "How happy is your little one in the evening?",
+            question: "Does your baby have any medical conditions or health concerns?",
             type: "clickable",
-            options: ["Very happy", "Somewhat happy", "Neutral", "Somewhat unhappy", "Very unhappy"],
-            key: "eveningMood"
+            options: ["Reflux or colic", "Allergies or intolerances", "Chronic health conditions", "None", "Other"],
+            key: "medicalConditions"
         },
         {
             question: "Which aspect of your youngster's development concerns you the most?",
             type: "clickable",
-            options: ["Sleep", "Feeding", "Motor skills", "Language", "Social skills", "None"],
+            options: ["Sleep", "Feeding", "Motor skills", "Language", "Social skills", "None", "All"],
             key: "developmentConcern"
         },
         {
@@ -192,9 +284,9 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             key: "routineAdjustment"
         },
         {
-            question: "Where does your bundle of joy sleep?",
+            question: "Where does your baby sleep at night?",
             type: "clickable",
-            options: ["In a bed", "In a crib", "In a stroller", "Other"],
+            options: ["In their own crib", "Co-sleeping with parents", "Bassinet in parent’s room", "Rotates between different locations"],
             key: "sleepLocation"
         },
         {
@@ -210,7 +302,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             alt: "Baby sitting and playing with a pacifier"
         },
         {
-            question: "How does your little dreamer typically fall asleep?",
+            question: "How does your little one typically fall asleep?",
             type: "clickable",
             options: ["Independently in crib/bed", "While feeding", "Being rocked or held", "With parent in room"],
             key: "fallingAsleepMethod"
@@ -228,15 +320,9 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             key: "timeToFallAsleep"
         },
         {
-            question: "Where does your little sleeper rest at night?",
-            type: "clickable",
-            options: ["In their own crib/bed in a separate room", "In a crib/bed in parents' room", "Co-sleeping with parent(s)", "Combination of above"],
-            key: "nightSleepLocation"
-        },
-        {
             question: "Do you use any sleep aids for your bundle of joy?",
             type: "multiSelect",
-            options: ["White noise machine", "Pacifier", "Swaddle or sleep sack", "Comfort object (stuffed animal, blanket)", "None"],
+            options: ["White noise machine", "Pacifier", "Swaddle or sleep sack", "Comfort object (stuffed animal, blanket)", "None", "All"],
             key: "sleepAids"
         },
         {
@@ -264,18 +350,6 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             key: "nightFeedings"
         },
         {
-            question: "Has your little one started eating solids?",
-            type: "clickable",
-            options: ["Yes", "No", "Just starting"],
-            key: "solidFoods"
-        },
-        {
-            question: "Does your bundle of joy fall asleep while feeding?",
-            type: "clickable",
-            options: ["Always", "Often", "Sometimes", "Rarely", "Never"],
-            key: "sleepWhileFeeding"
-        },
-        {
             question: "What is the room like where your little dreamer sleeps?",
             type: "multiSelect",
             options: ["Dark", "Quiet", "Cool temperature", "Warm temperature", "Noisy"],
@@ -300,36 +374,6 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             key: "screenTime"
         },
         {
-            question: "Does your bundle of joy suffer from colic?",
-            type: "clickable",
-            options: ["Yes", "No", "Unsure"],
-            key: "colic"
-        },
-        {
-            question: "Does your little one suffer from reflux?",
-            type: "clickable",
-            options: ["Yes", "No", "Unsure"],
-            key: "reflux"
-        },
-        {
-            question: "Does your youngster suffer from constipation or diarrhea?",
-            type: "clickable",
-            options: ["Constipation", "Diarrhea", "Both", "Neither"],
-            key: "digestiveIssues"
-        },
-        {
-            question: "Does your little dreamer suffer from skin rash?",
-            type: "clickable",
-            options: ["Yes", "No", "Occasionally"],
-            key: "skinRash"
-        },
-        {
-            content: "Health issues can impact sleep. Our program considers these factors for a holistic approach.",
-            type: "education",
-            image: crawlingBaby,
-            alt: "Baby crawling, demonstrating healthy development"
-        },
-        {
             question: "What is your little one's current weight pattern?",
             type: "clickable",
             options: ["Following typical growth curve", "Underweight for age", "Overweight for age", "Unsure"],
@@ -348,12 +392,6 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             key: "siblings"
         },
         {
-            question: "What are your bundle of joy's sleep cycles?",
-            type: "multiSelect",
-            options: ["Morning nap", "Afternoon nap", "Evening nap", "Night sleep"],
-            key: "sleepCycles"
-        },
-        {
             question: "How many hours does your little dreamer sleep on an average night?",
             type: "clickable",
             options: ["Less than 6", "6-8", "8-10", "10-12", "More than 12"],
@@ -364,18 +402,6 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             type: "future",
             image: sleepingHappyBaby,
             alt: "Peaceful sleeping baby"
-        },
-        {
-            question: "How would you describe your youngster's typical sleep pattern?",
-            type: "clickable",
-            options: ["Consistent", "Somewhat consistent", "Inconsistent", "Very irregular"],
-            key: "sleepPattern"
-        },
-        {
-            question: "Do you have other children besides your little one?",
-            type: "clickable",
-            options: ["Yes, 1 other child", "Yes, 2 or more children", "No, this is our first", "Expecting another"],
-            key: "otherChildren"
         },
         {
             question: "Does anyone in the family have sleep issues?",
@@ -400,18 +426,6 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             type: "clickable",
             options: ["1-2", "3-4", "5-6", "More than 6"],
             key: "mealsPerDay"
-        },
-        {
-            question: "Does your little one have any food allergies or dietary restrictions?",
-            type: "clickable",
-            options: ["Yes", "No", "Suspected but not confirmed"],
-            key: "foodAllergies"
-        },
-        {
-            question: "Have you tried any sleep training methods for your bundle of joy before?",
-            type: "clickable",
-            options: ["Yes", "No", "Not sure"],
-            key: "previousSleepTraining"
         },
         {
             question: "Which sleep training method(s) have you tried with your little dreamer?",
@@ -448,19 +462,6 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             type: "multiSelect",
             options: ["Longer night sleep", "Fewer night wakings", "Easier bedtime routine", "More consistent naps", "Self-soothing skills"],
             key: "sleepGoals"
-        },
-        {
-            question: "Have any of the following life events impacted your family's sleep routine in the last year?",
-            type: "multiSelect",
-            options: [
-                "New baby or adoption",
-                "Moving to a new home",
-                "Change in work schedule",
-                "Family illness or medical issue",
-                "Travel or vacation",
-                "None of the above"
-            ],
-            key: "lifeEvents"
         },
         {
             question: "Which of the following factors do you think contribute to your child's sleep challenges?",
@@ -510,11 +511,6 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             type: "future",
             image: walkingHappyBaby,
             alt: "Happy baby taking first steps"
-        },
-        {
-            content: "You're almost there! Your commitment to this process is admirable. Remember, consistency is key in establishing healthy sleep habits. Let's work together to give your child the gift of great sleep!",
-            type: "education",
-            image: "/api/placeholder/300/200"
         },
         {
             question: "What is your goal for your baby's total sleep duration in a 24-hour period?",
@@ -617,11 +613,11 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                                 key={option}
                                 onClick={() => handleOptionClick(q.key, option, q.type)}
                                 className={`w-full p-4 text-left bg-white rounded-lg shadow hover:bg-gray-50 active:bg-gray-100 transition-all flex items-center justify-between text-lg
-                                    ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98] animate-pulse' : ''}`}
+                                ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98] animate-pulse' : ''}`}
                             >
                                 <span>{option}</span>
                                 <div className={`w-6 h-6 border-2 rounded-full transition-all duration-200 ease-in-out
-                                    ${clickedOption === option ? 'bg-blue-500 border-blue-500 scale-110' : 'border-gray-300'}`}>
+                                ${clickedOption === option ? 'bg-blue-500 border-blue-500 scale-110' : 'border-gray-300'}`}>
                                     {clickedOption === option && (
                                         <div className="w-full h-full rounded-full bg-white scale-50"/>
                                     )}
@@ -635,7 +631,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                     <div className="space-y-4">
                         {q.options.map((option) => (
                             <label key={option} className={`flex items-center justify-between p-4 bg-white rounded-lg shadow w-full text-lg transition-all
-                                ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98]' : ''}`}>
+                            ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98]' : ''}`}>
                                 <span>{option}</span>
                                 <input
                                     type="checkbox"
@@ -651,8 +647,6 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             case 'weight':
             case 'age':
             case 'sleepDurationGoal':
-            case "education":
-            case "future":
                 return (
                     <div className="bg-white p-4 rounded-lg shadow">
                         {q.type === 'weight' && (
@@ -674,12 +668,26 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                                 onChange={(value) => updateFormData({ [q.key]: value })}
                             />
                         )}
-                        {(q.type === "education" || q.type === "future") && (
-                            <>
-                                <img src={q.image} alt="Educational content" className="w-full rounded mb-4"/>
-                                <p className="mb-4">{q.content}</p>
-                            </>
-                        )}
+                    </div>
+                );
+            case "education":
+            case "future":
+                return (
+                    <div className="education-card bg-white p-6 rounded-lg shadow-lg">
+                        <img
+                            src={q.image}
+                            alt={q.alt || "Educational content"}
+                            className="w-full rounded-lg mb-6"
+                        />
+                        <div className="text-center">
+                            <p className="education-text text-2xl font-bold mb-4 text-blue-800 leading-tight">
+                                "{q.content}"
+                            </p>
+                            <p className="text-lg text-gray-700 italic flex items-center justify-center">
+                                <Moon className="w-5 h-5 mr-2 pulse-icon text-blue-500" />
+                                Baby Sleep Wisdom
+                            </p>
+                        </div>
                     </div>
                 );
             default:
@@ -748,6 +756,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             </div>
         </div>
     );
+
 }
 
 export default BabySleepDevelopmentForm;
