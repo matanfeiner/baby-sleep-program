@@ -8,14 +8,14 @@ import ParentBabyWellnessDashboard from './components/ParentBabyWellnessDashboar
 import BabySleepPlanLoading from './components/BabySleepPlanLoading';
 import BabySleepPlanEmailInput from './components/BabySleepPlanEmailInput';
 import BabySleepPlanReady from './components/BabySleepPlanReady';
+import { FormDataProvider, useFormData } from './contexts/FormDataContext';
 
-function App() {
+function AppContent() {
   const [step, setStep] = useState(0);
-  const [formData, setFormData] = useState({});
   const [testMode, setTestMode] = useState(false);
+  const { formData, updateFormData } = useFormData();
 
   useEffect(() => {
-    // Check if the URL contains the query parameter ?test=1
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('test') === '1') {
       setTestMode(true);
@@ -23,12 +23,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // Add event listener for 'Enter' key if in test mode
     if (testMode) {
       const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
-          // Move to the next step when Enter is pressed
-          setStep((prevStep) => Math.min(prevStep + 1, 10)); // Adjust 10 based on your total steps
+          setStep((prevStep) => Math.min(prevStep + 1, 10));
         }
       };
 
@@ -40,22 +38,22 @@ function App() {
   }, [testMode]);
 
   const handleWeightSubmit = (weight) => {
-    setFormData({ ...formData, weight });
+    updateFormData({ weight });
     setStep(1);
   };
 
   const handleNameSubmit = (parentName, babyName) => {
-    setFormData({ ...formData, parentName, babyName });
+    updateFormData({ parentName, babyName });
     setStep(2);
   };
 
   const handleSleepDevelopmentSubmit = (data) => {
-    setFormData({ ...formData, ...data });
+    updateFormData(data);
     setStep(3);
   };
 
   const handleMilestoneSubmit = (milestones) => {
-    setFormData({ ...formData, milestones });
+    updateFormData({ milestones });
     setStep(5);
   };
 
@@ -68,7 +66,7 @@ function App() {
   };
 
   const handleEmailSubmit = (email) => {
-    setFormData({ ...formData, email });
+    updateFormData({ email });
     setStep(8);
   };
 
@@ -80,7 +78,7 @@ function App() {
   const renderStep = () => {
     switch (step) {
       case 0:
-        return <BabySleepDevelopmentForm onSubmit={handleWeightSubmit} />;
+        return <BabySleepDevelopmentForm onSubmit={handleSleepDevelopmentSubmit} />;
       case 1:
         return <ParentBabyNameInput onNameSubmit={handleNameSubmit} />;
       case 2:
@@ -123,6 +121,14 @@ function App() {
       <div className="App min-h-screen bg-gray-100 py-8">
         {renderStep()}
       </div>
+  );
+}
+
+function App() {
+  return (
+      <FormDataProvider>
+        <AppContent />
+      </FormDataProvider>
   );
 }
 

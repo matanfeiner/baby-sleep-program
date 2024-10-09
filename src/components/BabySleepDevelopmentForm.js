@@ -17,10 +17,11 @@ import WeightInput from './WeightInput';
 import AgeInput from './AgeInput';
 import SleepDurationGoalInput from './SleepDurationGoalInput';
 import rudderanalytics from '../rudderstack';
+import { useFormData } from '../contexts/FormDataContext';
 
 const BabySleepDevelopmentForm = ({ onSubmit }) => {
+    const { formData, updateFormData } = useFormData();
     const [step, setStep] = useState(0);
-    const [formData, setFormData] = useState({});
     const [isNextDisabled, setIsNextDisabled] = useState(false);
     const [clickedOption, setClickedOption] = useState(null);
     const bottomRef = useRef(null);
@@ -59,22 +60,19 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         setStep(step - 1);
     };
 
-    const updateFormData = (key, value, type) => {
+    const handleOptionClick = (key, value, type) => {
+        setIsNextDisabled(true);
+        setClickedOption(value);
+
         if (type === "multiSelect") {
             const currentSelections = formData[key] || [];
             const updatedSelections = currentSelections.includes(value)
                 ? currentSelections.filter(item => item !== value)
                 : [...currentSelections, value];
-            setFormData({...formData, [key]: updatedSelections});
+            updateFormData({ [key]: updatedSelections });
         } else {
-            setFormData({...formData, [key]: value});
+            updateFormData({ [key]: value });
         }
-    };
-
-    const handleOptionClick = (key, value, type) => {
-        setIsNextDisabled(true);
-        setClickedOption(value);
-        updateFormData(key, value, type);
 
         rudderanalytics.track('Answer Submitted', {
             question: key,
@@ -638,20 +636,20 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                         {q.type === 'weight' && (
                             <WeightInput
                                 value={formData[q.key]?.weight}
-                                onChange={(weight, unit) => updateFormData(q.key, {weight, unit})}
+                                onChange={(weight, unit) => updateFormData({ [q.key]: { weight, unit } })}
                                 defaultUnit="lbs"
                             />
                         )}
                         {q.type === 'age' && (
                             <AgeInput
                                 value={formData[q.key]?.age}
-                                onChange={(age, unit) => updateFormData(q.key, {age, unit})}
+                                onChange={(age, unit) => updateFormData({ [q.key]: { age, unit } })}
                             />
                         )}
                         {q.type === 'sleepDurationGoal' && (
                             <SleepDurationGoalInput
                                 value={formData[q.key]}
-                                onChange={(value) => updateFormData(q.key, value)}
+                                onChange={(value) => updateFormData({ [q.key]: value })}
                             />
                         )}
                         {(q.type === "education" || q.type === "future") && (
@@ -673,8 +671,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
     const showNextButton = ['multiSelect', 'weight', 'age', 'sleepDurationGoal', 'education', 'future'].includes(questions[step]?.type);
 
     return (
-        <div
-            className="flex justify-center items-start min-h-screen bg-gradient-to-br from-pink-100 to-blue-100 p-0 overflow-hidden">
+        <div className="flex justify-center items-start min-h-screen bg-gradient-to-br from-pink-100 to-blue-100 p-0 overflow-hidden">
             <div className="w-full max-w-md flex flex-col h-screen bg-white shadow-lg">
                 <div className="sticky top-0 bg-white z-10 pt-safe">
                     <div className="px-4 py-2 shadow-sm">
@@ -730,4 +727,5 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         </div>
     );
 }
+
 export default BabySleepDevelopmentForm;

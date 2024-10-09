@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Moon, Sun, Heart, Battery, Zap, UserCheck, Baby, ChevronRight } from 'lucide-react';
-import { fetchDashboardData } from '../api';
+import { useFormData } from '../contexts/FormDataContext';
 
 const WellnessMetric = ({ icon: Icon, title, value, description, reference }) => (
     <div className="bg-white p-4 rounded-lg shadow">
@@ -24,41 +24,15 @@ const WellnessMetric = ({ icon: Icon, title, value, description, reference }) =>
     </div>
 );
 
-const ParentBabyWellnessDashboard = ({ onViewSleepPlan, userId }) => {
-    const [dashboardData, setDashboardData] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+const ParentBabyWellnessDashboard = ({ onViewSleepPlan }) => {
+    const { formData } = useFormData();
 
-    useEffect(() => {
-        async function loadDashboardData() {
-            try {
-                setIsLoading(true);
-                const data = await fetchDashboardData(userId);
-                setDashboardData(data);
-                setIsLoading(false);
-            } catch (error) {
-                console.error('Failed to load dashboard data:', error);
-                setError(error.message);
-                setIsLoading(false);
-            }
-        }
-
-        loadDashboardData();
-    }, [userId]);
-
-    if (isLoading) return <div className="flex justify-center items-center h-screen">Loading your dashboard...</div>;
-    if (error) return <div>Sorry, we couldn't load your dashboard. Please try again later.</div>;
-
-    if (!dashboardData || !dashboardData.babyMetrics || !dashboardData.parentMetrics) {
-        return <div>No data available. Please try again later.</div>;
-    }
-
-    const { babyMetrics, parentMetrics } = dashboardData;
+    const processedData = processFormData(formData);
 
     return (
         <div className="flex justify-center items-start min-h-screen bg-gradient-to-br from-pink-100 to-blue-100 p-0 overflow-hidden">
             <div className="w-full max-w-md flex flex-col h-screen bg-white shadow-lg">
-                <div className="sticky top-0 bg-white z-10 pt-4"> {/* Changed pt-safe to pt-4 */}
+                <div className="sticky top-0 bg-white z-10 pt-4">
                     <div className="px-4 py-3 shadow-sm">
                         <div className="flex items-center">
                             <Baby className="text-pink-500 w-6 h-6 mr-2" />
@@ -75,23 +49,23 @@ const ParentBabyWellnessDashboard = ({ onViewSleepPlan, userId }) => {
                                 <WellnessMetric
                                     icon={Moon}
                                     title="Sleep Duration"
-                                    value={babyMetrics?.sleepDuration?.value}
-                                    description={babyMetrics?.sleepDuration?.description}
-                                    reference={babyMetrics?.sleepDuration?.reference}
+                                    value={processedData.babyMetrics.sleepDuration.value}
+                                    description={processedData.babyMetrics.sleepDuration.description}
+                                    reference={processedData.babyMetrics.sleepDuration.reference}
                                 />
                                 <WellnessMetric
                                     icon={Battery}
                                     title="Sleep Quality"
-                                    value={babyMetrics?.sleepQuality?.value}
-                                    description={babyMetrics?.sleepQuality?.description}
-                                    reference={babyMetrics?.sleepQuality?.reference}
+                                    value={processedData.babyMetrics.sleepQuality.value}
+                                    description={processedData.babyMetrics.sleepQuality.description}
+                                    reference={processedData.babyMetrics.sleepQuality.reference}
                                 />
                                 <WellnessMetric
                                     icon={Zap}
                                     title="Development"
-                                    value={babyMetrics?.development?.value}
-                                    description={babyMetrics?.development?.description}
-                                    reference={babyMetrics?.development?.reference}
+                                    value={processedData.babyMetrics.development.value}
+                                    description={processedData.babyMetrics.development.description}
+                                    reference={processedData.babyMetrics.development.reference}
                                 />
                             </div>
                         </div>
@@ -102,45 +76,47 @@ const ParentBabyWellnessDashboard = ({ onViewSleepPlan, userId }) => {
                                 <WellnessMetric
                                     icon={Moon}
                                     title="Your Sleep"
-                                    value={parentMetrics?.sleep?.value}
-                                    description={parentMetrics?.sleep?.description}
-                                    reference={parentMetrics?.sleep?.reference}
+                                    value={processedData.parentMetrics.sleep.value}
+                                    description={processedData.parentMetrics.sleep.description}
+                                    reference={processedData.parentMetrics.sleep.reference}
                                 />
                                 <WellnessMetric
                                     icon={Heart}
                                     title="Stress Level"
-                                    value={parentMetrics?.stressLevel?.value}
-                                    description={parentMetrics?.stressLevel?.description}
-                                    reference={parentMetrics?.stressLevel?.reference}
+                                    value={processedData.parentMetrics.stressLevel.value}
+                                    description={processedData.parentMetrics.stressLevel.description}
+                                    reference={processedData.parentMetrics.stressLevel.reference}
                                 />
                                 <WellnessMetric
                                     icon={UserCheck}
                                     title="Self-Care"
-                                    value={parentMetrics?.selfCare?.value}
-                                    description={parentMetrics?.selfCare?.description}
-                                    reference={parentMetrics?.selfCare?.reference}
+                                    value={processedData.parentMetrics.selfCare.value}
+                                    description={processedData.parentMetrics.selfCare.description}
+                                    reference={processedData.parentMetrics.selfCare.reference}
                                 />
                             </div>
                         </div>
+
                         <div className="bg-white p-4 rounded-lg shadow mb-6">
                             <h2 className="text-xl font-semibold mb-2 text-blue-800">Daily Rhythm</h2>
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                                 <div className="flex items-center mb-2 sm:mb-0">
                                     <Sun className="w-6 h-6 text-yellow-500 mr-2"/>
-                                    <span>Wake: {dashboardData?.dailyRhythm?.wakeTime}</span>
+                                    <span>Wake: {processedData.dailyRhythm.wakeTime}</span>
                                 </div>
                                 <div className="flex items-center">
                                     <Moon className="w-6 h-6 text-blue-500 mr-2"/>
-                                    <span>Bedtime: {dashboardData?.dailyRhythm?.bedTime}</span>
+                                    <span>Bedtime: {processedData.dailyRhythm.bedTime}</span>
                                 </div>
                             </div>
                         </div>
+
                         <div className="bg-white p-4 rounded-lg shadow">
                             <h2 className="text-xl font-semibold mb-2 text-blue-800">Wellness Insights</h2>
                             <ul className="list-disc list-inside space-y-2 text-gray-700">
-                                <li>Your baby's sleep pattern is improving. Keep up the consistent bedtime routine!</li>
-                                <li>Consider going to bed 30 minutes earlier to increase your sleep duration.</li>
-                                <li>Try incorporating a 10-minute meditation during your baby's morning nap for stress relief.</li>
+                                {processedData.insights.map((insight, index) => (
+                                    <li key={index}>{insight}</li>
+                                ))}
                             </ul>
                         </div>
                     </div>
@@ -159,5 +135,104 @@ const ParentBabyWellnessDashboard = ({ onViewSleepPlan, userId }) => {
         </div>
     );
 };
+
+function processFormData(formData) {
+    // This function should process the form data and return an object with the required metrics
+    // You'll need to implement the logic based on your form questions and desired dashboard metrics
+    return {
+        babyMetrics: {
+            sleepDuration: calculateSleepDuration(formData),
+            sleepQuality: assessSleepQuality(formData),
+            development: assessDevelopment(formData),
+        },
+        parentMetrics: {
+            sleep: calculateParentSleep(formData),
+            stressLevel: assessStressLevel(formData),
+            selfCare: assessSelfCare(formData),
+        },
+        dailyRhythm: {
+            wakeTime: formData.wakeTime || "7:00 AM",
+            bedTime: formData.bedTime || "8:30 PM",
+        },
+        insights: generateInsights(formData),
+    };
+}
+
+// Helper functions to calculate metrics based on form data
+function calculateSleepDuration(formData) {
+    // Implement logic based on your form data
+    const duration = formData.sleepHours || "Unknown";
+    return {
+        value: duration,
+        description: duration >= 10 ? "Within recommended range" : "Below recommended range",
+        reference: duration >= 10 ? "Good" : "Low"
+    };
+}
+
+function assessSleepQuality(formData) {
+    // Implement logic based on your form data
+    const quality = formData.sleepQuality || "Unknown";
+    return {
+        value: quality,
+        description: "Based on night wakings and ease of falling asleep",
+        reference: quality === "Good" ? "Good" : quality === "Fair" ? "Standard" : "Low"
+    };
+}
+
+function assessDevelopment(formData) {
+    // Implement logic based on your form data
+    const development = formData.development || "Unknown";
+    return {
+        value: development,
+        description: "Based on achieved milestones",
+        reference: development === "On Track" ? "Good" : "Standard"
+    };
+}
+
+function calculateParentSleep(formData) {
+    // Implement logic based on your form data
+    const parentSleep = formData.parentSleepHours || "Unknown";
+    return {
+        value: parentSleep,
+        description: parentSleep >= 7 ? "Within optimal range" : "Below optimal range",
+        reference: parentSleep >= 7 ? "Good" : parentSleep >= 6 ? "Standard" : "Low"
+    };
+}
+
+function assessStressLevel(formData) {
+    // Implement logic based on your form data
+    const stressLevel = formData.parentStressLevel || "Unknown";
+    return {
+        value: stressLevel,
+        description: "Based on reported stress indicators",
+        reference: stressLevel === "Low" ? "Good" : stressLevel === "Moderate" ? "Standard" : "Low"
+    };
+}
+
+function assessSelfCare(formData) {
+    // Implement logic based on your form data
+    const selfCareActivities = formData.parentSelfCareActivities || [];
+    const score = selfCareActivities.length;
+    return {
+        value: `${score}/5 activities`,
+        description: score >= 3 ? "Good self-care routine" : "Try to increase self-care activities",
+        reference: score >= 3 ? "Good" : score >= 2 ? "Standard" : "Low"
+    };
+}
+
+function generateInsights(formData) {
+    // Generate insights based on the form data
+    const insights = [];
+    if (formData.sleepHours < 10) {
+        insights.push("Consider adjusting bedtime to increase total sleep duration.");
+    }
+    if (formData.parentSleepHours < 7) {
+        insights.push("Try to prioritize your own sleep for better overall well-being.");
+    }
+    if (formData.parentStressLevel === "High") {
+        insights.push("Incorporate stress-reduction techniques into your daily routine.");
+    }
+    return insights;
+}
 
 export default ParentBabyWellnessDashboard;
