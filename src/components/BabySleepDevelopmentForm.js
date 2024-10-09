@@ -18,6 +18,19 @@ import AgeInput from './AgeInput';
 import SleepDurationGoalInput from './SleepDurationGoalInput';
 import rudderanalytics from '../rudderstack';
 import { useFormData } from '../contexts/FormDataContext';
+// Import images
+import crawlingBaby from '../assets/images/nadavfe_full_body_picture_of_crawling_baby_on_a_white_screen_4e6550ea-55e7-4f2a-8ee7-2aaf10ca6de2.png';
+import playingHappyBaby from '../assets/images/nadavfe_full_body_picture_of_playing_happy_baby_on_a_white_scre_b8a00ff0-5e66-42e4-a7f8-2e749bcb5dec.png';
+import playingHappyBaby2 from '../assets/images/nadavfe_full_body_picture_of_playing_happy_baby_on_a_white_scre_d99ac995-c276-4a50-9e65-8fe72c0e32a8.png';
+import sleepingHappyBaby from '../assets/images/nadavfe_full_body_picture_of_sleeping_happy_baby_on_a_white_scr_8610e1b7-6455-4588-89d2-162d36826742.png';
+import standingHappyBaby from '../assets/images/nadavfe_full_body_picture_of_standing_happy_baby_on_a_white_scr_371213f7-5b4b-41f6-91da-b0977d346e40.png';
+import standingHappyBaby2 from '../assets/images/nadavfe_full_body_picture_of_standing_happy_baby_on_a_white_scr_21039812-6052-4f3e-8906-660f7cfe0c6a.png';
+import walkingHappyBaby from '../assets/images/nadavfe_full_body_picture_of_walking_happy_baby_on_a_white_scre_5070c7f5-831a-460c-90e5-9ee97748305c.png';
+import walkingHappyBaby2 from '../assets/images/nadavfe_full_body_picture_of_walking_happy_baby_on_a_white_scre_73997fd0-d52c-4856-b306-2776b5e5aec5.png';
+import walkingHappyBaby3 from '../assets/images/nadavfe_full_body_picture_of_walking_happy_baby_on_a_white_scre_d732c37c-c7d1-4924-87b0-3c210e6b87d0.png';
+import sleepingBabyInCrib from '../assets/images/nadavfe_picture_of_sleeping_baby_in_a_crib_on_a_white_screen_4e040b55-58be-4283-a5c6-81b903cd839b.png';
+import sittingHappyBaby from '../assets/images/nadavfe_sitting_happy_baby_on_white_screen_1e1c64c1-68d8-41c5-9190-30ca0cee484c.png';
+
 
 const BabySleepDevelopmentForm = ({ onSubmit }) => {
     const { formData, updateFormData } = useFormData();
@@ -103,7 +116,8 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         {
             content: "Consistent bedtime routines can reduce night wakings by up to 37% in infants.",
             type: "education",
-            image: "/api/placeholder/300/200"
+            image: sleepingBabyInCrib,
+            alt: "Baby sleeping peacefully in a crib"
         },
         {
             question: "Are you willing to invest 15 minutes daily to improve your little sleeper's rest?",
@@ -126,7 +140,8 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         {
             content: "Montessori sleep routines focus on creating a safe, accessible sleep environment for your little one.",
             type: "education",
-            image: "/api/placeholder/300/200"
+            image: sleepingHappyBaby,
+            alt: "Happy baby sleeping in a Montessori-style bed"
         },
         {
             question: "Was your little one born full-term?",
@@ -161,7 +176,8 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         {
             content: "Quality sleep boosts cognitive development, emotional regulation, and physical growth in infants and toddlers.",
             type: "education",
-            image: "/api/placeholder/300/200"
+            image: playingHappyBaby,
+            alt: "Happy baby playing, demonstrating good development"
         },
         {
             question: "Does your little one cry when getting to bed?",
@@ -190,7 +206,8 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         {
             content: "Pacifiers can reduce SIDS risk, but may affect dental development if used long-term.",
             type: "education",
-            image: "/api/placeholder/300/200"
+            image: sittingHappyBaby,
+            alt: "Baby sitting and playing with a pacifier"
         },
         {
             question: "How does your little dreamer typically fall asleep?",
@@ -231,7 +248,8 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         {
             content: "A simple, consistent routine can lay the groundwork for better sleep habits.",
             type: "education",
-            image: "/api/placeholder/300/200"
+            image: standingHappyBaby,
+            alt: "Happy baby standing, ready for bedtime routine"
         },
         {
             question: "How is your little one fed?",
@@ -308,7 +326,8 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         {
             content: "Health issues can impact sleep. Our program considers these factors for a holistic approach.",
             type: "education",
-            image: "/api/placeholder/300/200"
+            image: crawlingBaby,
+            alt: "Baby crawling, demonstrating healthy development"
         },
         {
             question: "What is your little one's current weight pattern?",
@@ -343,7 +362,8 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         {
             content: "Imagine your little one sleeping through the night, and you waking up refreshed!",
             type: "future",
-            image: "/api/placeholder/300/200"
+            image: sleepingHappyBaby,
+            alt: "Peaceful sleeping baby"
         },
         {
             question: "How would you describe your youngster's typical sleep pattern?",
@@ -482,12 +502,14 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         {
             content: "Picture peaceful bedtimes and sweet dreams for your little one. It's possible!",
             type: "future",
-            image: "/api/placeholder/300/200"
+            image: sleepingBabyInCrib,
+            alt: "Baby sleeping peacefully in a crib at night"
         },
         {
             content: "Imagine your bundle of joy hitting milestones easily, thanks to quality sleep. You've got this!",
             type: "future",
-            image: "/api/placeholder/300/200"
+            image: walkingHappyBaby,
+            alt: "Happy baby taking first steps"
         },
         {
             content: "You're almost there! Your commitment to this process is admirable. Remember, consistency is key in establishing healthy sleep habits. Let's work together to give your child the gift of great sleep!",
