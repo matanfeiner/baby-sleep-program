@@ -1,6 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Star, Check, ChevronDown, ChevronUp } from 'lucide-react';
 
+// Import images and icons
+import mobileAppIllustration from '../assets/images/mobile-app-illustration.jpg';
+import featuredInLogo1 from '../assets/images/usa-today-logo.png';
+import featuredInLogo2 from '../assets/images/forbes-logo.png';
+import featuredInLogo3 from '../assets/images/wsj-logo.png';
+import featuredInLogo4 from '../assets/images/ny-post-logo.png';
+import featuredInLogo5 from '../assets/images/mashable-logo.png';
+import iconSleepSchedule from '../assets/icons/icon-sleep-schedule.png';
+import iconGuide from '../assets/icons/icon-guide.png';
+import iconSupport from '../assets/icons/icon-support.png';
+import iconTracking from '../assets/icons/icon-tracking.png';
+import iconConsultant from '../assets/icons/icon-consultant.png';
+import beforeImage from '../assets/images/before.jpg';
+import afterImage from '../assets/images/after.jpg';
+
 const PlanOption = ({ duration, price, perDay, popular = false }) => (
     <div className={`bg-white p-4 rounded-lg shadow-md ${popular ? 'border-2 border-blue-500' : ''}`}>
         <h3 className="text-lg font-semibold">{duration}</h3>
@@ -15,7 +30,7 @@ const PlanOption = ({ duration, price, perDay, popular = false }) => (
 
 const Feature = ({ text, icon }) => (
     <div className="flex items-center mb-2">
-        {icon}
+        <img src={icon} alt="Feature Icon" className="w-6 h-6 mr-2" />
         <p className="ml-2">{text}</p>
     </div>
 );
@@ -96,6 +111,7 @@ const UpdatedBabySleepPlanCheckout = () => {
                         <ProgressBar progress={25} />
                     </div>
                     <div className="mx-4 flex items-center justify-center">
+                        {/* Updated Arrow */}
                         <svg
                             width="24"
                             height="48"
@@ -132,11 +148,59 @@ const UpdatedBabySleepPlanCheckout = () => {
 
             <div className="bg-gray-100 p-6 rounded-lg mb-8">
                 <h2 className="text-2xl font-bold mb-4">What you get:</h2>
-                <Feature text="Personalized sleep schedule based on your baby's age and needs" />
-                <Feature text="Step-by-step guide to implement gentle sleep training methods" />
-                <Feature text="Daily tips and support to help you stay consistent" />
-                <Feature text="Track your baby's sleep patterns and see improvements over time" />
-                <Feature text="Access to sleep consultants for personalized advice" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <Feature icon={iconSleepSchedule} text="Personalized sleep schedule based on your baby's age and needs" />
+                        <Feature icon={iconGuide} text="Step-by-step guide to implement gentle sleep training methods" />
+                        <Feature icon={iconSupport} text="Daily tips and support to help you stay consistent" />
+                        <Feature icon={iconTracking} text="Track your baby's sleep patterns and see improvements over time" />
+                        <Feature icon={iconConsultant} text="Access to sleep consultants for personalized advice" />
+                    </div>
+                    <div className="flex items-center justify-center">
+                        <img src={mobileAppIllustration} alt="Mobile App" className="max-w-full h-auto" />
+                    </div>
+                </div>
+            </div>
+
+            <div className="mb-8">
+                <h2 className="text-xl font-bold mb-4">As featured in</h2>
+                <div className="flex justify-between items-center">
+                    <img src={featuredInLogo1} alt="USA Today" />
+                    <img src={featuredInLogo2} alt="Forbes" />
+                    <img src={featuredInLogo3} alt="WSJ" />
+                    <img src={featuredInLogo4} alt="New York Post" />
+                    <img src={featuredInLogo5} alt="Mashable" />
+                </div>
+            </div>
+
+            <div className="mb-8">
+                <h2 className="text-2xl font-bold mb-4">Results that make us proud</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="bg-white p-4 rounded-lg shadow-md">
+                        <div className="flex justify-between mb-2">
+                            <img src={beforeImage} alt="Before" className="w-1/2" />
+                            <img src={afterImage} alt="After" className="w-1/2" />
+                        </div>
+                        <h3 className="font-bold">Eun, -5 kg</h3>
+                        <p className="text-sm">It helps you track everything you need when you want to help yourself lower weight or keep it, from water to food and calories...</p>
+                        <a href="#" className="text-blue-500 text-sm">Read more</a>
+                    </div>
+                    {/* Add more similar result cards here */}
+                </div>
+            </div>
+
+            <h2 className="text-2xl font-bold text-center mb-6">Choose Your Plan</h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <PlanOption duration="1-Week Trial" price={9.90} perDay={1.41} />
+                <PlanOption duration="4-Week Plan" price={15.00} perDay={0.53} popular={true} />
+                <PlanOption duration="12-Week Plan" price={30.00} perDay={0.35} />
+            </div>
+
+            <div className="bg-gray-100 p-6 rounded-lg mb-8">
+                <h2 className="text-xl font-bold mb-4">30-day money-back guarantee</h2>
+                <p>We believe that our plan may work for you and you'll see visible results in 4 weeks! If you don't see improvements and can demonstrate that you followed our plan, we offer a full refund.</p>
+                <p className="mt-2">Find more about applicable limitations in our <a href="#" className="text-blue-500">money-back policy</a>.</p>
             </div>
 
             <div className="text-center mb-8">
