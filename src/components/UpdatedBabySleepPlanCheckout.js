@@ -21,14 +21,14 @@ const Feature = ({ text }) => (
 );
 
 const ProgressBar = ({ progress }) => {
-    const progressColors = ['bg-red-500', 'bg-yellow-500', 'bg-green-500'];
-    const progressColor = progress < 33 ? progressColors[0] : progress < 66 ? progressColors[1] : progressColors[2];
-
     return (
         <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4 overflow-hidden">
             <div
-                className={`h-2.5 ${progressColor} transition-all duration-1000`}
-                style={{ width: `${progress}%` }}
+                className="h-2.5 rounded-full transition-all duration-1000"
+                style={{
+                    width: `${progress}%`,
+                    background: `linear-gradient(to right, #f87171, #fbbf24, #34d399)`,
+                }}
             ></div>
         </div>
     );
@@ -86,13 +86,22 @@ const UpdatedBabySleepPlanCheckout = () => {
                         </div>
                         <p className="font-semibold">Sleep time: 6 hours</p>
                         <p className="text-red-500 font-bold">Bad</p>
-                        <ProgressBar progress={progress} />
+                        <ProgressBar progress={25} />
                     </div>
-                    <div className="animation-arrows_container__Fvs3R animation-arrows_isAnimated__RKH3A mx-4">
-                        <svg width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="animation-arrows_animationTriangle1__s7j_d">
-                            <path d="M3.28379 0.474938L13.6611 11.1135C13.7842 11.2401 13.8713 11.3773 13.9222 11.5251C13.9739 11.6728 13.9998 11.8311 13.9998 12C13.9998 12.1689 13.9739 12.3272 13.9222 12.4749C13.8713 12.6227 13.7842 12.7599 13.6611 12.8865L3.28379 23.5567C2.99639 23.8522 2.63714 24 2.20603 24C1.77493 24 1.40541 23.8417 1.09748 23.5251C0.789552 23.2084 0.635587 22.839 0.635587 22.4169C0.635587 21.9947 0.789552 21.6253 1.09748 21.3087L10.1507 12L1.09748 2.6913C0.810082 2.39578 0.666381 2.03188 0.666381 1.59958C0.666381 1.16644 0.820347 0.79156 1.12828 0.474938C1.43621 0.158315 1.79546 4.62499e-06 2.20604 4.6619e-06C2.61661 4.69881e-06 2.97586 0.158315 3.28379 0.474938Z" fill="var(--themePrimaryColor)"></path>
+                    <div className="mx-4 flex items-center justify-center">
+                        <svg
+                            width="24"
+                            height="48"
+                            viewBox="0 0 14 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="animate-bounce"
+                        >
+                            <path
+                                d="M3.28379 0.474938L13.6611 11.1135C13.7842 11.2401 13.8713 11.3773 13.9222 11.5251C13.9739 11.6728 13.9998 11.8311 13.9998 12C13.9998 12.1689 13.9739 12.3272 13.9222 12.4749C13.8713 12.6227 13.7842 12.7599 13.6611 12.8865L3.28379 23.5567C2.99639 23.8522 2.63714 24 2.20603 24C1.77493 24 1.40541 23.8417 1.09748 23.5251C0.789552 23.2084 0.635587 22.839 0.635587 22.4169C0.635587 21.9947 0.789552 21.6253 1.09748 21.3087L10.1507 12L1.09748 2.6913C0.810082 2.39578 0.666381 2.03188 0.666381 1.59958C0.666381 1.16644 0.820347 0.79156 1.12828 0.474938C1.43621 0.158315 1.79546 0 2.20604 0C2.61661 0 2.97586 0.158315 3.28379 0.474938Z"
+                                fill="var(--themePrimaryColor)"
+                            ></path>
                         </svg>
-                        {/* Repeat SVGs as needed for animation */}
                     </div>
                     <div className="text-left w-1/2">
                         <h3 className="font-bold mb-2">Your Goal</h3>
@@ -158,3 +167,4 @@ const UpdatedBabySleepPlanCheckout = () => {
 };
 
 export default UpdatedBabySleepPlanCheckout;
+
