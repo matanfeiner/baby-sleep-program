@@ -61,3 +61,31 @@
 .pulse-icon {
   animation: gentle-pulse 2s infinite;
 }
+
+.app-container {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Adjust the main content area */
+.content-area {
+  flex-grow: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 20px;
+}
+
+/* Style for the fixed header if you have one */
+.header {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1000;
+  padding: 10px;
+  padding-top: calc(env(safe-area-inset-top) + 10px);
+}

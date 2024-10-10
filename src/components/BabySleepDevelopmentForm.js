@@ -606,53 +606,62 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
 
     const showNextButton = ['multiSelect', 'weight', 'age', 'sleepDurationGoal', 'education', 'future'].includes(questions[step]?.type);
 
-    return <div className="flex justify-center items-start min-h-screen bg-gradient-to-br from-pink-100 to-blue-100 p-0 overflow-hidden">
-        <div className="w-full max-w-md flex flex-col h-screen bg-white shadow-lg">
-            <div className="sticky top-0 bg-white z-10 pt-safe">
-                <div className="px-4 py-2 shadow-sm">
-                    <div className="flex items-center mb-2">
-                        {step > 0 && <button onClick={handlePrevious}
-                                    className="p-2 rounded-full hover:bg-gray-200 active:bg-gray-300 transition-colors">
-                                <ChevronLeft className="w-6 h-6"/>
-                            </button>}
-                        <Baby className="text-pink-500 w-6 h-6 mr-2"/>
-                        <h1 className="text-xl font-bold text-blue-800 ml-2">Baby Sleep Program</h1>
-                    </div>
-                    <div className="bg-gray-200 p-1 rounded-full">
-                        <div className="flex">
-                            {[...Array(totalSteps)].map((_, index) => <div
-                                    key={index}
-                                    className={`flex-1 h-1 rounded-full mx-0.5 ${
-                                        index < currentStep ? 'bg-blue-500' : 'bg-gray-300'
-                                    }`}
-                                />)}
+    return (
+        <div className="flex justify-center items-start min-h-screen bg-gradient-to-br from-pink-100 to-blue-100 p-0 overflow-hidden">
+            <div className="w-full max-w-md flex flex-col h-screen bg-white shadow-lg">
+                <div className="sticky top-0 bg-white z-10 pt-safe">
+                    <div className="px-4 py-2 shadow-sm">
+                        <div className="flex items-center mb-2">
+                            {step > 0 && (
+                                <button onClick={handlePrevious}
+                                        className="p-2 rounded-full hover:bg-gray-200 active:bg-gray-300 transition-colors">
+                                    <ChevronLeft className="w-6 h-6"/>
+                                </button>
+                            )}
+                            <Baby className="text-pink-500 w-6 h-6 mr-2"/>
+                            <h1 className="text-xl font-bold text-blue-800 ml-2">Baby Sleep Program</h1>
+                        </div>
+                        <div className="bg-gray-200 p-1 rounded-full">
+                            <div className="flex">
+                                {[...Array(totalSteps)].map((_, index) => (
+                                    <div
+                                        key={index}
+                                        className={`flex-1 h-1 rounded-full mx-0.5 ${
+                                            index < currentStep ? 'bg-blue-500' : 'bg-gray-300'
+                                        }`}
+                                    />
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="flex-grow overflow-y-auto">
-                <div className="p-4">
-                    <div className="mb-6">
-                        {questions[step]?.question && <h2 className="text-lg font-semibold mb-4 text-blue-800">{questions[step].question}</h2>}
-                        {renderSleepQuestion(questions[step])}
+                <div className="flex-grow overflow-y-auto">
+                    <div className="p-4">
+                        <div className="mb-6">
+                            {questions[step]?.question && (
+                                <h2 className="text-lg font-semibold mb-4 text-blue-800">{questions[step].question}</h2>
+                            )}
+                            {renderSleepQuestion(questions[step])}
+                        </div>
+                        <div ref={bottomRef}/>
                     </div>
-                    <div ref={bottomRef}/>
                 </div>
+
+                {showNextButton && (
+                    <div className="sticky bottom-0 bg-white p-4 border-t border-gray-200">
+                        <button
+                            onClick={handleNext}
+                            disabled={isNextDisabled}
+                            className={`w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${clickedOption ? 'ring-2 ring-blue-300' : ''}`}
+                        >
+                            NEXT STEP
+                        </button>
+                    </div>
+                )}
             </div>
-
-            {showNextButton && <div className="sticky bottom-0 bg-white p-4 border-t border-gray-200">
-                    <button
-                        onClick={handleNext}
-                        disabled={isNextDisabled}
-                        className={`w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${clickedOption ? 'ring-2 ring-blue-300' : ''}`}
-                    >
-                        NEXT STEP
-                    </button>
-                </div>}
         </div>
-    </div>;
-
+    );
 }
 
 export default BabySleepDevelopmentForm;

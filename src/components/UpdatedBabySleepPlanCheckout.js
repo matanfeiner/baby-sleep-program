@@ -37,6 +37,12 @@ const FAQItem = ({ question, answer }) => {
     );
 };
 
+const ProgressBar = ({ progress, color }) => (
+    <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+        <div className={`h-2.5 rounded-full ${color}`} style={{ width: `${progress}%` }}></div>
+    </div>
+);
+
 const UpdatedBabySleepPlanCheckout = () => {
     const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
 
@@ -56,7 +62,27 @@ const UpdatedBabySleepPlanCheckout = () => {
 
             {/* Visual representation of current status and goal */}
             <div className="bg-gray-50 rounded-lg p-6 mb-8">
-                {/* Add your visual representation here */}
+                <div className="flex justify-between items-center">
+                    <div className="text-center w-1/2">
+                        <h3 className="font-bold mb-2">Now</h3>
+                        <div className="bg-gray-200 w-32 h-32 mx-auto mb-2 rounded-full flex items-center justify-center">
+                            <span className="text-gray-500">Crying Baby</span>
+                        </div>
+                        <p className="font-semibold">Sleep time: 6 hours</p>
+                        <p className="text-red-500 font-bold">Bad</p>
+                        <ProgressBar progress={25} color="bg-red-500" />
+                    </div>
+                    <div className="text-4xl font-bold text-blue-500">&gt;&gt;</div>
+                    <div className="text-center w-1/2">
+                        <h3 className="font-bold mb-2">Your Goal</h3>
+                        <div className="bg-gray-200 w-32 h-32 mx-auto mb-2 rounded-full flex items-center justify-center">
+                            <span className="text-gray-500">Happy Sleeping Baby</span>
+                        </div>
+                        <p className="font-semibold">Sleep time: 12 hours</p>
+                        <p className="text-green-500 font-bold">Good</p>
+                        <ProgressBar progress={100} color="bg-green-500" />
+                    </div>
+                </div>
             </div>
 
             <h2 className="text-2xl font-bold text-center mb-6">Choose Your Plan</h2>
@@ -87,8 +113,6 @@ const UpdatedBabySleepPlanCheckout = () => {
                 GET MY SLEEP PLAN
             </button>
 
-            {/* Rest of the component remains the same */}
-
             <div className="mb-8">
                 <h2 className="text-2xl font-bold mb-4 text-center">People often ask</h2>
                 <FAQItem
@@ -104,8 +128,6 @@ const UpdatedBabySleepPlanCheckout = () => {
                     answer="Yes, our sleep plans are customized for babies from newborn to 24 months old, with age-appropriate strategies and techniques."
                 />
             </div>
-
-            {/* More sections as in the original component */}
 
             <p className="text-xs text-gray-500 text-center">
                 By selecting a plan, you agree to our Terms of Service and Privacy Policy. You can cancel anytime through your account settings.
