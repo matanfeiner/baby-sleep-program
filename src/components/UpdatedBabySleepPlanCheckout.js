@@ -13,20 +13,26 @@ const PlanOption = ({ duration, price, perDay, popular = false }) => (
     </div>
 );
 
-const Feature = ({ text }) => (
+const Feature = ({ text, icon }) => (
     <div className="flex items-center mb-2">
-        <Check className="w-5 h-5 text-green-500 mr-2" />
-        <p>{text}</p>
+        {icon}
+        <p className="ml-2">{text}</p>
     </div>
 );
 
 const ProgressBar = ({ progress }) => {
+    const [currentProgress, setCurrentProgress] = useState(0);
+
+    useEffect(() => {
+        setTimeout(() => setCurrentProgress(progress), 500);
+    }, [progress]);
+
     return (
         <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4 overflow-hidden">
             <div
                 className="h-2.5 rounded-full transition-all duration-1000"
                 style={{
-                    width: `${progress}%`,
+                    width: `${currentProgress}%`,
                     background: `linear-gradient(to right, #f87171, #fbbf24, #34d399)`,
                 }}
             ></div>
@@ -63,10 +69,7 @@ const UpdatedBabySleepPlanCheckout = () => {
     }, []);
 
     useEffect(() => {
-        // Filling effect for the progress bar when the component loads
-        setTimeout(() => {
-            setProgress(25); // Example initial progress value
-        }, 500);
+        setProgress(25); // Initial progress value
     }, []);
 
     const minutes = Math.floor(timeLeft / 60);
@@ -74,9 +77,13 @@ const UpdatedBabySleepPlanCheckout = () => {
 
     return (
         <div className="max-w-4xl mx-auto p-6">
+            <div className="bg-blue-100 text-blue-800 p-2 rounded-lg mb-4 relative">
+                <span className="absolute top-0 right-0 bg-blue-500 text-white px-2 py-1 text-xs rounded-bl">Limited Offer: 50% Off</span>
+                <p className="font-semibold">Get your personalized sleep plan now</p>
+            </div>
+
             <h1 className="text-3xl font-bold text-center mb-8">Your Baby Sleep Journey</h1>
 
-            {/* Visual representation of current status and goal */}
             <div className="bg-gray-50 rounded-lg p-6 mb-8">
                 <div className="flex justify-between items-center">
                     <div className="text-left w-1/2">
@@ -167,4 +174,3 @@ const UpdatedBabySleepPlanCheckout = () => {
 };
 
 export default UpdatedBabySleepPlanCheckout;
-

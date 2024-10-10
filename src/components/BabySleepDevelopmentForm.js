@@ -202,7 +202,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         {
             question: "How many times do you wake up for your baby at night?",
             type: "clickable",
-            options: ["0", "2", "3", "4+"],
+            options: ["0", "1", "2", "3", "4+"],
             key: "nightWakings"
         },
         {
@@ -230,7 +230,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             key: "montessoriMethod"
         },
         {
-            content: "The Ferber method is great for teaching babies to self-soothe gradually. You're going to find it very helpful!",
+            content: "The Ferber-Montessori method is great for teaching babies to self-soothe gradually. You're going to find it very helpful!",
             type: "education",
             image: sleepingHappyBaby,
             alt: "Happy baby sleeping in a Montessori-style bed"
@@ -244,7 +244,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         {
             question: "What else do you hope to achieve with this plan for your youngster?",
             type: "multiSelect",
-            options: ["Improved nutrition", "Developmental milestones", "Behavior management"],
+            options: ["Improved nutrition", "Developmental milestones", "Behavior management", "Other"],
             key: "goals"
         },
         {
@@ -322,7 +322,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         {
             question: "Do you use any sleep aids for your bundle of joy?",
             type: "multiSelect",
-            options: ["White noise machine", "Pacifier", "Swaddle or sleep sack", "Comfort object (stuffed animal, blanket)", "None", "All"],
+            options: ["White noise machine", "Pacifier", "Swaddle or sleep sack", "Comfort object (stuffed animal, blanket)", "None"],
             key: "sleepAids"
         },
         {
@@ -352,7 +352,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         {
             question: "What is the room like where your little dreamer sleeps?",
             type: "multiSelect",
-            options: ["Dark", "Quiet", "Cool temperature", "Warm temperature", "Noisy"],
+            options: ["Dark", "Bright", "Quiet", "Cool temperature", "Warm temperature", "Noisy"],
             key: "sleepEnvironment"
         },
         {
@@ -471,7 +471,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                 "Overstimulation before bed",
                 "Hunger or discomfort",
                 "Separation anxiety",
-                "Environmental factors (noise, light, temperature)",
+                "Noise or Light)",
                 "Not sure"
             ],
             key: "sleepChallengeFactors"
@@ -505,12 +505,6 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             type: "future",
             image: sleepingBabyInCrib,
             alt: "Baby sleeping peacefully in a crib at night"
-        },
-        {
-            content: "Imagine your bundle of joy hitting milestones easily, thanks to quality sleep. You've got this!",
-            type: "future",
-            image: walkingHappyBaby,
-            alt: "Happy baby taking first steps"
         },
         {
             question: "What is your goal for your baby's total sleep duration in a 24-hour period?",
