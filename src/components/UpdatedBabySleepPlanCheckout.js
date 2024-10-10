@@ -34,6 +34,23 @@ const ProgressBar = ({ progress }) => {
     );
 };
 
+const FAQItem = ({ question, answer }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <div className="border-b border-gray-200 py-4">
+            <button
+                className="flex justify-between items-center w-full text-left"
+                onClick={() => setIsOpen(!isOpen)}
+            >
+                <span className="font-semibold">{question}</span>
+                {isOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+            </button>
+            {isOpen && <p className="mt-2 text-gray-600">{answer}</p>}
+        </div>
+    );
+};
+
 const UpdatedBabySleepPlanCheckout = () => {
     const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
     const [progress, setProgress] = useState(0);
