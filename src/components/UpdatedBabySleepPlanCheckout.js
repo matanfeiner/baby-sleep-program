@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Star, Check, ChevronDown, ChevronUp } from 'lucide-react';
 
 // Import images and icons
-import mobileAppIllustration from '../assets/images/mobile-app-illustration.jpg';
-import featuredInLogo1 from '../assets/images/usa-today-logo.png';
-import featuredInLogo2 from '../assets/images/forbes-logo.png';
-import featuredInLogo3 from '../assets/images/wsj-logo.png';
+import mobileAppIllustration from '../assets/images/r1ovtijr9ap12weug1ha.webp';
+import featuredInLogo1 from '../assets/images/usa-today-new.webp';
+import featuredInLogo2 from '../assets/images/forbes-logo-black-transparent.png';
+import featuredInLogo3 from '../assets/images/wall-street-journal-logo.png';
 import featuredInLogo4 from '../assets/images/ny-post-logo.png';
 import featuredInLogo5 from '../assets/images/mashable-logo.png';
 import iconSleepSchedule from '../assets/icons/icon-sleep-schedule.png';
@@ -13,8 +13,8 @@ import iconGuide from '../assets/icons/icon-guide.png';
 import iconSupport from '../assets/icons/icon-support.png';
 import iconTracking from '../assets/icons/icon-tracking.png';
 import iconConsultant from '../assets/icons/icon-consultant.png';
-import beforeImage from '../assets/images/before.jpg';
-import afterImage from '../assets/images/after.jpg';
+import beforeImage from '../assets/images/before.png';
+import afterImage from '../assets/images/after.png';
 
 const PlanOption = ({ duration, price, perDay, popular = false }) => (
     <div className={`bg-white p-4 rounded-lg shadow-md ${popular ? 'border-2 border-blue-500' : ''}`}>
