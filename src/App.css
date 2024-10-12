@@ -1,22 +1,25 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Ensures padding doesn't affect the overall dimensions */
+}
+
 /* General Resets */
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%; /* Full height */
-  overflow: hidden; /* Prevents scrolling at the HTML/body level */
+  overflow: hidden;  /* Prevent scrolling */
+  height: 100%;      /* Full height */
+  width: 100%;       /* Full width */
 }
 
 /* Main app container styling */
-.App {
+#root, .App {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Ensures the app fills the entire height of the viewport */
-  align-items: center; /* Centers items horizontally in flex container */
-  justify-content: center; /* Centers items vertically in flex container */
-  text-align: center; /* Keeps text centered */
-  background-color: #282c34; /* Keeps the original dark background */
-  color: white; /* Keeps text color white */
 }
+
 
 /* Ensure logo and animations only apply where needed */
 .App-logo {
@@ -145,4 +148,16 @@ html, body {
 
 .animate-bounce {
   animation: bounce 1s infinite;
+}
+
+.sticky-top-0 {
+  position: sticky;
+  top: 0;
+  z-index: 100; /* Make sure it stays on top of other content */
+}
+
+.sticky-bottom-0 {
+  position: sticky;
+  bottom: 0;
+  z-index: 100;
 }
