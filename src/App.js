@@ -96,5 +96,4 @@ function App() {
     </FormDataProvider>
   );
 }
-
 export default App;
