@@ -1,56 +1,78 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Calendar } from 'lucide-react';
 
-const AgeInput = ({ value, onChange }) => {
-    const [unit, setUnit] = useState('months');
+const AgeInput = ({ value, onChange, defaultUnit = 'months' }) => {
+    const [unit, setUnit] = useState(defaultUnit);
     const [age, setAge] = useState(value || '');
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        if (age && !isNaN(parseInt(age))) {
+            setError('');
+        } else if (age !== '') {
+            setError('Please enter a valid number');
+        }
+    }, [age]);
 
     const handleUnitChange = (newUnit) => {
         setUnit(newUnit);
-        if (age) {
-            const newAge = newUnit === 'months' ? age * 12 : Math.floor(age / 12);
-            setAge(newAge);
+        const parsedAge = parseInt(age);
+        if (!isNaN(parsedAge)) {
+            const newAge = newUnit === 'months' ? parsedAge * 12 : Math.floor(parsedAge / 12);
+            setAge(newAge.toString());
         }
     };
 
     const handleAgeChange = (e) => {
-        const newAge = e.target.value;
-        setAge(newAge);
+        setAge(e.target.value);
     };
 
-    const handleSubmit = () => {
-        onChange(age, unit);
-    };
+    useEffect(() => {
+        const parsedAge = parseInt(age);
+        if (!isNaN(parsedAge) && parsedAge > 0) {
+            onChange(parsedAge, unit);
+        }
+    }, [age, unit, onChange]);
 
     return (
-        <div className="flex flex-col items-center">
-            <div className="flex space-x-2 mb-2">
-                <button
-                    className={`px-2 py-1 rounded ${unit === 'months' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                    onClick={() => handleUnitChange('months')}
-                >
-                    months
-                </button>
-                <button
-                    className={`px-2 py-1 rounded ${unit === 'years' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                    onClick={() => handleUnitChange('years')}
-                >
-                    years
-                </button>
+        <div className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-md">
+            <div className="flex items-center justify-center mb-4">
+                <Calendar className="text-blue-500 mr-2" />
+                <h2 className="text-2xl font-semibold text-gray-800">Age Input</h2>
             </div>
-            <input
-                type="number"
-                value={age}
-                onChange={handleAgeChange}
-                className="w-full p-2 border rounded text-center text-2xl"
-                placeholder={`Enter ${unit}`}
-            />
-            <span className="mt-2 text-lg">{unit}</span>
-            <button
-                onClick={handleSubmit}
-                className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300"
-            >
-                Next
-            </button>
+            <div className="flex justify-center space-x-2 mb-4">
+                {['months', 'years'].map((unitOption) => (
+                    <button
+                        key={unitOption}
+                        className={`px-4 py-2 rounded-full font-medium transition-colors duration-200 ${
+                            unit === unitOption
+                                ? 'bg-blue-500 text-white'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        }`}
+                        onClick={() => handleUnitChange(unitOption)}
+                    >
+                        {unitOption}
+                    </button>
+                ))}
+            </div>
+            <div className="relative">
+                <input
+                    type="number"
+                    value={age}
+                    onChange={handleAgeChange}
+                    className={`w-full p-3 border-2 rounded-lg text-center text-2xl ${
+                        error ? 'border-red-500' : 'border-gray-300 focus:border-blue-500'
+                    } transition-colors duration-200`}
+                    placeholder={`Enter age in ${unit}`}
+                    step="1"
+                    min="0"
+                    aria-label={`Age in ${unit}`}
+                />
+                <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                    {unit}
+                </span>
+            </div>
+            {error && <p className="mt-2 text-red-500 text-sm">{error}</p>}
         </div>
     );
 };

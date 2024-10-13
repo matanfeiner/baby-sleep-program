@@ -9,6 +9,7 @@ import ParentBabyWellnessDashboard from './components/ParentBabyWellnessDashboar
 import BabySleepPlanLoading from './components/BabySleepPlanLoading';
 import BabySleepPlanEmailInput from './components/BabySleepPlanEmailInput';
 import BabySleepPlanReady from './components/BabySleepPlanReady';
+import WeightInput from './components/WeightInput';
 import { FormDataProvider, useFormData } from './contexts/FormDataContext';
 
 function AppContent() {
@@ -57,13 +58,13 @@ function AppContent() {
       case 3:
         return <UpdatedBabySleepPlanCheckout onSubmit={() => handleNextStep()} />;
       case 4:
-        return <ParentBabyWellnessDashboard onSubmit={() => handleNextStep()} />;
-      case 5:
         return <BabySleepPlanLoading onSubmit={() => handleNextStep()} />;
-      case 6:
+      case 5:
         return <BabySleepPlanEmailInput onSubmit={() => handleNextStep()} />;
-      case 7:
+      case 6:
         return <BabySleepPlanReady onSubmit={() => handleNextStep()} />;
+      case 7:
+        return <WeightInput onChange={(weight, unit) => updateFormData({ weight, unit })} />;
       default:
         return <div className="max-w-md mx-auto p-6 text-center">Thank you!</div>;
     }
@@ -71,7 +72,16 @@ function AppContent() {
 
   return (
       <div className="App">
+        <ParentBabyWellnessDashboard />
         {renderStep()}
+        <div className="sticky bottom-0 bg-white p-4 border-t border-gray-200">
+          <button
+              onClick={handleNextStep}
+              className="w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 transition-colors"
+          >
+            NEXT STEP
+          </button>
+        </div>
       </div>
   );
 }

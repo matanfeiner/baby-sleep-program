@@ -1,80 +1,65 @@
-import React, { useState } from 'react';
-import { Cake, Book, Car, Star, Smile, Moon, X, Baby, Heart } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Moon } from 'lucide-react';
 
-const MilestoneOption = ({ icon: Icon, label, isSelected, onToggle }) => (
-    <div
-        className={`flex items-center justify-between p-3 bg-white rounded-lg shadow-sm hover:bg-gray-50 transition-colors cursor-pointer ${
-            isSelected ? 'border-2 border-blue-500' : ''
-        }`}
-        onClick={onToggle}
-    >
-        <div className="flex items-center">
-            <Icon className="w-6 h-6 mr-3 text-blue-500" />
-            <span className="text-lg">{label}</span>
-        </div>
-        <input
-            type="checkbox"
-            checked={isSelected}
-            onChange={onToggle}
-            className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-        />
-    </div>
-);
+const SleepDurationGoalInput = ({ value, onChange }) => {
+    const [hours, setHours] = useState(value?.hours || 7.5);
 
-const BabyMilestoneQuestion = ({ onSubmit }) => {
-    const [selectedMilestones, setSelectedMilestones] = useState([]);
+    useEffect(() => {
+        onChange({ hours: parseFloat(hours.toFixed(1)) });
+    }, [hours, onChange]);
 
-    const handleMilestoneToggle = (milestone) => {
-        setSelectedMilestones(prev =>
-            prev.includes(milestone)
-                ? prev.filter(m => m !== milestone)
-                : [...prev, milestone]
-        );
+    const handleSliderChange = (e) => {
+        setHours(parseFloat(e.target.value));
     };
 
-    const handleSubmit = () => {
-        onSubmit(selectedMilestones);
-    };
+    const getGradientColor = (value) => {
+        const colors = ['#f87171', '#fbbf24', '#34d399', '#60a5fa', '#818cf8'];
+        const index = (value - 3) / (12 - 3) * (colors.length - 1);
+        const lowerIndex = Math.floor(index);
+        const upperIndex = Math.ceil(index);
+        const ratio = index - lowerIndex;
 
-    const milestones = [
-        { icon: Cake, label: "First birthday" },
-        { icon: Baby, label: "First steps" },
-        { icon: Book, label: "First words" },
-        { icon: Car, label: "Family trip or vacation" },
-        { icon: Star, label: "Starting daycare/preschool" },
-        { icon: Smile, label: "First tooth" },
-        { icon: Moon, label: "Sleeping through the night" },
-        { icon: Heart, label: "Other milestone" },
-        { icon: X, label: "No specific milestones soon" },
-    ];
+        if (lowerIndex === upperIndex) return colors[lowerIndex];
+
+        const r = Math.round(parseInt(colors[lowerIndex].slice(1, 3), 16) * (1 - ratio) + parseInt(colors[upperIndex].slice(1, 3), 16) * ratio);
+        const g = Math.round(parseInt(colors[lowerIndex].slice(3, 5), 16) * (1 - ratio) + parseInt(colors[upperIndex].slice(3, 5), 16) * ratio);
+        const b = Math.round(parseInt(colors[lowerIndex].slice(5, 7), 16) * (1 - ratio) + parseInt(colors[upperIndex].slice(5, 7), 16) * ratio);
+
+        return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+    };
 
     return (
-        <div className="max-w-2xl mx-auto p-6 bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold text-center mb-4">What's the next exciting milestone for your baby?</h2>
-            <p className="text-center text-gray-600 mb-6">
-                Looking forward to upcoming milestones can be a great motivator for sticking to your sleep and development plan!
-            </p>
-
-            <div className="space-y-3">
-                {milestones.map((milestone) => (
-                    <MilestoneOption
-                        key={milestone.label}
-                        icon={milestone.icon}
-                        label={milestone.label}
-                        isSelected={selectedMilestones.includes(milestone.label)}
-                        onToggle={() => handleMilestoneToggle(milestone.label)}
-                    />
-                ))}
+        <div className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-md">
+            <div className="flex items-center justify-center mb-4">
+                <Moon className="text-blue-500 mr-2" />
+                <h2 className="text-2xl font-semibold text-gray-800">Sleep Duration Goal</h2>
             </div>
-
-            <button
-                onClick={handleSubmit}
-                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 mt-6"
-            >
-                Continue
-            </button>
+            <div className="mb-4">
+                <input
+                    type="range"
+                    min="3"
+                    max="12"
+                    step="0.1"
+                    value={hours}
+                    onChange={handleSliderChange}
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    style={{
+                        background: `linear-gradient(to right, #f87171, #fbbf24, #34d399, #60a5fa, #818cf8)`,
+                    }}
+                />
+            </div>
+            <div className="text-center">
+                <span className="text-4xl font-bold" style={{ color: getGradientColor(hours) }}>
+                    {hours.toFixed(1)}
+                </span>
+                <span className="text-2xl text-gray-600 ml-2">hours</span>
+            </div>
+            <div className="flex justify-between text-sm text-gray-500 mt-2">
+                <span>3 hours</span>
+                <span>12 hours</span>
+            </div>
         </div>
     );
 };
 
-export default BabyMilestoneQuestion;
+export default SleepDurationGoalInput;
