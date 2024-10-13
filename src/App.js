@@ -83,15 +83,6 @@ function AppContent() {
     }
   };
 
-  return (
-      <div className="App min-h-screen bg-gray-100 py-8">
-        <Header/>
-        <div className="content-area overflow-y-auto">
-          {renderStep()}
-        </div>
-        <Footer onPrev={handlePrevStep} onNext={handleNextStep} step={step} totalSteps={10}/>
-      </div>
-  );
 }
 
 function App() {
