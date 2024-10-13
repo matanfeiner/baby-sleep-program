@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
-import ParentBabyNameInput from './components/ParentBabyNameInput';
-import BabySleepDevelopmentForm from './components/BabySleepDevelopmentForm';
-import BabyMilestoneQuestion from './components/BabyMilestoneQuestion';
-import BabySleepImprovementPrediction from './components/BabySleepImprovementPrediction';
-import UpdatedBabySleepPlanCheckout from './components/UpdatedBabySleepPlanCheckout';
-import ParentBabyWellnessDashboard from './components/ParentBabyWellnessDashboard';
-import BabySleepPlanLoading from './components/BabySleepPlanLoading';
-import BabySleepPlanEmailInput from './components/BabySleepPlanEmailInput';
-import BabySleepPlanReady from './components/BabySleepPlanReady';
-import WeightInput from './components/WeightInput';
-import { FormDataProvider, useFormData } from './contexts/FormDataContext';
+import { useFormData, FormDataProvider } from './FormDataContext';
+import BabySleepDevelopmentForm from './BabySleepDevelopmentForm';
+import BabyMilestoneQuestion from './BabyMilestoneQuestion';
+import BabySleepImprovementPrediction from './BabySleepImprovementPrediction';
+import UpdatedBabySleepPlanCheckout from './UpdatedBabySleepPlanCheckout';
+import BabySleepPlanLoading from './BabySleepPlanLoading';
+import BabySleepPlanEmailInput from './BabySleepPlanEmailInput';
+import BabySleepPlanReady from './BabySleepPlanReady';
+import WeightInput from './WeightInput';
+import ParentBabyWellnessDashboard from './ParentBabyWellnessDashboard';
 
 function AppContent() {
   const [step, setStep] = useState(0);
@@ -77,14 +75,6 @@ function AppContent() {
       <div className="content-area">
         {renderStep()}
       </div>
-      <div className="footer">
-        <button
-          onClick={handleNextStep}
-          className="next-button"
-        >
-          NEXT STEP
-        </button>
-      </div>
     </div>
   );
 }
@@ -96,4 +86,5 @@ function App() {
     </FormDataProvider>
   );
 }
+
 export default App;
