@@ -9,6 +9,7 @@ import BabySleepPlanEmailInput from './components/BabySleepPlanEmailInput';
 import BabySleepPlanReady from './components/BabySleepPlanReady';
 import WeightInput from './components/WeightInput';
 import ParentBabyWellnessDashboard from './components/ParentBabyWellnessDashboard';
+import SleepDurationGoalInput from './components/SleepDurationGoalInput'; // Import the component
 
 function AppContent() {
   const [step, setStep] = useState(0);
@@ -34,7 +35,7 @@ function AppContent() {
   }, [testMode]);
 
   const handleNextStep = () => {
-    if (step < 9) {
+    if (step < 10) { // Adjust the step limit
       setStep(step + 1);
     }
   };
@@ -64,6 +65,8 @@ function AppContent() {
       case 7:
         return <WeightInput onChange={(weight, unit) => updateFormData({ weight, unit })} />;
       case 8:
+        return <SleepDurationGoalInput value={formData.sleepDurationGoal} onChange={(data) => updateFormData({ sleepDurationGoal: data })} />; // Add the component
+      case 9:
         return <ParentBabyWellnessDashboard />;
       default:
         return <div className="max-w-md mx-auto p-6 text-center">Thank you!</div>;
