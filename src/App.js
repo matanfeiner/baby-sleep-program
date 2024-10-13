@@ -54,7 +54,7 @@ function AppContent() {
       case 1:
         return <BabyMilestoneQuestion onSubmit={() => handleNextStep()} />;
       case 2:
-        return <BabySleepImprovementPrediction onSubmit={() => handleNextStep()} />;
+        return <BabySleepImprovementPrediction onContinue={() => handleNextStep()} />;
       case 3:
         return <UpdatedBabySleepPlanCheckout onSubmit={() => handleNextStep()} />;
       case 4:
@@ -71,26 +71,30 @@ function AppContent() {
   };
 
   return (
-      <div className="App">
+    <div className="app-container">
+      <div className="dashboard-container">
         <ParentBabyWellnessDashboard />
-        {renderStep()}
-        <div className="sticky bottom-0 bg-white p-4 border-t border-gray-200">
-          <button
-              onClick={handleNextStep}
-              className="w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 transition-colors"
-          >
-            NEXT STEP
-          </button>
-        </div>
       </div>
+      <div className="content-area">
+        {renderStep()}
+      </div>
+      <div className="footer">
+        <button
+          onClick={handleNextStep}
+          className="next-button"
+        >
+          NEXT STEP
+        </button>
+      </div>
+    </div>
   );
 }
 
 function App() {
   return (
-      <FormDataProvider>
-        <AppContent />
-      </FormDataProvider>
+    <FormDataProvider>
+      <AppContent />
+    </FormDataProvider>
   );
 }
 

@@ -3,7 +3,6 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Moon, Cake } from 'lucide-react';
 
 const BabySleepImprovementPrediction = ({ data, onContinue }) => {
-    // Sample data - in a real application, this would be generated based on user input
     const sampleData = [
         { week: 'Week 1', sleepHours: 6 },
         { week: 'Week 2', sleepHours: 7 },
@@ -13,28 +12,23 @@ const BabySleepImprovementPrediction = ({ data, onContinue }) => {
         { week: 'Week 6', sleepHours: 12 },
     ];
 
-    const [lineColor, setLineColor] = useState('#FF0000'); // Start with red
+    const [lineColor, setLineColor] = useState('#FF0000');
 
     useEffect(() => {
-        // Gradually change the color from red to green
         let colorTransition = setInterval(() => {
             setLineColor((prevColor) => {
-                // Extract RGB values from the hex color code
                 const r = parseInt(prevColor.slice(1, 3), 16);
                 const g = parseInt(prevColor.slice(3, 5), 16);
                 const b = parseInt(prevColor.slice(5, 7), 16);
 
-                // Increment green value and decrease red until green is at maximum (FF) and red is at minimum (00)
                 const newR = r > 0 ? r - 8 : 0;
                 const newG = g < 255 ? g + 8 : 255;
 
-                // Convert back to hex and update the color
                 const newColor = `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
                 return newColor;
             });
         }, 100);
 
-        // Stop the interval when the color reaches green
         return () => clearInterval(colorTransition);
     }, []);
 
