@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useFormData, FormDataProvider } from './contexts/FormDataContext';
-import BabySleepDevelopmentForm from './BabySleepDevelopmentForm';
-import BabyMilestoneQuestion from './BabyMilestoneQuestion';
-import BabySleepImprovementPrediction from './BabySleepImprovementPrediction';
-import UpdatedBabySleepPlanCheckout from './UpdatedBabySleepPlanCheckout';
-import BabySleepPlanLoading from './BabySleepPlanLoading';
-import BabySleepPlanEmailInput from './BabySleepPlanEmailInput';
-import BabySleepPlanReady from './BabySleepPlanReady';
-import WeightInput from './WeightInput';
-import ParentBabyWellnessDashboard from './ParentBabyWellnessDashboard';
+import BabySleepDevelopmentForm from './components/BabySleepDevelopmentForm';
+import BabyMilestoneQuestion from './components/BabyMilestoneQuestion';
+import BabySleepImprovementPrediction from './components/BabySleepImprovementPrediction';
+import UpdatedBabySleepPlanCheckout from './components/UpdatedBabySleepPlanCheckout';
+import BabySleepPlanLoading from './components/BabySleepPlanLoading';
+import BabySleepPlanEmailInput from './components/BabySleepPlanEmailInput';
+import BabySleepPlanReady from './components/BabySleepPlanReady';
+import WeightInput from './components/WeightInput';
+import ParentBabyWellnessDashboard from './components/ParentBabyWellnessDashboard';
 
 function AppContent() {
   const [step, setStep] = useState(0);
