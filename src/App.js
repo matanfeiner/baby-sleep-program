@@ -11,30 +11,6 @@ import BabySleepPlanEmailInput from './components/BabySleepPlanEmailInput';
 import BabySleepPlanReady from './components/BabySleepPlanReady';
 import { FormDataProvider, useFormData } from './contexts/FormDataContext';
 
-function Header() {
-  return (
-      <div className="header sticky top-0 bg-white p-2 shadow-md z-50">
-        <h1 className="text-xl font-bold">Baby Sleep Program</h1>
-      </div>
-  );
-}
-
-
-function Footer({ onPrev, onNext, step, totalSteps }) {
-  return (
-      <div className="footer sticky bottom-0 bg-white p-2 shadow-md">
-        {step > 0 && (
-            <button onClick={onPrev} className="control-button w-full py-2 mb-2">Previous</button>
-        )}
-        {step < totalSteps - 1 && (
-            <button onClick={onNext} className="control-button w-full py-2">Next</button>
-        )}
-      </div>
-  );
-}
-
-
-
 function AppContent() {
   const [step, setStep] = useState(0);
   const [testMode, setTestMode] = useState(false);
@@ -49,7 +25,7 @@ function AppContent() {
     if (testMode) {
       const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
-          setStep((prevStep) => Math.min(prevStep + 1, 10));
+          handleNextStep();
         }
       };
 
@@ -72,17 +48,32 @@ function AppContent() {
 
   const renderStep = () => {
     switch (step) {
-        // Map steps to components as previously defined
       case 0:
         return <BabySleepDevelopmentForm onSubmit={() => handleNextStep()} />;
       case 1:
-        return <ParentBabyNameInput onNameSubmit={() => handleNextStep()} />;
-        // Add all other cases
+        return <BabyMilestoneQuestion onSubmit={() => handleNextStep()} />;
+      case 2:
+        return <BabySleepImprovementPrediction onSubmit={() => handleNextStep()} />;
+      case 3:
+        return <UpdatedBabySleepPlanCheckout onSubmit={() => handleNextStep()} />;
+      case 4:
+        return <ParentBabyWellnessDashboard onSubmit={() => handleNextStep()} />;
+      case 5:
+        return <BabySleepPlanLoading onSubmit={() => handleNextStep()} />;
+      case 6:
+        return <BabySleepPlanEmailInput onSubmit={() => handleNextStep()} />;
+      case 7:
+        return <BabySleepPlanReady onSubmit={() => handleNextStep()} />;
       default:
         return <div className="max-w-md mx-auto p-6 text-center">Thank you!</div>;
     }
   };
 
+  return (
+      <div className="App">
+        {renderStep()}
+      </div>
+  );
 }
 
 function App() {
