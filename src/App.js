@@ -13,24 +13,27 @@ import { FormDataProvider, useFormData } from './contexts/FormDataContext';
 
 function Header() {
   return (
-      <div className="header">
-        <h1>Baby Sleep Program</h1>
+      <div className="header sticky top-0 bg-white p-2 shadow-md z-50">
+        <h1 className="text-xl font-bold">Baby Sleep Program</h1>
       </div>
   );
 }
 
+
 function Footer({ onPrev, onNext, step, totalSteps }) {
   return (
-      <div className="footer">
+      <div className="footer sticky bottom-0 bg-white p-2 shadow-md">
         {step > 0 && (
-            <button onClick={onPrev} className="control-button">Previous</button>
+            <button onClick={onPrev} className="control-button w-full py-2 mb-2">Previous</button>
         )}
         {step < totalSteps - 1 && (
-            <button onClick={onNext} className="control-button">Next</button>
+            <button onClick={onNext} className="control-button w-full py-2">Next</button>
         )}
       </div>
   );
 }
+
+
 
 function AppContent() {
   const [step, setStep] = useState(0);
@@ -82,11 +85,11 @@ function AppContent() {
 
   return (
       <div className="App min-h-screen bg-gray-100 py-8">
-        <Header />
-        <div className="content-area">
+        <Header/>
+        <div className="content-area overflow-y-auto">
           {renderStep()}
         </div>
-        <Footer onPrev={handlePrevStep} onNext={handleNextStep} step={step} totalSteps={10} />
+        <Footer onPrev={handlePrevStep} onNext={handleNextStep} step={step} totalSteps={10}/>
       </div>
   );
 }

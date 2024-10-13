@@ -161,3 +161,44 @@ html, body {
   bottom: 0;
   z-index: 100;
 }
+
+/* Mobile-specific styling */
+@media (max-width: 600px) {
+  .App-header {
+    font-size: calc(8px + 2vmin); /* Reduce header text size for smaller screens */
+    padding: 1rem; /* Reduce padding for mobile */
+  }
+
+  .content-area {
+    padding: 1rem; /* Less padding for better fit */
+    font-size: 14px; /* Adjust text size for readability */
+  }
+
+  .next-button {
+    font-size: 14px; /* Smaller font for mobile */
+    padding: 8px 0; /* Adjust padding for smaller screens */
+  }
+
+  .footer {
+    padding: 0.5rem;
+  }
+
+  .control-button {
+    padding: 0.5rem;
+    font-size: 14px; /* Reduce button text size */
+  }
+
+  .education-card {
+    padding: 0.5rem;
+    font-size: 12px; /* Smaller text for cards */
+  }
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+}
