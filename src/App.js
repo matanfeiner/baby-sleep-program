@@ -65,6 +65,8 @@ function AppContent() {
         return <BabySleepPlanReady onSubmit={() => handleNextStep()} />;
       case 7:
         return <WeightInput onChange={(weight, unit) => updateFormData({ weight, unit })} />;
+      case 8:
+        return <ParentBabyWellnessDashboard />;
       default:
         return <div className="max-w-md mx-auto p-6 text-center">Thank you!</div>;
     }
@@ -72,9 +74,6 @@ function AppContent() {
 
   return (
     <div className="app-container">
-      <div className="dashboard-container">
-        <ParentBabyWellnessDashboard />
-      </div>
       <div className="content-area">
         {renderStep()}
       </div>
