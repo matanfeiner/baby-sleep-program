@@ -152,7 +152,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
     const totalSteps = questions.length;
     const currentStep = currentQuestionIndex + 1;
 
-    const showNextButton = currentQuestion && ![questionTypes.CLICKABLE, questionTypes.EDUCATION, questionTypes.FUTURE].includes(currentQuestion.type);
+    const showNextButton = currentQuestion && currentQuestion.type !== questionTypes.CLICKABLE;
 
     useEffect(() => {
         if (currentQuestion && [questionTypes.EDUCATION, questionTypes.FUTURE].includes(currentQuestion.type)) {
@@ -175,14 +175,14 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                 </div>
             </div>
 
-            {(showNextButton || currentQuestion.type === questionTypes.EDUCATION || currentQuestion.type === questionTypes.FUTURE) && (
+            {showNextButton && (
                 <div className="p-4 border-t border-gray-200">
                     <button
                         onClick={handleNext}
-                        disabled={isNextDisabled || (![questionTypes.EDUCATION, questionTypes.FUTURE].includes(currentQuestion.type) && !formData[currentQuestion.key])}
+                        disabled={isNextDisabled || (!formData[currentQuestion.key] && ![questionTypes.EDUCATION, questionTypes.FUTURE].includes(currentQuestion.type))}
                         className={`w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${clickedOption ? 'ring-2 ring-blue-300' : ''}`}
                     >
-                        {[questionTypes.EDUCATION, questionTypes.FUTURE].includes(currentQuestion.type) ? 'CONTINUE' : 'NEXT STEP'}
+                        NEXT STEP
                     </button>
                 </div>
             )}
