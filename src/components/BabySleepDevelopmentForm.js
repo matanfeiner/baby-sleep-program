@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, Baby } from 'lucide-react';
+import { Baby } from 'lucide-react';
 import WeightInput from './WeightInput';
 import AgeInput from './AgeInput';
 import SleepDurationGoalInput from './SleepDurationGoalInput';
 import rudderanalytics from '../rudderstack';
 import { useFormData } from '../contexts/FormDataContext';
-import { questions, questionTypes, getIconForOption, getQuestionById } from '../data/questions';
+import { questions, questionTypes, getIconForOption } from '../data/questions';
 
 const BabySleepDevelopmentForm = ({ onSubmit }) => {
     const { formData, updateFormData } = useFormData();
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [isNextDisabled, setIsNextDisabled] = useState(false);
-    const [clickedOption, setClickedOption] = useState(null);
+    const [selectedOption, setSelectedOption] = useState(null);
     const bottomRef = useRef(null);
 
     const currentQuestion = questions[currentQuestionIndex];
@@ -23,23 +22,15 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                 nextQuestionIndex: currentQuestionIndex + 1
             });
             setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+            setSelectedOption(null);
         } else {
             rudderanalytics.track('Form Completed', formData);
             onSubmit(formData);
         }
     };
 
-    const handlePrevious = () => {
-        rudderanalytics.track('Previous Question', {
-            currentQuestionIndex,
-            previousQuestionIndex: currentQuestionIndex - 1
-        });
-        setCurrentQuestionIndex(prevIndex => prevIndex - 1);
-    };
-
     const handleOptionClick = (key, value, type) => {
-        setIsNextDisabled(true);
-        setClickedOption(value);
+        setSelectedOption(value);
 
         if (type === questionTypes.MULTI_SELECT) {
             const currentSelections = formData[key] || [];
@@ -51,7 +42,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             updateFormData({ [key]: value });
         }
 
-        rudderanalytics.track('Answer Submitted', {
+        rudderanalytics.track('Answer Selected', {
             question: key,
             answer: value,
             questionType: type
@@ -60,20 +51,13 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         if (window.navigator && window.navigator.vibrate) {
             window.navigator.vibrate(50);
         }
-
-        setTimeout(() => {
-            setIsNextDisabled(false);
-            setClickedOption(null);
-            if (type === questionTypes.CLICKABLE) {
-                handleNext();
-            }
-        }, 300);
     };
 
     const renderQuestion = (q) => {
         if (!q) return null;
         switch (q.type) {
             case questionTypes.CLICKABLE:
+            case questionTypes.MULTI_SELECT:
                 return (
                     <div className="space-y-4">
                         {q.options.map((option) => (
@@ -81,40 +65,19 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                                 key={option}
                                 onClick={() => handleOptionClick(q.key, option, q.type)}
                                 className={`w-full p-4 text-left bg-white rounded-lg shadow hover:bg-gray-50 active:bg-gray-100 transition-all flex items-center justify-between text-lg
-                                ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98] animate-pulse' : ''}`}
+                                ${selectedOption === option ? 'ring-2 ring-blue-500 bg-blue-50' : ''}`}
                             >
                                 <span>{option}</span>
                                 <div className="flex items-center">
                                     {getIconForOption(option)}
                                     <div className={`ml-2 w-6 h-6 border-2 rounded-full transition-all duration-200 ease-in-out
-                                    ${clickedOption === option ? 'bg-blue-500 border-blue-500 scale-110' : 'border-gray-300'}`}>
-                                        {clickedOption === option && (
+                                    ${selectedOption === option ? 'bg-blue-500 border-blue-500' : 'border-gray-300'}`}>
+                                        {selectedOption === option && (
                                             <div className="w-full h-full rounded-full bg-white scale-50"/>
                                         )}
                                     </div>
                                 </div>
                             </button>
-                        ))}
-                    </div>
-                );
-            case questionTypes.MULTI_SELECT:
-                return (
-                    <div className="space-y-4">
-                        {q.options.map((option) => (
-                            <label key={option} className={`flex items-center justify-between p-4 bg-white rounded-lg shadow w-full text-lg transition-all
-                            ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98]' : ''}`}>
-                                <span>{option}</span>
-                                <div className="flex items-center">
-                                    {getIconForOption(option)}
-                                    <input
-                                        type="checkbox"
-                                        value={option}
-                                        checked={(formData[q.key] || []).includes(option)}
-                                        onChange={() => handleOptionClick(q.key, option, q.type)}
-                                        className="ml-2 form-checkbox h-6 w-6 text-blue-600 rounded-full transition-all duration-200 ease-in-out"
-                                    />
-                                </div>
-                            </label>
                         ))}
                     </div>
                 );
@@ -149,18 +112,6 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         }
     };
 
-    const totalSteps = questions.length;
-    const currentStep = currentQuestionIndex + 1;
-
-    const showNextButton = currentQuestion && currentQuestion.type !== questionTypes.CLICKABLE;
-
-    useEffect(() => {
-        if (currentQuestion && [questionTypes.EDUCATION, questionTypes.FUTURE].includes(currentQuestion.type)) {
-            const timer = setTimeout(() => handleNext(), 5000); // 5 seconds delay
-            return () => clearTimeout(timer);
-        }
-    }, [currentQuestionIndex, currentQuestion]);
-
     return (
         <div className="flex flex-col h-full">
             <div className="flex-grow overflow-y-auto">
@@ -175,17 +126,15 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                 </div>
             </div>
 
-            {showNextButton && (
-                <div className="p-4 border-t border-gray-200">
-                    <button
-                        onClick={handleNext}
-                        disabled={isNextDisabled || (!formData[currentQuestion.key] && ![questionTypes.EDUCATION, questionTypes.FUTURE].includes(currentQuestion.type))}
-                        className={`w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${clickedOption ? 'ring-2 ring-blue-300' : ''}`}
-                    >
-                        NEXT STEP
-                    </button>
-                </div>
-            )}
+            <div className="p-4 border-t border-gray-200">
+                <button
+                    onClick={handleNext}
+                    disabled={!formData[currentQuestion.key] && ![questionTypes.EDUCATION, questionTypes.FUTURE].includes(currentQuestion.type)}
+                    className="w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    NEXT STEP
+                </button>
+            </div>
         </div>
     );
 };
