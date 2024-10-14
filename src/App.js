@@ -9,7 +9,7 @@ import BabySleepPlanEmailInput from './components/BabySleepPlanEmailInput';
 import BabySleepPlanReady from './components/BabySleepPlanReady';
 import WeightInput from './components/WeightInput';
 import ParentBabyWellnessDashboard from './components/ParentBabyWellnessDashboard';
-import SleepDurationGoalInput from './components/SleepDurationGoalInput'; // Import the component
+import SleepDurationGoalInput from './components/SleepDurationGoalInput';
 
 function AppContent() {
   const [step, setStep] = useState(0);
@@ -35,7 +35,7 @@ function AppContent() {
   }, [testMode]);
 
   const handleNextStep = () => {
-    if (step < 10) { // Adjust the step limit
+    if (step < 10) {
       setStep(step + 1);
     }
   };
@@ -65,7 +65,7 @@ function AppContent() {
       case 7:
         return <WeightInput onChange={(weight, unit) => updateFormData({ weight, unit })} />;
       case 8:
-        return <SleepDurationGoalInput value={formData.sleepDurationGoal} onChange={(data) => updateFormData({ sleepDurationGoal: data })} />; // Add the component
+        return <SleepDurationGoalInput value={formData.sleepDurationGoal} onChange={(data) => updateFormData({ sleepDurationGoal: data })} />;
       case 9:
         return <ParentBabyWellnessDashboard />;
       default:
@@ -74,7 +74,7 @@ function AppContent() {
   };
 
   return (
-    <div className="app-container">
+    <div className="app-container" style={{ paddingTop: 'env(safe-area-inset-top)', paddingBottom: 'env(safe-area-inset-bottom)' }}>
       <div className="content-area">
         {renderStep()}
       </div>
