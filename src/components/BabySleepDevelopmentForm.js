@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Baby } from 'lucide-react';
 import WeightInput from './WeightInput';
 import AgeInput from './AgeInput';
@@ -61,23 +61,24 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                 return (
                     <div className="space-y-4">
                         {q.options.map((option) => (
-                            <button
+                            <label
                                 key={option}
-                                onClick={() => handleOptionClick(q.key, option, q.type)}
-                                className={`w-full p-4 text-left bg-white rounded-lg shadow hover:bg-gray-50 active:bg-gray-100 transition-all flex items-center justify-between text-lg
+                                className={`w-full p-4 text-left bg-white rounded-lg shadow hover:bg-gray-50 active:bg-gray-100 transition-all flex items-center justify-between text-lg cursor-pointer
                                 ${selectedOption === option ? 'ring-2 ring-blue-500 bg-blue-50' : ''}`}
                             >
                                 <span>{option}</span>
                                 <div className="flex items-center">
                                     {getIconForOption(option)}
-                                    <div className={`ml-2 w-6 h-6 border-2 rounded-full transition-all duration-200 ease-in-out
-                                    ${selectedOption === option ? 'bg-blue-500 border-blue-500' : 'border-gray-300'}`}>
-                                        {selectedOption === option && (
-                                            <div className="w-full h-full rounded-full bg-white scale-50"/>
-                                        )}
-                                    </div>
+                                    <input
+                                        type={q.type === questionTypes.MULTI_SELECT ? "checkbox" : "radio"}
+                                        checked={q.type === questionTypes.MULTI_SELECT
+                                            ? (formData[q.key] || []).includes(option)
+                                            : selectedOption === option}
+                                        onChange={() => handleOptionClick(q.key, option, q.type)}
+                                        className="ml-2 form-checkbox h-6 w-6 text-blue-600 rounded-full transition-all duration-200 ease-in-out"
+                                    />
                                 </div>
-                            </button>
+                            </label>
                         ))}
                     </div>
                 );
