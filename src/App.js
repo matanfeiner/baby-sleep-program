@@ -35,16 +35,10 @@ function AppContent() {
   }, [testMode]);
 
   useEffect(() => {
-// Scroll to the top to prevent address bar from covering content
-    window.scrollTo(0, 0);
-
-// Prevent auto-scroll on focus in Safari
-    const preventAutoScroll = (event) => {
-      event.preventDefault();
-    };
-    window.addEventListener('touchmove', preventAutoScroll, { passive: false });
-    return () => window.removeEventListener('touchmove', preventAutoScroll);
-  }, []);
+    // Scroll to the top to prevent address bar from covering content
+    // Remove scrolling to prevent content from being covered by the address bar
+// window.scrollTo(0, 0);
+  }, [step]);
 
   const handleNextStep = () => {
     if (step < 10) {
