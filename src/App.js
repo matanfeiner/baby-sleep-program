@@ -74,21 +74,20 @@ function AppContent() {
   };
 
   return (
-    <div className="app-container" style={{ paddingTop: 'env(safe-area-inset-top)', paddingBottom: 'env(safe-area-inset-bottom)' }}>
-      <div className="content-area">
-        {renderStep()}
+      <div className="app-container" style={{ paddingTop: 'env(safe-area-inset-top)', paddingBottom: 'env(safe-area-inset-bottom)', paddingLeft: 'env(safe-area-inset-left)', paddingRight: 'env(safe-area-inset-right)', minHeight: 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))' }}>
+        <div className="content-area">
+          {renderStep()}
+        </div>
       </div>
-    </div>
   );
 }
 
 function App() {
   return (
-    <FormDataProvider>
-      <AppContent />
-    </FormDataProvider>
+      <FormDataProvider>
+        <AppContent />
+      </FormDataProvider>
   );
 }
-
 
 export default App;
