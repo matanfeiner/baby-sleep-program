@@ -35,7 +35,10 @@ function AppContent() {
   }, [testMode]);
 
   useEffect(() => {
-    // Prevent auto-scroll on focus in Safari
+// Scroll to the top to prevent address bar from covering content
+    window.scrollTo(0, 0);
+
+// Prevent auto-scroll on focus in Safari
     const preventAutoScroll = (event) => {
       event.preventDefault();
     };
@@ -83,7 +86,7 @@ function AppContent() {
   };
 
   return (
-      <div className="app-container" style={{ paddingTop: 'calc(env(safe-area-inset-top, 20px) + 10px)', paddingBottom: 'env(safe-area-inset-bottom)', paddingLeft: 'env(safe-area-inset-left)', paddingRight: 'env(safe-area-inset-right)', minHeight: '100vh' }}>
+      <div className="app-container" style={{ paddingTop: 'calc(env(safe-area-inset-top, 20px) + 30px)', paddingBottom: 'env(safe-area-inset-bottom)', paddingLeft: 'env(safe-area-inset-left)', paddingRight: 'env(safe-area-inset-right)', minHeight: '100vh' }}>
         <div className="content-area">
           {renderStep()}
         </div>
@@ -100,4 +103,3 @@ function App() {
 }
 
 export default App;
-
