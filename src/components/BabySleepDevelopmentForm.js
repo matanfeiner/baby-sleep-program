@@ -10,8 +10,7 @@ import {
     Battery,
     Apple,
     Clock,
-    Calendar,
-    Baby  // Import Baby icon from lucide-react
+    Calendar
 } from 'lucide-react';
 import WeightInput from './WeightInput';
 import AgeInput from './AgeInput';
@@ -35,12 +34,14 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
     }, [step]);
 
     const handleNext = () => {
+        setIsNextDisabled(true); // Disable the button to prevent multiple clicks
         if (step < questions.length - 1) {
             rudderanalytics.track('Next Question', {
                 currentQuestionIndex: step,
                 nextQuestionIndex: step + 1
             });
             setStep(step + 1);
+            setIsNextDisabled(false); // Re-enable the button once step is updated
         } else {
             rudderanalytics.track('Form Completed', formData);
             onSubmit(formData);
@@ -56,7 +57,6 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
     };
 
     const handleOptionClick = (key, value, type) => {
-        setIsNextDisabled(true);
         setClickedOption(value);
 
         if (type === questionTypes.MULTI_SELECT) {
@@ -79,13 +79,12 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             window.navigator.vibrate(50);
         }
 
-        setTimeout(() => {
-            setIsNextDisabled(false);
-            setClickedOption(null);
-            if (type === questionTypes.CLICKABLE) {
-                handleNext(); // Auto advance after clickable options
-            }
-        }, 300);
+        // Automatically move to the next step for radio button (clickable) questions
+        if (type === questionTypes.CLICKABLE) {
+            setTimeout(() => {
+                handleNext(); // Auto advance after clicking a radio option
+            }, 300);
+        }
     };
 
     const renderSleepQuestion = (q) => {
@@ -195,16 +194,18 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                 </div>
             </div>
 
-            {/* Footer for NEXT button */}
-            <div className="sticky bottom-0 bg-white p-4 border-t border-gray-200">
-                <button
-                    onClick={handleNext}
-                    disabled={isNextDisabled}
-                    className={`w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${clickedOption ? 'ring-2 ring-blue-300' : ''}`}
-                >
-                    NEXT STEP
-                </button>
-            </div>
+            {/* Footer for NEXT button, only show if it's NOT a radio button question */}
+            {questions[step]?.type !== questionTypes.CLICKABLE && (
+                <div className="sticky bottom-0 bg-white p-4 border-t border-gray-200">
+                    <button
+                        onClick={handleNext}
+                        disabled={isNextDisabled}
+                        className={`w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
+                    >
+                        NEXT STEP
+                    </button>
+                </div>
+            )}
         </div>
     );
 }
