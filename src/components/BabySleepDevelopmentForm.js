@@ -10,7 +10,8 @@ import {
     Battery,
     Apple,
     Clock,
-    Calendar
+    Calendar,
+    Baby  // Import Baby icon from lucide-react
 } from 'lucide-react';
 import WeightInput from './WeightInput';
 import AgeInput from './AgeInput';
