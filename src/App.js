@@ -34,6 +34,15 @@ function AppContent() {
     }
   }, [testMode]);
 
+  useEffect(() => {
+    // Prevent auto-scroll on focus in Safari
+    const preventAutoScroll = (event) => {
+      event.preventDefault();
+    };
+    window.addEventListener('touchmove', preventAutoScroll, { passive: false });
+    return () => window.removeEventListener('touchmove', preventAutoScroll);
+  }, []);
+
   const handleNextStep = () => {
     if (step < 10) {
       setStep(step + 1);
@@ -74,7 +83,7 @@ function AppContent() {
   };
 
   return (
-      <div className="app-container" style={{ paddingTop: 'env(safe-area-inset-top)', paddingBottom: 'env(safe-area-inset-bottom)', paddingLeft: 'env(safe-area-inset-left)', paddingRight: 'env(safe-area-inset-right)', minHeight: '100vh' }}>
+      <div className="app-container" style={{ paddingTop: 'calc(env(safe-area-inset-top, 20px) + 10px)', paddingBottom: 'env(safe-area-inset-bottom)', paddingLeft: 'env(safe-area-inset-left)', paddingRight: 'env(safe-area-inset-right)', minHeight: '100vh' }}>
         <div className="content-area">
           {renderStep()}
         </div>
@@ -91,3 +100,4 @@ function App() {
 }
 
 export default App;
+
