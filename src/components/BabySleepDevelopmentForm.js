@@ -40,19 +40,23 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
     const [clickedOption, setClickedOption] = useState(null);
     const bottomRef = useRef(null);
 
-const handleNext = () => {
-    if (step < questions.length - 1) {
-        rudderanalytics.track('Next Question', {
-            currentQuestionIndex: step,
-            nextQuestionIndex: step + 1
-        });
-        setStep(step + 1);
-        window.scrollTo(0, 0); // Scroll to the top of the page
-    } else {
-        rudderanalytics.track('Form Completed', formData);
-        onSubmit(formData);
-    }
-};
+    const handleNext = () => {
+        if (step < questions.length - 1) {
+            rudderanalytics.track('Next Question', {
+                currentQuestionIndex: step,
+                nextQuestionIndex: step + 1
+            });
+            setStep(step + 1);
+
+            // If it's an educational step, automatically move to the next step
+            if (['education', 'future'].includes(questions[step + 1]?.type)) {
+                setTimeout(() => handleNext(), 100);
+            }
+        } else {
+            rudderanalytics.track('Form Completed', formData);
+            onSubmit(formData);
+        }
+    };
 
     const handlePrevious = () => {
         rudderanalytics.track('Previous Question', {
@@ -60,6 +64,11 @@ const handleNext = () => {
             previousQuestionIndex: step - 1
         });
         setStep(step - 1);
+
+        // If the previous step is an educational step, go back one more
+        if (['education', 'future'].includes(questions[step - 1]?.type)) {
+            setTimeout(() => handlePrevious(), 100);
+        }
     };
 
     const handleOptionClick = (key, value, type) => {
