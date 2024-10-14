@@ -1,38 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-    ChevronLeft,
-    Baby,
-    AlertCircle,
-    Sun,
-    Moon,
-    Coffee,
-    X,
-    Heart,
-    Battery,
-    Apple,
-    Clock,
-    Calendar
-} from 'lucide-react';
+import { ChevronLeft, Baby } from 'lucide-react';
 import WeightInput from './WeightInput';
 import AgeInput from './AgeInput';
 import SleepDurationGoalInput from './SleepDurationGoalInput';
 import rudderanalytics from '../rudderstack';
 import { useFormData } from '../contexts/FormDataContext';
 import { questions, questionTypes, getIconForOption, getQuestionById } from '../data/questions';
-
-// Import images
-import crawlingBaby from '../assets/images/nadavfe_full_body_picture_of_crawling_baby_on_a_white_screen_4e6550ea-55e7-4f2a-8ee7-2aaff0ca6de2.jpg';
-import playingHappyBaby from '../assets/images/nadavfe_full_body_picture_of_playing_happy_baby_on_a_white_scre_b8a00ff0-5e66-42e4-a7f8-2e749bcb5dcc.jpg';
-import sleepingHappyBaby from '../assets/images/nadavfe_full_body_picture_of_sleeping_happy_baby_on_a_white_scr_8610e1b7-6455-4588-89d2-162d36826742.jpg';
-import standingHappyBaby from '../assets/images/nadavfe_full_body_picture_of_standing_happy_baby_on_a_white_scr_21039812-6052-4f3e-8906-660f7cfe0c6a.jpg';
-import walkingHappyBaby from '../assets/images/nadavfe_full_body_picture_of_walking_happy_baby_on_a_white_scre_5070c7f5-831a-460c-90e5-9ee97748305c.jpg';
-import walkingHappyBaby2 from '../assets/images/nadavfe_full_body_picture_of_walking_happy_baby_on_a_white_scre_739971d0-d52c-4856-b306-2776b5e5aec5.jpg';
-import cryingBabyInCrib1 from '../assets/images/nadavfe_photo_of_a_crying_baby_in_a_crib_on_white_screen_12ff85d9-7d9e-4d83-a051-d0fcdae29cdf.jpg';
-import cryingBabyInCrib2 from '../assets/images/nadavfe_photo_of_a_crying_baby_in_a_crib_on_white_screen_2513d2db-9b77-4534-a009-19d85659b8d2.jpg';
-import screamingBabyInCrib from '../assets/images/nadavfe_photo_of_a_screaming_baby_in_a_crib_on_white_screen_8d03b4d2-ad17-429b-85b1-9e7fd406b91a.jpg';
-import smilingSleepingBabyInCrib from '../assets/images/nadavfe_photo_of_a_smiling_sleeping_baby_in_a_crib_on_white_scr_3e0a4752-9fd2-4444-8b07-7d182113d924.jpg';
-import sleepingBabyInCrib from '../assets/images/nadavfe_picture_of_sleeping_baby_in_a_crib_on_a_white_screen_4e040b55-58be-4283-a5c6-81b903cd839b.jpg';
-import sittingHappyBaby from '../assets/images/nadavfe_sitting_happy_baby_on_white_screen_1e1c64c1-68d8-41c5-919d-30ca0cee484c.jpg';
 
 const BabySleepDevelopmentForm = ({ onSubmit }) => {
     const { formData, updateFormData } = useFormData();
@@ -179,7 +152,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
     const totalSteps = questions.length;
     const currentStep = currentQuestionIndex + 1;
 
-    const showNextButton = currentQuestion && [questionTypes.MULTI_SELECT, questionTypes.WEIGHT, questionTypes.AGE, questionTypes.SLEEP_DURATION_GOAL].includes(currentQuestion.type);
+    const showNextButton = currentQuestion && ![questionTypes.CLICKABLE, questionTypes.EDUCATION, questionTypes.FUTURE].includes(currentQuestion.type);
 
     useEffect(() => {
         if (currentQuestion && [questionTypes.EDUCATION, questionTypes.FUTURE].includes(currentQuestion.type)) {
@@ -202,14 +175,14 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                 </div>
             </div>
 
-            {showNextButton && (
+            {(showNextButton || currentQuestion.type === questionTypes.EDUCATION || currentQuestion.type === questionTypes.FUTURE) && (
                 <div className="p-4 border-t border-gray-200">
                     <button
                         onClick={handleNext}
-                        disabled={isNextDisabled || !formData[currentQuestion.key]}
+                        disabled={isNextDisabled || (![questionTypes.EDUCATION, questionTypes.FUTURE].includes(currentQuestion.type) && !formData[currentQuestion.key])}
                         className={`w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${clickedOption ? 'ring-2 ring-blue-300' : ''}`}
                     >
-                        NEXT STEP
+                        {[questionTypes.EDUCATION, questionTypes.FUTURE].includes(currentQuestion.type) ? 'CONTINUE' : 'NEXT STEP'}
                     </button>
                 </div>
             )}
