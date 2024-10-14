@@ -2,6 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useFormData, FormDataProvider } from './contexts/FormDataContext';
 import { Baby } from 'lucide-react';
 import { questions, questionTypes } from './data/questions';
+import WeightInput from './components/WeightInput';
+import BabyMilestoneQuestion from './components/BabyMilestoneQuestion';
+import SleepDurationGoalInput from './components/SleepDurationGoalInput';
+import BabySleepDevelopmentForm from './components/BabySleepDevelopmentForm';
+import BabySleepImprovementPrediction from './components/BabySleepImprovementPrediction';
+import UpdatedBabySleepPlanCheckout from './components/UpdatedBabySleepPlanCheckout';
+import BabySleepPlanLoading from './components/BabySleepPlanLoading';
+import BabySleepPlanEmailInput from './components/BabySleepPlanEmailInput';
+import BabySleepPlanReady from './components/BabySleepPlanReady';
+import ParentBabyWellnessDashboard from './components/ParentBabyWellnessDashboard';
+
 
 function AppContent() {
   const [step, setStep] = useState(0);
