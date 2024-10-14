@@ -1,203 +1,133 @@
-/* CSS */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box; /* Ensures padding doesn't affect the overall dimensions */
-}
-
-/* General Resets */
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;      /* Full height */
-  width: 100%;       /* Full width */
-  overflow-x: hidden; /* Prevent horizontal scrolling */
-}
-
-/* Main app container styling */
-#root, .App {
+/* Ensure full height and width */
+html, body, #root {
   height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Apply flexbox to the main container */
+.flex-col {
   display: flex;
   flex-direction: column;
 }
 
-/* Ensure logo and animations only apply where needed */
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-  animation: App-logo-spin infinite 20s linear;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+/* Minimum height for the main container */
+.min-h-screen {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/* Gradient background */
+.bg-gradient-to-br {
+  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
 }
 
-/* Maintain animation keyframes */
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.from-pink-100 {
+  --tw-gradient-from: #fce7f3;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(252, 231, 243, 0));
 }
 
-.education-card {
-  background: linear-gradient(to bottom right, #e6f7ff, #ffffff);
-  border: 2px solid #b3e0ff;
-  transition: all 0.3s ease;
+.to-blue-100 {
+  --tw-gradient-to: #dbeafe;
 }
 
-.education-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+/* Sticky header */
+.sticky {
+  position: sticky;
 }
 
-.education-text {
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+.top-0 {
+  top: 0;
 }
 
-@keyframes gentle-pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.7; }
-  100% { opacity: 1; }
+.z-10 {
+  z-index: 10;
 }
 
-.pulse-icon {
-  animation: gentle-pulse 2s infinite;
-}
-
-.app-container {
-  padding-top: calc(env(safe-area-inset-top, 20px) + 30px);
-  padding-bottom: env(safe-area-inset-bottom);
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Adjust the main content area */
-.content-area {
+/* Flex-grow for main content */
+.flex-grow {
   flex-grow: 1;
-  width: 100%; /* Ensures it takes full width */
-  overflow-y: auto; /* Enables scrolling */
-  background: #fff; /* Light background for the content */
-  color: #333; /* Darker text for readability */
-  padding: 20px;
 }
 
-/* Footer with the navigation button */
-.footer {
-  position: sticky;
+/* Overflow for scrollable content */
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+/* Sticky footer */
+.bottom-0 {
   bottom: 0;
+}
+
+/* Button styling */
+.bg-blue-500 {
+  background-color: #3b82f6;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.hover\:bg-blue-600:hover {
+  background-color: #2563eb;
+}
+
+.active\:bg-blue-700:active {
+  background-color: #1d4ed8;
+}
+
+.transition-colors {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Utility classes */
+.container {
   width: 100%;
-  background-color: #ffffff; /* Matches header background */
-  box-shadow: 0 -2px 4px rgba(0,0,0,0.1); /* Shadow at the top of the footer */
+  margin-right: auto;
+  margin-left: auto;
 }
 
-/* Header styles to make it always visible */
-.header {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  background-color: #ffffff; /* Changes background to white */
-  z-index: 1000; /* Ensures it's on top */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Adds shadow for depth */
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Full-width button */
-.next-button {
-  width: 100%;
-  background-color: #007bff; /* Example blue background */
-  color: white;
-  padding: 10px 0; /* Padding for button height */
-  border: none; /* Removes border */
-  font-size: 16px; /* Increases font size for readability */
-  cursor: pointer; /* Pointer to indicate clickability */
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
-.next-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+/* Ensure content is not covered by the address bar on mobile */
+@supports (padding: max(0px)) {
+  body {
+    padding-top: max(0px, env(safe-area-inset-top));
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
   }
-  50% {
-    transform: translateY(-0.5rem);
-    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-  }
-}
-
-.animate-bounce {
-  animation: bounce 1s infinite;
-}
-
-.sticky-top-0 {
-  position: sticky;
-  top: 0;
-  z-index: 100; /* Make sure it stays on top of other content */
-}
-
-.sticky-bottom-0 {
-  position: sticky;
-  bottom: 0;
-  z-index: 100;
-}
-
-/* Mobile-specific styling */
-@media (max-width: 600px) {
-  .App-header {
-    font-size: calc(8px + 2vmin); /* Reduce header text size for smaller screens */
-    padding: 1rem; /* Reduce padding for mobile */
-  }
-
-  .content-area {
-    padding: 1rem; /* Less padding for better fit */
-    font-size: 14px; /* Adjust text size for readability */
-  }
-
-  .next-button {
-    font-size: 14px; /* Smaller font for mobile */
-    padding: 8px 0; /* Adjust padding for smaller screens */
-  }
-
-  .footer {
-    padding: 0.5rem;
-  }
-
-  .control-button {
-    padding: 0.5rem;
-    font-size: 14px; /* Reduce button text size */
-  }
-
-  .education-card {
-    padding: 0.5rem;
-    font-size: 12px; /* Smaller text for cards */
-  }
-}
-
-.App {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
 }

@@ -10,6 +10,7 @@ import BabySleepPlanReady from './components/BabySleepPlanReady';
 import WeightInput from './components/WeightInput';
 import ParentBabyWellnessDashboard from './components/ParentBabyWellnessDashboard';
 import SleepDurationGoalInput from './components/SleepDurationGoalInput';
+import { Baby } from 'lucide-react';
 
 function AppContent() {
   const [step, setStep] = useState(0);
@@ -34,12 +35,6 @@ function AppContent() {
     }
   }, [testMode]);
 
-  useEffect(() => {
-    // Scroll to the top to prevent address bar from covering content
-    // Remove scrolling to prevent content from being covered by the address bar
-// window.scrollTo(0, 0);
-  }, [step]);
-
   const handleNextStep = () => {
     if (step < 10) {
       setStep(step + 1);
@@ -55,19 +50,19 @@ function AppContent() {
   const renderStep = () => {
     switch (step) {
       case 0:
-        return <BabySleepDevelopmentForm onSubmit={() => handleNextStep()} />;
+        return <BabySleepDevelopmentForm onSubmit={handleNextStep} />;
       case 1:
-        return <BabyMilestoneQuestion onSubmit={() => handleNextStep()} />;
+        return <BabyMilestoneQuestion onSubmit={handleNextStep} />;
       case 2:
-        return <BabySleepImprovementPrediction onContinue={() => handleNextStep()} />;
+        return <BabySleepImprovementPrediction onContinue={handleNextStep} />;
       case 3:
-        return <UpdatedBabySleepPlanCheckout onSubmit={() => handleNextStep()} />;
+        return <UpdatedBabySleepPlanCheckout onSubmit={handleNextStep} />;
       case 4:
-        return <BabySleepPlanLoading onSubmit={() => handleNextStep()} />;
+        return <BabySleepPlanLoading onSubmit={handleNextStep} />;
       case 5:
-        return <BabySleepPlanEmailInput onSubmit={() => handleNextStep()} />;
+        return <BabySleepPlanEmailInput onSubmit={handleNextStep} />;
       case 6:
-        return <BabySleepPlanReady onSubmit={() => handleNextStep()} />;
+        return <BabySleepPlanReady onSubmit={handleNextStep} />;
       case 7:
         return <WeightInput onChange={(weight, unit) => updateFormData({ weight, unit })} />;
       case 8:
@@ -80,10 +75,30 @@ function AppContent() {
   };
 
   return (
-      <div className="app-container" style={{ paddingTop: 'calc(env(safe-area-inset-top, 20px) + 30px)', paddingBottom: 'env(safe-area-inset-bottom)', paddingLeft: 'env(safe-area-inset-left)', paddingRight: 'env(safe-area-inset-right)', minHeight: '100vh' }}>
-        <div className="content-area">
-          {renderStep()}
-        </div>
+      <div className="flex flex-col min-h-screen bg-gradient-to-br from-pink-100 to-blue-100">
+        <header className="sticky top-0 bg-white shadow-sm z-10">
+          <div className="container mx-auto px-4 py-2 flex items-center">
+            <Baby className="text-pink-500 w-6 h-6 mr-2" />
+            <h1 className="text-xl font-bold text-blue-800">Baby Sleep Program</h1>
+          </div>
+        </header>
+        <main className="flex-grow overflow-y-auto">
+          <div className="container mx-auto px-4 py-6">
+            {renderStep()}
+          </div>
+        </main>
+        {step < 10 && (
+            <footer className="sticky bottom-0 bg-white shadow-sm">
+              <div className="container mx-auto px-4 py-2">
+                <button
+                    onClick={handleNextStep}
+                    className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold text-lg hover:bg-blue-600 active:bg-blue-700 transition-colors"
+                >
+                  NEXT STEP
+                </button>
+              </div>
+            </footer>
+        )}
       </div>
   );
 }
