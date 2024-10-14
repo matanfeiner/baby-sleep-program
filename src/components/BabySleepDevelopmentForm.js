@@ -51,6 +51,11 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         if (window.navigator && window.navigator.vibrate) {
             window.navigator.vibrate(50);
         }
+
+        // Automatically go to the next question when a radio option is selected
+        if (type !== questionTypes.MULTI_SELECT) {
+            handleNext();
+        }
     };
 
     const renderQuestion = (q) => {
@@ -124,14 +129,17 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                 </div>
             </div>
 
+            {/* Hide the button when the current question is a radio type */}
             <div className="p-4 border-t border-gray-200">
-                <button
-                    onClick={handleNext}
-                    disabled={!formData[currentQuestion.key] && ![questionTypes.EDUCATION, questionTypes.FUTURE].includes(currentQuestion.type)}
-                    className="w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                    NEXT STEP
-                </button>
+                {currentQuestion?.type !== questionTypes.CLICKABLE && (
+                    <button
+                        onClick={handleNext}
+                        disabled={!formData[currentQuestion.key] && ![questionTypes.EDUCATION, questionTypes.FUTURE].includes(currentQuestion.type)}
+                        className="w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        NEXT STEP
+                    </button>
+                )}
             </div>
         </div>
     );
