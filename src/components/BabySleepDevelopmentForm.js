@@ -47,24 +47,27 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         };
     }, []);
 
+    /*
     useEffect(() => {
         if (bottomRef.current) {
             bottomRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     }, [step]);
+    */
 
-    const handleNext = () => {
-        if (step < questions.length - 1) {
-            rudderanalytics.track('Next Question', {
-                currentQuestionIndex: step,
-                nextQuestionIndex: step + 1
-            });
-            setStep(step + 1);
-        } else {
-            rudderanalytics.track('Form Completed', formData);
-            onSubmit(formData);
-        }
-    };
+const handleNext = () => {
+    if (step < questions.length - 1) {
+        rudderanalytics.track('Next Question', {
+            currentQuestionIndex: step,
+            nextQuestionIndex: step + 1
+        });
+        setStep(step + 1);
+        window.scrollTo(0, 0); // Scroll to the top of the page
+    } else {
+        rudderanalytics.track('Form Completed', formData);
+        onSubmit(formData);
+    }
+};
 
     const handlePrevious = () => {
         rudderanalytics.track('Previous Question', {
@@ -661,3 +664,5 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
 }
 
 export default BabySleepDevelopmentForm;
+
+
