@@ -52,7 +52,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             window.navigator.vibrate(50);
         }
 
-        // Automatically go to the next question when a radio option is selected
+        // Auto advance for single-choice (radio) questions
         if (type !== questionTypes.MULTI_SELECT) {
             handleNext();
         }
