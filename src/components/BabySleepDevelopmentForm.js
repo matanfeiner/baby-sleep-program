@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
     ChevronLeft,
-    Baby,
     AlertCircle,
     Sun,
     Moon,
@@ -27,13 +26,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
     const [clickedOption, setClickedOption] = useState(null);
     const bottomRef = useRef(null);
 
-    useEffect(() => {
-        document.body.style.overflow = 'hidden'; // Disable background scroll
-        return () => {
-            document.body.style.overflow = 'unset'; // Enable background scroll when component unmounts
-        };
-    }, []);
-
+    // Auto-scroll when step changes
     useEffect(() => {
         if (bottomRef.current) {
             bottomRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -89,7 +82,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             setIsNextDisabled(false);
             setClickedOption(null);
             if (type === questionTypes.CLICKABLE) {
-                handleNext();
+                handleNext(); // Auto advance after clickable options
             }
         }, 300);
     };
@@ -162,6 +155,26 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                         )}
                     </div>
                 );
+            case questionTypes.EDUCATION:
+            case questionTypes.FUTURE:
+                return (
+                    <div className="education-card bg-white p-6 rounded-lg shadow-lg">
+                        <img
+                            src={q.image}
+                            alt={q.alt || "Educational content"}
+                            className="w-full rounded-lg mb-6"
+                        />
+                        <div className="text-center">
+                            <p className="education-text text-2xl font-bold mb-4 text-blue-800 leading-tight">
+                                "{q.content}"
+                            </p>
+                            <p className="text-lg text-gray-700 italic flex items-center justify-center">
+                                <Baby className="w-5 h-5 mr-2 pulse-icon text-blue-500" />
+                                Baby Sleep Wisdom
+                            </p>
+                        </div>
+                    </div>
+                );
             default:
                 return null;
         }
@@ -169,21 +182,6 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
 
     return (
         <div className="flex flex-col h-full">
-            <div className="sticky top-0 bg-white z-10 pt-safe shadow-sm">
-                <div className="px-4 py-2">
-                    <div className="flex items-center mb-2">
-                        {step > 0 && (
-                            <button onClick={handlePrevious}
-                                    className="p-2 rounded-full hover:bg-gray-200 active:bg-gray-300 transition-colors">
-                                <ChevronLeft className="w-6 h-6"/>
-                            </button>
-                        )}
-                        <Baby className="text-pink-500 w-6 h-6 mr-2"/>
-                        <h1 className="text-xl font-bold text-blue-800 ml-2">Baby Sleep Program</h1>
-                    </div>
-                </div>
-            </div>
-
             <div className="flex-grow overflow-y-auto">
                 <div className="p-4">
                     <div className="mb-6">
@@ -196,16 +194,15 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                 </div>
             </div>
 
+            {/* Footer for NEXT button */}
             <div className="sticky bottom-0 bg-white p-4 border-t border-gray-200">
-                {['MULTI_SELECT', 'WEIGHT', 'AGE', 'SLEEP_DURATION_GOAL'].includes(questions[step]?.type) && (
-                    <button
-                        onClick={handleNext}
-                        disabled={isNextDisabled}
-                        className={`w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${clickedOption ? 'ring-2 ring-blue-300' : ''}`}
-                    >
-                        NEXT STEP
-                    </button>
-                )}
+                <button
+                    onClick={handleNext}
+                    disabled={isNextDisabled}
+                    className={`w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${clickedOption ? 'ring-2 ring-blue-300' : ''}`}
+                >
+                    NEXT STEP
+                </button>
             </div>
         </div>
     );
