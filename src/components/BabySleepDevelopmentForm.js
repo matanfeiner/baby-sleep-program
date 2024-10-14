@@ -47,11 +47,6 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                 nextQuestionIndex: step + 1
             });
             setStep(step + 1);
-
-            // If it's an educational step, automatically move to the next step
-            if (['education', 'future'].includes(questions[step + 1]?.type)) {
-                setTimeout(() => handleNext(), 100);
-            }
         } else {
             rudderanalytics.track('Form Completed', formData);
             onSubmit(formData);
@@ -64,11 +59,6 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             previousQuestionIndex: step - 1
         });
         setStep(step - 1);
-
-        // If the previous step is an educational step, go back one more
-        if (['education', 'future'].includes(questions[step - 1]?.type)) {
-            setTimeout(() => handlePrevious(), 100);
-        }
     };
 
     const handleOptionClick = (key, value, type) => {
@@ -597,17 +587,18 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
     const totalSteps = 5;
     const currentStep = Math.min(Math.floor((step / questions.length) * totalSteps) + 1, totalSteps);
 
-    const showNextButton = ['multiSelect', 'weight', 'age', 'sleepDurationGoal', 'education', 'future'].includes(questions[step]?.type);
+    const currentQuestion = questions[step];
+    const showNextButton = currentQuestion && ['multiSelect', 'weight', 'age', 'sleepDurationGoal', 'education', 'future'].includes(currentQuestion.type);
 
     return (
         <div className="flex flex-col h-full">
             <div className="flex-grow overflow-y-auto">
                 <div className="p-4">
                     <div className="mb-6">
-                        {questions[step]?.question && (
-                            <h2 className="text-lg font-semibold mb-4 text-blue-800">{questions[step].question}</h2>
+                        {currentQuestion?.question && (
+                            <h2 className="text-lg font-semibold mb-4 text-blue-800">{currentQuestion.question}</h2>
                         )}
-                        {renderSleepQuestion(questions[step])}
+                        {renderSleepQuestion(currentQuestion)}
                     </div>
                     <div ref={bottomRef}/>
                 </div>
@@ -617,7 +608,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                 <div className="p-4 border-t border-gray-200">
                     <button
                         onClick={handleNext}
-                        disabled={isNextDisabled}
+                        disabled={isNextDisabled || (currentQuestion.type !== 'education' && currentQuestion.type !== 'future' && !formData[currentQuestion.key])}
                         className={`w-full bg-blue-500 text-white py-4 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${clickedOption ? 'ring-2 ring-blue-300' : ''}`}
                     >
                         NEXT STEP
