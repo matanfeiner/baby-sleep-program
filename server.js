@@ -9,8 +9,17 @@ const PORT = process.env.PORT || 3000;
 // Enable gzip compression for all responses
 app.use(compression());
 
-// Add basic security headers
+// Use helmet for basic security headers
 app.use(helmet());
+
+// Add custom Content Security Policy (CSP) to allow external scripts
+app.use((req, res, next) => {
+    res.setHeader(
+        "Content-Security-Policy",
+        "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://cdn.rudderlabs.com; connect-src 'self' https://api.rudderstack.com;"
+    );
+    next();
+});
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'build'), { maxAge: '1y' }));
