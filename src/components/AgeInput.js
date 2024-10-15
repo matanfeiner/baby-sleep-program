@@ -9,16 +9,22 @@ const AgeInput = ({ value, onChange, defaultUnit = 'months' }) => {
     useEffect(() => {
         if (age && !isNaN(parseInt(age))) {
             setError('');
+            onChange(parseInt(age), unit);
         } else if (age !== '') {
             setError('Please enter a valid number');
+            onChange(null, unit);
+        } else {
+            onChange(null, unit);
         }
-    }, [age]);
+    }, [age, unit, onChange]);
 
     const handleUnitChange = (newUnit) => {
         setUnit(newUnit);
         const parsedAge = parseInt(age);
         if (!isNaN(parsedAge)) {
-            const newAge = newUnit === 'months' ? parsedAge * 12 : Math.floor(parsedAge / 12);
+            const newAge = newUnit === 'months'
+                ? parsedAge * 12
+                : Math.floor(parsedAge / 12);
             setAge(newAge.toString());
         }
     };
@@ -26,13 +32,6 @@ const AgeInput = ({ value, onChange, defaultUnit = 'months' }) => {
     const handleAgeChange = (e) => {
         setAge(e.target.value);
     };
-
-    useEffect(() => {
-        const parsedAge = parseInt(age);
-        if (!isNaN(parsedAge) && parsedAge > 0) {
-            onChange(parsedAge, unit);
-        }
-    }, [age, unit, onChange]);
 
     return (
         <div className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-md">

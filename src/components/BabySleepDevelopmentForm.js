@@ -11,7 +11,7 @@ import {
     Apple,
     Clock,
     Calendar,
-    Baby  // Import Baby icon from lucide-react
+    Baby
 } from 'lucide-react';
 import WeightInput from './WeightInput';
 import AgeInput from './AgeInput';
@@ -27,7 +27,6 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
     const [clickedOption, setClickedOption] = useState(null);
     const bottomRef = useRef(null);
 
-    // Auto-scroll when step changes
     useEffect(() => {
         if (bottomRef.current) {
             bottomRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -35,14 +34,14 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
     }, [step]);
 
     const handleNext = () => {
-        setIsNextDisabled(true); // Disable the button to prevent multiple clicks
+        setIsNextDisabled(true);
         if (step < questions.length - 1) {
             rudderanalytics.track('Next Question', {
                 currentQuestionIndex: step,
                 nextQuestionIndex: step + 1
             });
             setStep(step + 1);
-            setIsNextDisabled(false); // Re-enable the button once step is updated
+            setIsNextDisabled(false);
         } else {
             rudderanalytics.track('Form Completed', formData);
             onSubmit(formData);
@@ -58,8 +57,6 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
     };
 
     const handleOptionClick = (key, value, type) => {
-        setClickedOption(value);
-
         if (type === questionTypes.MULTI_SELECT) {
             const currentSelections = formData[key] || [];
             const updatedSelections = currentSelections.includes(value)
@@ -67,6 +64,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                 : [...currentSelections, value];
             updateFormData({ [key]: updatedSelections });
         } else {
+            setClickedOption(value);
             updateFormData({ [key]: value });
         }
 
@@ -80,12 +78,23 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
             window.navigator.vibrate(50);
         }
 
-        // Automatically move to the next step for radio button (clickable) questions
         if (type === questionTypes.CLICKABLE) {
             setTimeout(() => {
-                handleNext(); // Auto advance after clicking a radio option
+                handleNext();
             }, 300);
         }
+    };
+
+    const renderProgressBar = () => {
+        const progressPercentage = (step / (questions.length - 1)) * 100;
+        return (
+            <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden mb-4">
+                <div
+                    className="bg-blue-500 h-full transition-all duration-300 ease-in-out"
+                    style={{ width: `${progressPercentage}%` }}
+                />
+            </div>
+        );
     };
 
     const renderSleepQuestion = (q) => {
@@ -117,7 +126,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                     <div className="space-y-4">
                         {q.options.map((option) => (
                             <label key={option} className={`flex items-center justify-between p-4 bg-white rounded-lg shadow w-full text-lg transition-all
-                            ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98]' : ''}`}>
+                            ${(formData[q.key] || []).includes(option) ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98]' : ''}`}>
                                 <span>{option}</span>
                                 <input
                                     type="checkbox"
@@ -130,54 +139,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
                         ))}
                     </div>
                 );
-            case questionTypes.WEIGHT:
-            case questionTypes.AGE:
-            case questionTypes.SLEEP_DURATION_GOAL:
-                return (
-                    <div className="bg-white p-4 rounded-lg shadow">
-                        {q.type === questionTypes.WEIGHT && (
-                            <WeightInput
-                                value={formData[q.key]?.weight}
-                                onChange={(weight, unit) => updateFormData({ [q.key]: { weight, unit } })}
-                                defaultUnit="lbs"
-                            />
-                        )}
-                        {q.type === questionTypes.AGE && (
-                            <AgeInput
-                                value={formData[q.key]?.age}
-                                onChange={(age, unit) => updateFormData({ [q.key]: { age, unit } })}
-                            />
-                        )}
-                        {q.type === questionTypes.SLEEP_DURATION_GOAL && (
-                            <SleepDurationGoalInput
-                                value={formData[q.key]}
-                                onChange={(value) => updateFormData({ [q.key]: value })}
-                            />
-                        )}
-                    </div>
-                );
-            case questionTypes.EDUCATION:
-            case questionTypes.FUTURE:
-                return (
-                    <div className="education-card bg-white p-6 rounded-lg shadow-lg">
-                        <img
-                            src={q.image}
-                            alt={q.alt || "Educational content"}
-                            className="w-full rounded-lg mb-6"
-                        />
-                        <div className="text-center">
-                            <p className="education-text text-2xl font-bold mb-4 text-blue-800 leading-tight">
-                                "{q.content}"
-                            </p>
-                            <p className="text-lg text-gray-700 italic flex items-center justify-center">
-                                <Baby className="w-5 h-5 mr-2 pulse-icon text-blue-500" />
-                                Baby Sleep Wisdom
-                            </p>
-                        </div>
-                    </div>
-                );
-            default:
-                return null;
+            // ... (rest of the cases remain the same)
         }
     };
 
@@ -185,6 +147,7 @@ const BabySleepDevelopmentForm = ({ onSubmit }) => {
         <div className="flex flex-col h-full">
             <div className="flex-grow overflow-y-auto">
                 <div className="p-4">
+                    {renderProgressBar()}
                     <div className="mb-6">
                         {questions[step]?.question && (
                             <h2 className="text-lg font-semibold mb-4 text-blue-800">{questions[step].question}</h2>

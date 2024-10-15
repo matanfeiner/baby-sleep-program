@@ -9,10 +9,14 @@ const WeightInput = ({ value, onChange, defaultUnit = 'lbs' }) => {
     useEffect(() => {
         if (weight && !isNaN(parseFloat(weight))) {
             setError('');
+            onChange(parseFloat(weight), unit);
         } else if (weight !== '') {
             setError('Please enter a valid number');
+            onChange(null, unit);
+        } else {
+            onChange(null, unit);
         }
-    }, [weight]);
+    }, [weight, unit, onChange]);
 
     const handleUnitChange = (newUnit) => {
         setUnit(newUnit);

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useFormData, FormDataProvider } from './contexts/FormDataContext';
 import { Baby } from 'lucide-react';
 import { questions, questionTypes } from './data/questions';
 import WeightInput from './components/WeightInput';
-import BabyMilestoneQuestion from './components/BabyMilestoneQuestion';
+import AgeInput from './components/AgeInput';
 import SleepDurationGoalInput from './components/SleepDurationGoalInput';
 import BabySleepDevelopmentForm from './components/BabySleepDevelopmentForm';
 import BabySleepImprovementPrediction from './components/BabySleepImprovementPrediction';
@@ -12,7 +12,6 @@ import BabySleepPlanLoading from './components/BabySleepPlanLoading';
 import BabySleepPlanEmailInput from './components/BabySleepPlanEmailInput';
 import BabySleepPlanReady from './components/BabySleepPlanReady';
 import ParentBabyWellnessDashboard from './components/ParentBabyWellnessDashboard';
-
 
 function AppContent() {
   const [step, setStep] = useState(0);
@@ -33,7 +32,7 @@ function AppContent() {
     if (questions[step].type === questionTypes.CLICKABLE) {
       setTimeout(() => {
         handleNextStep();
-      }, 300); // Delay to show feedback before moving to next question
+      }, 300);
     }
   };
 
@@ -49,11 +48,11 @@ function AppContent() {
                       key={option}
                       onClick={() => handleOptionClick(question.key, option)}
                       className={`w-full p-4 text-left bg-white rounded-lg shadow hover:bg-gray-50 active:bg-gray-100 transition-all flex items-center justify-between text-lg
-                ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98] animate-pulse' : ''}`}
+                  ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98] animate-pulse' : ''}`}
                   >
                     <span>{option}</span>
                     <div className={`w-6 h-6 border-2 rounded-full transition-all duration-200 ease-in-out
-                ${clickedOption === option ? 'bg-blue-500 border-blue-500 scale-110' : 'border-gray-300'}`}>
+                  ${clickedOption === option ? 'bg-blue-500 border-blue-500 scale-110' : 'border-gray-300'}`}>
                       {clickedOption === option && (
                           <div className="w-full h-full rounded-full bg-white scale-50"/>
                       )}
@@ -95,9 +94,23 @@ function AppContent() {
             </div>
         );
       case questionTypes.WEIGHT:
-        return <WeightInput onChange={(weight, unit) => updateFormData({ [question.key]: { weight, unit } })} />;
+        return (
+            <WeightInput
+                value={formData[question.key]?.weight}
+                onChange={(weight, unit) => {
+                  updateFormData({ [question.key]: { weight, unit } });
+                }}
+            />
+        );
       case questionTypes.AGE:
-        return <BabyMilestoneQuestion onSubmit={handleNextStep} />;
+        return (
+            <AgeInput
+                value={formData[question.key]?.age}
+                onChange={(age, unit) => {
+                  updateFormData({ [question.key]: { age, unit } });
+                }}
+            />
+        );
       case questionTypes.SLEEP_DURATION_GOAL:
         return <SleepDurationGoalInput value={formData[question.key]} onChange={(value) => updateFormData({ [question.key]: value })} />;
       default:
@@ -106,6 +119,19 @@ function AppContent() {
   };
 
   const showNextButton = questions[step].type !== questionTypes.CLICKABLE;
+
+  const isNextButtonDisabled = () => {
+    const question = questions[step];
+    if (question.type === questionTypes.WEIGHT) {
+      const weightData = formData[question.key];
+      return !weightData || !weightData.weight || !weightData.unit;
+    }
+    if (question.type === questionTypes.AGE) {
+      const ageData = formData[question.key];
+      return !ageData || !ageData.age || !ageData.unit;
+    }
+    return false;
+  };
 
   return (
       <div className="flex flex-col min-h-screen bg-gradient-to-br from-pink-100 to-blue-100">
@@ -128,7 +154,11 @@ function AppContent() {
               <div className="container mx-auto px-4 py-2">
                 <button
                     onClick={handleNextStep}
-                    className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold text-lg hover:bg-blue-600 active:bg-blue-700 transition-colors"
+                    disabled={isNextButtonDisabled()}
+                    className={`w-full py-3 rounded-lg font-semibold text-lg transition-colors
+                ${isNextButtonDisabled()
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        : 'bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700'}`}
                 >
                   NEXT STEP
                 </button>
