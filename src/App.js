@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { useFormData, FormDataProvider } from './contexts/FormDataContext';
 import { Baby } from 'lucide-react';
 import { questions, questionTypes } from './data/questions';
@@ -13,9 +14,15 @@ import BabySleepPlanEmailInput from './components/BabySleepPlanEmailInput';
 import BabySleepPlanReady from './components/BabySleepPlanReady';
 import ParentBabyWellnessDashboard from './components/ParentBabyWellnessDashboard';
 import ParentBabyNameInput from './components/ParentBabyNameInput';
-import GoogleTagManager from './components/GoogleTagManager';
+import TagManager from 'react-gtm-module';
+import useGTMPageView from './hooks/useGTMPageView';
+
+const tagManagerArgs = {
+    gtmId: 'GTM-M3TTKRD5'
+};
 
 function AppContent() {
+    useGTMPageView();
     const [step, setStep] = useState(0);
     const { formData, updateFormData } = useFormData();
     const [clickedOption, setClickedOption] = useState(null);
@@ -278,12 +285,16 @@ function AppContent() {
 }
 
 function App() {
+    useEffect(() => {
+        TagManager.initialize(tagManagerArgs);
+    }, []);
+
     return (
-        <GoogleTagManager>
+        <Router>
             <FormDataProvider>
                 <AppContent />
             </FormDataProvider>
-        </GoogleTagManager>
+        </Router>
     );
 }
 
