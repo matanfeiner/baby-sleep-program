@@ -16,6 +16,7 @@ import iconConsultant from '../assets/icons/icon-consultant.png';
 import beforeImage from '../assets/images/before.png';
 import afterImage from '../assets/images/after.png';
 import testimonialImage from '../assets/images/WhatsApp Image 2024-10-15 at 14.21.41.jpeg';
+import shieldIcon from '../assets/images/shield-icon.png';
 
 const PlanOption = ({ duration, price, perDay, popular = false, onSelect }) => (
     <div className={`bg-white p-4 rounded-lg shadow-md ${popular ? 'border-2 border-blue-500' : ''}`}>
