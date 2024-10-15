@@ -77,8 +77,10 @@ const FAQItem = ({ question, answer }) => {
 };
 
 const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
-    const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
+    const [timeLeft, setTimeLeft] = useState(600);
     const [progress, setProgress] = useState(0);
+    const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
+    const logos = [featuredInLogo1, featuredInLogo2, featuredInLogo3, featuredInLogo4, featuredInLogo5];
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -88,11 +90,15 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
     }, []);
 
     useEffect(() => {
-        setProgress(25); // Initial progress value
+        setProgress(25);
     }, []);
 
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentLogoIndex((prevIndex) => (prevIndex + 1) % logos.length);
+        }, 3000);
+        return () => clearInterval(interval);
+    }, []);
 
     const handlePlanSelection = (duration, price) => {
         onPlanSelect({ duration, price });
@@ -204,6 +210,48 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
                     question="Is this suitable for all ages?"
                     answer="Yes, our sleep plans are customized for babies from newborn to 24 months old, with age-appropriate strategies and techniques."
                 />
+            </div>
+
+            {/* Choose Your Plan section (repeated) */}
+            <h2 className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">Choose Your Plan</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 sm:mb-8">
+                <PlanOption duration="1-Week Trial" price={9.90} perDay={1.41} onSelect={handlePlanSelection} />
+                <PlanOption duration="4-Week Plan" price={15.00} perDay={0.53} popular={true} onSelect={handlePlanSelection} />
+                <PlanOption duration="12-Week Plan" price={30.00} perDay={0.35} onSelect={handlePlanSelection} />
+            </div>
+
+            {/* 30-day money-back guarantee section */}
+            <div className="bg-gray-100 p-4 sm:p-6 rounded-lg mb-6 sm:mb-8">
+                <div className="flex items-center justify-center mb-4">
+                    <img src={shieldIcon} alt="Shield" className="w-8 h-8 mr-2" />
+                    <h2 className="text-xl sm:text-2xl font-bold">30-day money-back guarantee</h2>
+                </div>
+                <p className="text-center mb-4">
+                    We believe that our plan may work for you and you'll get visible results in 4 weeks!
+                    We even are ready to return your money back if you don't see visible results and
+                    can demonstrate that you followed our plan.
+                </p>
+                <p className="text-center text-sm text-blue-600">
+                    Find more about applicable limitations in our <a href="#" className="underline">money-back policy</a>.
+                </p>
+            </div>
+
+            {/* Logo carousel */}
+            <div className="mb-6 sm:mb-8">
+                <h2 className="text-lg sm:text-xl font-bold mb-4 text-center">As featured in</h2>
+                <div className="flex justify-center items-center">
+                    <img src={logos[currentLogoIndex]} alt="Featured In" className="w-32 h-auto" />
+                </div>
+            </div>
+
+            <div className="mb-6 sm:mb-8">
+                <h2 className="text-xl sm:text-2xl font-bold mb-4">Results that make us proud</h2>
+                <div className="bg-white p-4 rounded-lg shadow-md">
+                    <img src={testimonialImage} alt="Testimonial" className="w-full mb-2 rounded" />
+                    <h3 className="font-bold">Baby Olivia, -5 kg</h3>
+                    <p className="text-sm">It helps you track everything you need when you want to help yourself lower weight or keep it, from water to food and calories...</p>
+                    <a href="#" className="text-blue-500 text-sm">Read more</a>
+                </div>
             </div>
 
             <p className="text-xs text-gray-500 text-center">
