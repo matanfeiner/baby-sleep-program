@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Moon, Cake } from 'lucide-react';
 
-const BabySleepImprovementPrediction = ({ data, onContinue }) => {
+const BabySleepImprovementPrediction = () => {
     const sampleData = [
         { week: 'Week 1', sleepHours: 6 },
         { week: 'Week 2', sleepHours: 7 },
@@ -64,13 +64,6 @@ const BabySleepImprovementPrediction = ({ data, onContinue }) => {
             <div className="mt-4 text-sm text-gray-500">
                 *Based on data from babies with similar sleep patterns. Results may vary. Always consult with your pediatrician.
             </div>
-
-            <button
-                onClick={onContinue}
-                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 mt-4"
-            >
-                Get My Sleep Plan
-            </button>
         </div>
     );
 };

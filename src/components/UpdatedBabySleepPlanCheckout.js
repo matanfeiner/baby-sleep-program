@@ -16,13 +16,16 @@ import iconConsultant from '../assets/icons/icon-consultant.png';
 import beforeImage from '../assets/images/before.png';
 import afterImage from '../assets/images/after.png';
 
-const PlanOption = ({ duration, price, perDay, popular = false }) => (
+const PlanOption = ({ duration, price, perDay, popular = false, onSelect }) => (
     <div className={`bg-white p-4 rounded-lg shadow-md ${popular ? 'border-2 border-blue-500' : ''}`}>
         <h3 className="text-lg font-semibold">{duration}</h3>
         <p className="text-2xl font-bold">${price.toFixed(2)}</p>
         <p className="text-md">${perDay.toFixed(2)} per day</p>
         {popular && <span className="text-sm text-blue-500">Most Popular!</span>}
-        <button className="w-full bg-blue-500 text-white mt-4 py-2 rounded hover:bg-blue-600 transition-colors">
+        <button
+            onClick={() => onSelect(duration, price)}
+            className="w-full bg-blue-500 text-white mt-4 py-2 rounded hover:bg-blue-600 transition-colors"
+        >
             Choose Plan
         </button>
     </div>
@@ -72,7 +75,7 @@ const FAQItem = ({ question, answer }) => {
     );
 };
 
-const UpdatedBabySleepPlanCheckout = () => {
+const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
     const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
     const [progress, setProgress] = useState(0);
 
@@ -89,6 +92,10 @@ const UpdatedBabySleepPlanCheckout = () => {
 
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
+
+    const handlePlanSelection = (duration, price) => {
+        onPlanSelect({ duration, price });
+    };
 
     return (
         <div className="max-w-4xl mx-auto p-6">
@@ -111,7 +118,6 @@ const UpdatedBabySleepPlanCheckout = () => {
                         <ProgressBar progress={25} />
                     </div>
                     <div className="mx-4 flex items-center justify-center">
-                        {/* Updated Arrow */}
                         <svg
                             width="24"
                             height="48"
@@ -141,9 +147,9 @@ const UpdatedBabySleepPlanCheckout = () => {
             <h2 className="text-2xl font-bold text-center mb-6">Choose Your Plan</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <PlanOption duration="1-Week Trial" price={9.90} perDay={1.41} />
-                <PlanOption duration="4-Week Plan" price={15.00} perDay={0.53} popular={true} />
-                <PlanOption duration="12-Week Plan" price={30.00} perDay={0.35} />
+                <PlanOption duration="1-Week Trial" price={9.90} perDay={1.41} onSelect={handlePlanSelection} />
+                <PlanOption duration="4-Week Plan" price={15.00} perDay={0.53} popular={true} onSelect={handlePlanSelection} />
+                <PlanOption duration="12-Week Plan" price={30.00} perDay={0.35} onSelect={handlePlanSelection} />
             </div>
 
             <div className="bg-gray-100 p-6 rounded-lg mb-8">
@@ -185,34 +191,8 @@ const UpdatedBabySleepPlanCheckout = () => {
                         <p className="text-sm">It helps you track everything you need when you want to help yourself lower weight or keep it, from water to food and calories...</p>
                         <a href="#" className="text-blue-500 text-sm">Read more</a>
                     </div>
-                    {/* Add more similar result cards here */}
                 </div>
             </div>
-
-            <h2 className="text-2xl font-bold text-center mb-6">Choose Your Plan</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <PlanOption duration="1-Week Trial" price={9.90} perDay={1.41} />
-                <PlanOption duration="4-Week Plan" price={15.00} perDay={0.53} popular={true} />
-                <PlanOption duration="12-Week Plan" price={30.00} perDay={0.35} />
-            </div>
-
-            <div className="bg-gray-100 p-6 rounded-lg mb-8">
-                <h2 className="text-xl font-bold mb-4">30-day money-back guarantee</h2>
-                <p>We believe that our plan may work for you and you'll see visible results in 4 weeks! If you don't see improvements and can demonstrate that you followed our plan, we offer a full refund.</p>
-                <p className="mt-2">Find more about applicable limitations in our <a href="#" className="text-blue-500">money-back policy</a>.</p>
-            </div>
-
-            <div className="text-center mb-8">
-                <h3 className="text-xl font-bold mb-2">Limited Time Offer</h3>
-                <div className="text-3xl font-bold text-blue-600">
-                    {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
-                </div>
-            </div>
-
-            <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold text-xl hover:bg-blue-700 transition duration-300 mb-8">
-                GET MY SLEEP PLAN
-            </button>
 
             <div className="mb-8">
                 <h2 className="text-2xl font-bold mb-4 text-center">People often ask</h2>

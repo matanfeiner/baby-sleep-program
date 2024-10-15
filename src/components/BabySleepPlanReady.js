@@ -1,7 +1,7 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, ReferenceDot } from 'recharts';
 
-const BabySleepPlanReady = ({ parentName = 'NAME', babyName = 'BABY', onContinue }) => {
+const BabySleepPlanReady = ({ parentName, babyName }) => {
     const data = [
         { week: 'Now', sleepHours: 6 },
         { week: 'Week 1', sleepHours: 7 },
@@ -53,13 +53,6 @@ const BabySleepPlanReady = ({ parentName = 'NAME', babyName = 'BABY', onContinue
             <p className="text-sm text-gray-500 mb-6">
                 This chart is for illustrative purposes only. Individual results may vary.
             </p>
-
-            <button
-                onClick={onContinue}
-                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold text-xl hover:bg-blue-700 transition duration-300"
-            >
-                CONTINUE
-            </button>
         </div>
     );
 };
