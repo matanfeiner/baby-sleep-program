@@ -1,7 +1,8 @@
 {
-  "name": "baby-sleep-program-new",
+  "name": "my-tiny-milestones",
   "version": "0.1.0",
   "private": true,
+  "description": "An app to track and celebrate your baby's tiny milestones",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
