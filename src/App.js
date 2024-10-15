@@ -32,6 +32,11 @@ function AppContent() {
     const totalSteps = questions.length + 7; // Adding 7 for the additional components
 
     useEffect(() => {
+        console.log("Initializing GTM with ID:", tagManagerArgs.gtmId);
+        TagManager.initialize(tagManagerArgs);
+    }, []);
+
+    useEffect(() => {
         // Read initial step from URL when component mounts
         const params = new URLSearchParams(window.location.search);
         const stepParam = params.get('step');
