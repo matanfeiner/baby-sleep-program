@@ -44,13 +44,6 @@ function AppContent() {
         }
     };
 
-    const handlePreviousStep = () => {
-        if (step > 0) {
-            setStep(step - 1);
-            setClickedOption(null);
-        }
-    };
-
     const handleOptionClick = (key, value) => {
         const question = questions[step];
 
@@ -84,11 +77,11 @@ function AppContent() {
                                 key={option}
                                 onClick={() => handleOptionClick(question.key, option)}
                                 className={`w-full p-4 text-left bg-white rounded-lg shadow hover:bg-gray-50 active:bg-gray-100 transition-all flex items-center justify-between text-lg
-                                    ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98] animate-pulse' : ''}`}
+                                ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98] animate-pulse' : ''}`}
                             >
                                 <span>{option}</span>
                                 <div className={`w-6 h-6 border-2 rounded-full transition-all duration-200 ease-in-out
-                                    ${clickedOption === option ? 'bg-blue-500 border-blue-500 scale-110' : 'border-gray-300'}`}>
+                                ${clickedOption === option ? 'bg-blue-500 border-blue-500 scale-110' : 'border-gray-300'}`}>
                                     {clickedOption === option && (
                                         <div className="w-full h-full rounded-full bg-white scale-50"/>
                                     )}
@@ -148,16 +141,13 @@ function AppContent() {
                     />
                 );
             case questionTypes.SLEEP_DURATION_GOAL:
-                return (
-                    <SleepDurationGoalInput
-                        value={formData[question.key]}
-                        onChange={(value) => updateFormData({ [question.key]: value })}
-                    />
-                );
+                return <SleepDurationGoalInput value={formData[question.key]} onChange={(value) => updateFormData({ [question.key]: value })} />;
             default:
                 return null;
         }
     };
+
+    const showNextButton = questions[step].type !== questionTypes.CLICKABLE;
 
     const isNextButtonDisabled = () => {
         const question = questions[step];
@@ -173,9 +163,6 @@ function AppContent() {
             const selections = formData[question.key];
             return !selections || selections.length === 0;
         }
-        if (question.type === questionTypes.CLICKABLE) {
-            return !formData[question.key];
-        }
         if (question.type === questionTypes.SLEEP_DURATION_GOAL) {
             return !formData[question.key] || typeof formData[question.key].hours !== 'number';
         }
@@ -185,14 +172,9 @@ function AppContent() {
     return (
         <div className="flex flex-col min-h-screen bg-gradient-to-br from-pink-100 to-blue-100">
             <header className="sticky top-0 bg-white shadow-sm z-10">
-                <div className="container mx-auto px-4 py-2 flex items-center justify-between">
-                    <div className="flex items-center">
-                        <Baby className="text-pink-500 w-6 h-6 mr-2" />
-                        <h1 className="text-xl font-bold text-blue-800">My Tiny Milestones</h1>
-                    </div>
-                    <div className="text-sm text-gray-500">
-                        Step {step + 1} of {questions.length}
-                    </div>
+                <div className="container mx-auto px-4 py-2 flex items-center">
+                    <Baby className="text-pink-500 w-6 h-6 mr-2" />
+                    <h1 className="text-xl font-bold text-blue-800">My Tiny Milestones</h1>
                 </div>
             </header>
 
@@ -203,30 +185,22 @@ function AppContent() {
                 </div>
             </main>
 
-            <footer className="sticky bottom-0 bg-white shadow-sm">
-                <div className="container mx-auto px-4 py-2 flex justify-between">
-                    {step > 0 && (
-                        <button
-                            onClick={handlePreviousStep}
-                            className="py-3 px-6 rounded-lg font-semibold text-lg transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
-                        >
-                            Previous
-                        </button>
-                    )}
-                    {step < questions.length - 1 && (
+            {showNextButton && (
+                <footer className="sticky bottom-0 bg-white shadow-sm">
+                    <div className="container mx-auto px-4 py-2">
                         <button
                             onClick={handleNextStep}
                             disabled={isNextButtonDisabled()}
-                            className={`py-3 px-6 rounded-lg font-semibold text-lg transition-colors
+                            className={`w-full py-3 rounded-lg font-semibold text-lg transition-colors
                                 ${isNextButtonDisabled()
                                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                 : 'bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700'}`}
                         >
-                            Next
+                            NEXT STEP
                         </button>
-                    )}
-                </div>
-            </footer>
+                    </div>
+                </footer>
+            )}
         </div>
     );
 }
