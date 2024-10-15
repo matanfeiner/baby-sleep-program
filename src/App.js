@@ -13,6 +13,7 @@ import BabySleepPlanEmailInput from './components/BabySleepPlanEmailInput';
 import BabySleepPlanReady from './components/BabySleepPlanReady';
 import ParentBabyWellnessDashboard from './components/ParentBabyWellnessDashboard';
 import ParentBabyNameInput from './components/ParentBabyNameInput';
+import GoogleTagManager from './components/GoogleTagManager';
 
 function AppContent() {
     const [step, setStep] = useState(0);
@@ -278,9 +279,11 @@ function AppContent() {
 
 function App() {
     return (
-        <FormDataProvider>
-            <AppContent />
-        </FormDataProvider>
+        <GoogleTagManager>
+            <FormDataProvider>
+                <AppContent />
+            </FormDataProvider>
+        </GoogleTagManager>
     );
 }
 
