@@ -201,7 +201,14 @@ function AppContent() {
         return "NEXT STEP";
     };
 
-    const showButton = step < totalSteps - 1 && step !== questions.length + 2 && step !== questions.length + 6; // Hide button for BabySleepPlanLoading and UpdatedBabySleepPlanCheckout
+    const showButton = () => {
+        if (step < questions.length) {
+            const question = questions[step];
+            return question.type !== questionTypes.CLICKABLE;
+        }
+        // Hide button for BabySleepPlanLoading and UpdatedBabySleepPlanCheckout
+        return step < totalSteps - 1 && step !== questions.length + 2 && step !== questions.length + 6;
+    };
 
     const isButtonDisabled = () => {
         if (step < questions.length) {
@@ -249,7 +256,7 @@ function AppContent() {
                 </div>
             </main>
 
-            {showButton && (
+            {showButton() && (
                 <footer className="sticky bottom-0 bg-white shadow-sm">
                     <div className="container mx-auto px-4 py-2">
                         <button
