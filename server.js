@@ -17,15 +17,14 @@ app.use((req, res, next) => {
     res.setHeader(
         "Content-Security-Policy",
         "default-src 'self'; " +
-        "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://cdn.rudderlabs.com https://assets.anytrack.io https://d2wy8f7a9ursnm.cloudfront.net; " +
-        "connect-src 'self' https://api.rudderstack.com https://d2wy8f7a9ursnm.cloudfront.net https://t1.anytrack.io; " + // Added AnyTrack to connect-src
-        "img-src 'self' data: https://t1.anytrack.io; " + // Allow images from AnyTrack
-        "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com data:; " +
-        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;"
+        "script-src * 'unsafe-inline' 'unsafe-eval'; " + // Allow scripts from any source
+        "connect-src *; " + // Allow connections from any source
+        "img-src * data:; " + // Allow images from any source
+        "font-src * data:; " + // Allow fonts from any source
+        "style-src * 'unsafe-inline';" // Allow inline styles and external styles from any source
     );
     next();
 });
-
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'build'), { maxAge: '1y' }));
