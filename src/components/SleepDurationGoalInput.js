@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Moon } from 'lucide-react';
 
 const SleepDurationGoalInput = ({ value, onChange }) => {
-    const [hours, setHours] = useState(value?.hours || 7.5);
+    const [hours, setHours] = useState(value?.hours || 12);
 
     useEffect(() => {
         onChange({ hours: parseFloat(hours.toFixed(1)) });
@@ -14,7 +14,7 @@ const SleepDurationGoalInput = ({ value, onChange }) => {
 
     const getGradientColor = (value) => {
         const colors = ['#f87171', '#fbbf24', '#34d399', '#60a5fa', '#818cf8'];
-        const index = (value - 3) / (12 - 3) * (colors.length - 1);
+        const index = (value - 6) / (18 - 6) * (colors.length - 1);
         const lowerIndex = Math.floor(index);
         const upperIndex = Math.ceil(index);
         const ratio = index - lowerIndex;
@@ -37,8 +37,8 @@ const SleepDurationGoalInput = ({ value, onChange }) => {
             <div className="mb-4">
                 <input
                     type="range"
-                    min="3"
-                    max="12"
+                    min="6"
+                    max="18"
                     step="0.1"
                     value={hours}
                     onChange={handleSliderChange}
@@ -55,8 +55,8 @@ const SleepDurationGoalInput = ({ value, onChange }) => {
                 <span className="text-2xl text-gray-600 ml-2">hours</span>
             </div>
             <div className="flex justify-between text-sm text-gray-500 mt-2">
-                <span>3 hours</span>
-                <span>12 hours</span>
+                <span>6 hours</span>
+                <span>18 hours</span>
             </div>
         </div>
     );

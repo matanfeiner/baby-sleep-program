@@ -147,6 +147,9 @@ function AppContent() {
         if (question.type === questionTypes.CLICKABLE) {
             return !formData[question.key];
         }
+        if (question.type === questionTypes.SLEEP_DURATION_GOAL) {
+            return !formData[question.key] || !formData[question.key].hours;
+        }
         return false;
     };
 
