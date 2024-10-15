@@ -122,7 +122,12 @@ function AppContent() {
                     />
                 );
             case questionTypes.SLEEP_DURATION_GOAL:
-                return <SleepDurationGoalInput value={formData[question.key]} onChange={(value) => updateFormData({ [question.key]: value })} />;
+                return (
+                    <SleepDurationGoalInput
+                        value={formData[question.key]}
+                        onChange={(value) => updateFormData({ [question.key]: value })}
+                    />
+                );
             default:
                 return null;
         }
@@ -148,7 +153,7 @@ function AppContent() {
             return !formData[question.key];
         }
         if (question.type === questionTypes.SLEEP_DURATION_GOAL) {
-            return !formData[question.key] || !formData[question.key].hours;
+            return !formData[question.key] || typeof formData[question.key].hours !== 'number';
         }
         return false;
     };

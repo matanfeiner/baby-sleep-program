@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Moon } from 'lucide-react';
 
 const SleepDurationGoalInput = ({ value, onChange }) => {
@@ -8,25 +8,29 @@ const SleepDurationGoalInput = ({ value, onChange }) => {
         onChange({ hours: parseFloat(hours.toFixed(1)) });
     }, [hours, onChange]);
 
-    const handleSliderChange = (e) => {
-        setHours(parseFloat(e.target.value));
-    };
+    const handleSliderChange = useCallback((e) => {
+        const newHours = parseFloat(e.target.value);
+        setHours(newHours);
+        onChange({ hours: parseFloat(newHours.toFixed(1)) });
+    }, [onChange]);
 
-    const getGradientColor = (value) => {
-        const colors = ['#f87171', '#fbbf24', '#34d399', '#60a5fa', '#818cf8'];
-        const index = (value - 6) / (18 - 6) * (colors.length - 1);
-        const lowerIndex = Math.floor(index);
-        const upperIndex = Math.ceil(index);
-        const ratio = index - lowerIndex;
+    const getGradientColor = useMemo(() => {
+        return (value) => {
+            const colors = ['#f87171', '#fbbf24', '#34d399', '#60a5fa', '#818cf8'];
+            const index = (value - 6) / (18 - 6) * (colors.length - 1);
+            const lowerIndex = Math.floor(index);
+            const upperIndex = Math.ceil(index);
+            const ratio = index - lowerIndex;
 
-        if (lowerIndex === upperIndex) return colors[lowerIndex];
+            if (lowerIndex === upperIndex) return colors[lowerIndex];
 
-        const r = Math.round(parseInt(colors[lowerIndex].slice(1, 3), 16) * (1 - ratio) + parseInt(colors[upperIndex].slice(1, 3), 16) * ratio);
-        const g = Math.round(parseInt(colors[lowerIndex].slice(3, 5), 16) * (1 - ratio) + parseInt(colors[upperIndex].slice(3, 5), 16) * ratio);
-        const b = Math.round(parseInt(colors[lowerIndex].slice(5, 7), 16) * (1 - ratio) + parseInt(colors[upperIndex].slice(5, 7), 16) * ratio);
+            const r = Math.round(parseInt(colors[lowerIndex].slice(1, 3), 16) * (1 - ratio) + parseInt(colors[upperIndex].slice(1, 3), 16) * ratio);
+            const g = Math.round(parseInt(colors[lowerIndex].slice(3, 5), 16) * (1 - ratio) + parseInt(colors[upperIndex].slice(3, 5), 16) * ratio);
+            const b = Math.round(parseInt(colors[lowerIndex].slice(5, 7), 16) * (1 - ratio) + parseInt(colors[upperIndex].slice(5, 7), 16) * ratio);
 
-        return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
-    };
+            return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+        };
+    }, []);
 
     return (
         <div className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-md">
