@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Star, Check, ChevronDown, ChevronUp } from 'lucide-react';
 
 // Import images and icons
-import mobileAppIllustration from '../assets/images/r1ovtijr9ap12weug1ha.webp';
+import mobileAppIllustration from '../assets/images/WhatsApp Image 2024-10-15 at 15.49.50.jpeg';
 import featuredInLogo1 from '../assets/images/usa-today-new.webp';
 import featuredInLogo2 from '../assets/images/forbes-logo-black-transparent.png';
 import featuredInLogo3 from '../assets/images/wall-street-journal-logo.png';
@@ -15,6 +15,7 @@ import iconTracking from '../assets/icons/icon-tracking.png';
 import iconConsultant from '../assets/icons/icon-consultant.png';
 import beforeImage from '../assets/images/before.png';
 import afterImage from '../assets/images/after.png';
+import testimonialImage from '../assets/images/WhatsApp Image 2024-10-15 at 14.21.41.jpeg';
 
 const PlanOption = ({ duration, price, perDay, popular = false, onSelect }) => (
     <div className={`bg-white p-4 rounded-lg shadow-md ${popular ? 'border-2 border-blue-500' : ''}`}>
@@ -98,20 +99,20 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto p-6">
+        <div className="max-w-4xl mx-auto p-4 sm:p-6">
             <div className="bg-blue-100 text-blue-800 p-2 rounded-lg mb-4 relative">
                 <span className="absolute top-0 right-0 bg-blue-500 text-white px-2 py-1 text-xs rounded-bl">Limited Offer: 50% Off</span>
                 <p className="font-semibold">Get your personalized sleep plan now</p>
             </div>
 
-            <h1 className="text-3xl font-bold text-center mb-8">Your Baby Sleep Journey</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8">Your Baby Sleep Journey</h1>
 
-            <div className="bg-gray-50 rounded-lg p-6 mb-8">
-                <div className="flex justify-between items-center">
-                    <div className="text-left w-1/2">
+            <div className="bg-gray-50 rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
+                <div className="flex flex-col sm:flex-row justify-between items-center">
+                    <div className="text-center sm:text-left w-full sm:w-1/2 mb-4 sm:mb-0">
                         <h3 className="font-bold mb-2">Now</h3>
                         <div className="bg-gray-200 w-32 h-32 mx-auto mb-2 rounded-full flex items-center justify-center">
-                            <span className="text-gray-500">Crying Baby</span>
+                            <img src={beforeImage} alt="Before" className="w-full h-full object-cover rounded-full" />
                         </div>
                         <p className="font-semibold">Sleep time: 6 hours</p>
                         <p className="text-red-500 font-bold">Bad</p>
@@ -132,10 +133,10 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
                             ></path>
                         </svg>
                     </div>
-                    <div className="text-left w-1/2">
+                    <div className="text-center sm:text-left w-full sm:w-1/2">
                         <h3 className="font-bold mb-2">Your Goal</h3>
                         <div className="bg-gray-200 w-32 h-32 mx-auto mb-2 rounded-full flex items-center justify-center">
-                            <span className="text-gray-500">Happy Sleeping Baby</span>
+                            <img src={afterImage} alt="After" className="w-full h-full object-cover rounded-full" />
                         </div>
                         <p className="font-semibold">Sleep time: 12 hours</p>
                         <p className="text-green-500 font-bold">Good</p>
@@ -144,17 +145,17 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
                 </div>
             </div>
 
-            <h2 className="text-2xl font-bold text-center mb-6">Choose Your Plan</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">Choose Your Plan</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 sm:mb-8">
                 <PlanOption duration="1-Week Trial" price={9.90} perDay={1.41} onSelect={handlePlanSelection} />
                 <PlanOption duration="4-Week Plan" price={15.00} perDay={0.53} popular={true} onSelect={handlePlanSelection} />
                 <PlanOption duration="12-Week Plan" price={30.00} perDay={0.35} onSelect={handlePlanSelection} />
             </div>
 
-            <div className="bg-gray-100 p-6 rounded-lg mb-8">
-                <h2 className="text-2xl font-bold mb-4">What you get:</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-gray-100 p-4 sm:p-6 rounded-lg mb-6 sm:mb-8">
+                <h2 className="text-xl sm:text-2xl font-bold mb-4">What you get:</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <Feature icon={iconSleepSchedule} text="Personalized sleep schedule based on your baby's age and needs" />
                         <Feature icon={iconGuide} text="Step-by-step guide to implement gentle sleep training methods" />
@@ -168,34 +169,29 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
                 </div>
             </div>
 
-            <div className="mb-8">
-                <h2 className="text-xl font-bold mb-4">As featured in</h2>
-                <div className="flex justify-between items-center">
-                    <img src={featuredInLogo1} alt="USA Today" />
-                    <img src={featuredInLogo2} alt="Forbes" />
-                    <img src={featuredInLogo3} alt="WSJ" />
-                    <img src={featuredInLogo4} alt="New York Post" />
-                    <img src={featuredInLogo5} alt="Mashable" />
+            <div className="mb-6 sm:mb-8">
+                <h2 className="text-lg sm:text-xl font-bold mb-4">As featured in</h2>
+                <div className="flex flex-wrap justify-between items-center">
+                    <img src={featuredInLogo1} alt="USA Today" className="w-1/2 sm:w-auto mb-2 sm:mb-0" />
+                    <img src={featuredInLogo2} alt="Forbes" className="w-1/2 sm:w-auto mb-2 sm:mb-0" />
+                    <img src={featuredInLogo3} alt="WSJ" className="w-1/2 sm:w-auto mb-2 sm:mb-0" />
+                    <img src={featuredInLogo4} alt="New York Post" className="w-1/2 sm:w-auto mb-2 sm:mb-0" />
+                    <img src={featuredInLogo5} alt="Mashable" className="w-1/2 sm:w-auto" />
                 </div>
             </div>
 
-            <div className="mb-8">
-                <h2 className="text-2xl font-bold mb-4">Results that make us proud</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="bg-white p-4 rounded-lg shadow-md">
-                        <div className="flex justify-between mb-2">
-                            <img src={beforeImage} alt="Before" className="w-1/2" />
-                            <img src={afterImage} alt="After" className="w-1/2" />
-                        </div>
-                        <h3 className="font-bold">Eun, -5 kg</h3>
-                        <p className="text-sm">It helps you track everything you need when you want to help yourself lower weight or keep it, from water to food and calories...</p>
-                        <a href="#" className="text-blue-500 text-sm">Read more</a>
-                    </div>
+            <div className="mb-6 sm:mb-8">
+                <h2 className="text-xl sm:text-2xl font-bold mb-4">Results that make us proud</h2>
+                <div className="bg-white p-4 rounded-lg shadow-md">
+                    <img src={testimonialImage} alt="Testimonial" className="w-full mb-2 rounded" />
+                    <h3 className="font-bold">Eun, -5 kg</h3>
+                    <p className="text-sm">It helps you track everything you need when you want to help yourself lower weight or keep it, from water to food and calories...</p>
+                    <a href="#" className="text-blue-500 text-sm">Read more</a>
                 </div>
             </div>
 
-            <div className="mb-8">
-                <h2 className="text-2xl font-bold mb-4 text-center">People often ask</h2>
+            <div className="mb-6 sm:mb-8">
+                <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">People often ask</h2>
                 <FAQItem
                     question="How can this plan help improve my baby's sleep?"
                     answer="Our plan provides personalized strategies based on your baby's age and sleep patterns, along with expert guidance to implement effective sleep training methods."
