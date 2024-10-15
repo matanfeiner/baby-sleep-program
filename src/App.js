@@ -86,7 +86,77 @@ function AppContent() {
             const question = questions[step];
 
             switch (question.type) {
-                // ... (previous cases remain the same)
+                case questionTypes.CLICKABLE:
+                    return (
+                        <div className="space-y-4">
+                            {question.options.map((option) => (
+                                <button
+                                    key={option}
+                                    onClick={() => handleOptionClick(question.key, option)}
+                                    className={`w-full p-4 text-left bg-white rounded-lg shadow hover:bg-gray-50 active:bg-gray-100 transition-all flex items-center justify-between text-lg
+                                    ${clickedOption === option ? 'ring-2 ring-blue-500 bg-blue-50 scale-[0.98] animate-pulse' : ''}`}
+                                >
+                                    <span>{option}</span>
+                                    <div className={`w-6 h-6 border-2 rounded-full transition-all duration-200 ease-in-out
+                                    ${clickedOption === option ? 'bg-blue-500 border-blue-500 scale-110' : 'border-gray-300'}`}>
+                                        {clickedOption === option && (
+                                            <div className="w-full h-full rounded-full bg-white scale-50"/>
+                                        )}
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+                    );
+                case questionTypes.MULTI_SELECT:
+                    return (
+                        <div className="space-y-4">
+                            {question.options.map((option) => (
+                                <label key={option} className="flex items-center justify-between p-4 bg-white rounded-lg shadow w-full text-lg transition-all">
+                                    <span>{option}</span>
+                                    <input
+                                        type="checkbox"
+                                        checked={(formData[question.key] || []).includes(option)}
+                                        onChange={() => handleOptionClick(question.key, option)}
+                                        className="form-checkbox h-6 w-6 text-blue-600 rounded-full transition-all duration-200 ease-in-out"
+                                    />
+                                </label>
+                            ))}
+                        </div>
+                    );
+                case questionTypes.EDUCATION:
+                case questionTypes.FUTURE:
+                    return (
+                        <div className="bg-white p-6 rounded-lg shadow-lg">
+                            <img src={question.image} alt={question.alt} className="w-full rounded-lg mb-6" />
+                            <div className="text-center">
+                                <p className="text-2xl font-bold mb-4 text-blue-800 leading-tight">
+                                    "{question.content}"
+                                </p>
+                                <p className="text-lg text-gray-700 italic flex items-center justify-center">
+                                    <Baby className="w-5 h-5 mr-2 text-blue-500" />
+                                    Baby Sleep Wisdom
+                                </p>
+                            </div>
+                        </div>
+                    );
+                case questionTypes.WEIGHT:
+                    return (
+                        <WeightInput
+                            value={formData[question.key]?.weight}
+                            onChange={(weight, unit) => {
+                                updateFormData({ [question.key]: { weight, unit } });
+                            }}
+                        />
+                    );
+                case questionTypes.AGE:
+                    return (
+                        <AgeInput
+                            value={formData[question.key]?.age}
+                            onChange={(age, unit) => {
+                                updateFormData({ [question.key]: { age, unit } });
+                            }}
+                        />
+                    );
                 case questionTypes.SLEEP_DURATION_GOAL:
                     return <SleepDurationGoalInput value={formData[question.key]} onChange={(value) => updateFormData({ [question.key]: value })} />;
                 default:
@@ -135,7 +205,22 @@ function AppContent() {
 
     const isButtonDisabled = () => {
         if (step < questions.length) {
-            // ... (previous logic for question steps remains the same)
+            const question = questions[step];
+            if (question.type === questionTypes.WEIGHT) {
+                const weightData = formData[question.key];
+                return !weightData || !weightData.weight || !weightData.unit;
+            }
+            if (question.type === questionTypes.AGE) {
+                const ageData = formData[question.key];
+                return !ageData || !ageData.age || !ageData.unit;
+            }
+            if (question.type === questionTypes.MULTI_SELECT) {
+                const selections = formData[question.key];
+                return !selections || selections.length === 0;
+            }
+            if (question.type === questionTypes.SLEEP_DURATION_GOAL) {
+                return !formData[question.key] || typeof formData[question.key].hours !== 'number';
+            }
         }
         if (step === questions.length + 3) { // Email input step
             return !email || !/\S+@\S+\.\S+/.test(email); // Basic email validation
