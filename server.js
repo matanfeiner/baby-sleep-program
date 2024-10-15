@@ -16,7 +16,12 @@ app.use(helmet());
 app.use((req, res, next) => {
     res.setHeader(
         "Content-Security-Policy",
-        "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://cdn.rudderlabs.com; connect-src 'self' https://api.rudderstack.com;"
+        "default-src 'self'; " +
+        "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://cdn.rudderlabs.com https://assets.anytrack.io https://d2wy8f7a9ursnm.cloudfront.net; " +
+        "connect-src 'self' https://api.rudderstack.com https://d2wy8f7a9ursnm.cloudfront.net; " +
+        "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com data:; " +
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+        "img-src 'self' data:;"
     );
     next();
 });
