@@ -166,7 +166,7 @@ function AppContent() {
             // Render additional components
             switch (step - questions.length) {
                 case 0:
-                    return <ParentBabyWellnessDashboard />;
+                    return <ParentBabyWellnessDashboard formData={formData} />;
                 case 1:
                     return <BabySleepImprovementPrediction />;
                 case 2:
