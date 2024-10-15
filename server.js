@@ -18,7 +18,7 @@ app.use((req, res, next) => {
         "Content-Security-Policy",
         "default-src 'self'; " +
         "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://cdn.rudderlabs.com https://assets.anytrack.io https://d2wy8f7a9ursnm.cloudfront.net; " +
-        "connect-src 'self' https://api.rudderstack.com https://d2wy8f7a9ursnm.cloudfront.net; " +
+        "connect-src 'self' https://api.rudderstack.com https://d2wy8f7a9ursnm.cloudfront.net https://t1.anytrack.io; " + // Added AnyTrack to connect-src
         "img-src 'self' data: https://t1.anytrack.io; " + // Allow images from AnyTrack
         "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com data:; " +
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;"
