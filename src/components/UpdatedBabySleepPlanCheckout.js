@@ -198,9 +198,8 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
                 <h2 className="text-xl sm:text-2xl font-bold mb-4">Results that make us proud</h2>
                 <div className="bg-white p-4 rounded-lg shadow-md">
                     <img src={testimonialImage} alt="Testimonial" className="w-full mb-2 rounded"/>
-                    <h3 className="font-bold">Eun, -5 kg</h3>
-                    <p className="text-sm">It helps you track everything you need when you want to help yourself lower
-                        weight or keep it, from water to food and calories...</p>
+                    <h3 className="font-bold">Tina, mother of Olivia</h3>
+                    <p className="text-sm">Since introducing the app to our nightly routine, it's been a game changer for little Max and me. The variety of lullabies and gentle night sounds help him settle down quickly and sleep through the night.</p>
                     <a href="#" className="text-blue-500 text-sm">Read more</a>
                 </div>
             </div>
