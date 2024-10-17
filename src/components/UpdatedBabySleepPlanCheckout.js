@@ -102,7 +102,8 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
     }, []);
 
     const handlePlanSelection = (duration, price) => {
-        onPlanSelect({ duration, price });
+        // onPlanSelect({ duration, price }); // No longer needed if you only want to redirect
+        window.location.href = 'https://plan.mytinymilestones.com/something-went-wrong/';
     };
 
     return (
