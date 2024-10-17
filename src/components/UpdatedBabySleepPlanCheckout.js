@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Star, Check, ChevronDown, ChevronUp } from 'lucide-react';
 
 // Import images and icons
-import mobileAppIllustration from '../assets/images/WhatsApp Image 2024-10-15 at 15.49.50.jpeg';
+import mobileAppIllustration from '../assets/images/app-without-background.png';
 import featuredInLogo1 from '../assets/images/usa-today-new.webp';
 import featuredInLogo2 from '../assets/images/forbes-logo-black-transparent.png';
 import featuredInLogo3 from '../assets/images/wall-street-journal-logo.png';
@@ -13,9 +13,10 @@ import iconGuide from '../assets/icons/icon-guide.png';
 import iconSupport from '../assets/icons/icon-support.png';
 import iconTracking from '../assets/icons/icon-tracking.png';
 import iconConsultant from '../assets/icons/icon-consultant.png';
-import beforeImage from '../assets/images/before.png';
-import afterImage from '../assets/images/after.png';
+import beforeImage from '../assets/images/before.jpg';
+import afterImage from '../assets/images/after.jpg';
 import testimonialImage from '../assets/images/WhatsApp Image 2024-10-15 at 14.21.41.jpeg';
+import testimonialImage2 from '../assets/images/nadavfe_iphone_photo_of_a_mom_holding_happy_sleeping_baby_165d4444-7684-4430-9865-099749307555.jpg';
 import shieldIcon from '../assets/images/shield-icon.png';
 
 const PlanOption = ({ duration, price, perDay, popular = false, onSelect }) => (
@@ -119,12 +120,13 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
                 <div className="flex flex-col sm:flex-row justify-between items-center">
                     <div className="text-center sm:text-left w-full sm:w-1/2 mb-4 sm:mb-0">
                         <h3 className="font-bold mb-2">Now</h3>
-                        <div className="bg-gray-200 w-32 h-32 mx-auto mb-2 rounded-full flex items-center justify-center">
-                            <img src={beforeImage} alt="Before" className="w-full h-full object-cover rounded-full" />
+                        <div
+                            className="bg-gray-200 w-32 h-32 mx-auto mb-2 rounded-full flex items-center justify-center">
+                            <img src={beforeImage} alt="Before" className="w-full h-full object-cover rounded-full"/>
                         </div>
                         <p className="font-semibold">Sleep time: 6 hours</p>
                         <p className="text-red-500 font-bold">Bad</p>
-                        <ProgressBar progress={25} />
+                        <ProgressBar progress={25}/>
                     </div>
                     <div className="mx-4 flex items-center justify-center">
                         <svg
@@ -143,12 +145,13 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
                     </div>
                     <div className="text-center sm:text-left w-full sm:w-1/2">
                         <h3 className="font-bold mb-2">Your Goal</h3>
-                        <div className="bg-gray-200 w-32 h-32 mx-auto mb-2 rounded-full flex items-center justify-center">
-                            <img src={afterImage} alt="After" className="w-full h-full object-cover rounded-full" />
+                        <div
+                            className="bg-gray-200 w-32 h-32 mx-auto mb-2 rounded-full flex items-center justify-center">
+                            <img src={afterImage} alt="After" className="w-full h-full object-cover rounded-full"/>
                         </div>
                         <p className="font-semibold">Sleep time: 12 hours</p>
                         <p className="text-green-500 font-bold">Good</p>
-                        <ProgressBar progress={100} />
+                        <ProgressBar progress={100}/>
                     </div>
                 </div>
             </div>
@@ -156,23 +159,26 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
             <h2 className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">Choose Your Plan</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 sm:mb-8">
-                <PlanOption duration="1-Week Trial" price={9.90} perDay={1.41} onSelect={handlePlanSelection} />
-                <PlanOption duration="4-Week Plan" price={15.00} perDay={0.53} popular={true} onSelect={handlePlanSelection} />
-                <PlanOption duration="12-Week Plan" price={30.00} perDay={0.35} onSelect={handlePlanSelection} />
+                <PlanOption duration="1-Week Trial" price={9.90} perDay={1.41} onSelect={handlePlanSelection}/>
+                <PlanOption duration="4-Week Plan" price={15.00} perDay={0.53} popular={true}
+                            onSelect={handlePlanSelection}/>
+                <PlanOption duration="12-Week Plan" price={30.00} perDay={0.35} onSelect={handlePlanSelection}/>
             </div>
 
             <div className="bg-gray-100 p-4 sm:p-6 rounded-lg mb-6 sm:mb-8">
                 <h2 className="text-xl sm:text-2xl font-bold mb-4">What you get:</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <Feature icon={iconSleepSchedule} text="Personalized sleep schedule based on your baby's age and needs" />
-                        <Feature icon={iconGuide} text="Step-by-step guide to implement gentle sleep training methods" />
-                        <Feature icon={iconSupport} text="Daily tips and support to help you stay consistent" />
-                        <Feature icon={iconTracking} text="Track your baby's sleep patterns and see improvements over time" />
-                        <Feature icon={iconConsultant} text="Access to sleep consultants for personalized advice" />
+                        <Feature icon={iconSleepSchedule}
+                                 text="Personalized sleep schedule based on your baby's age and needs"/>
+                        <Feature icon={iconGuide} text="Step-by-step guide to implement gentle sleep training methods"/>
+                        <Feature icon={iconSupport} text="Daily tips and support to help you stay consistent"/>
+                        <Feature icon={iconTracking}
+                                 text="Track your baby's sleep patterns and see improvements over time"/>
+                        <Feature icon={iconConsultant} text="Access to sleep consultants for personalized advice"/>
                     </div>
                     <div className="flex items-center justify-center">
-                        <img src={mobileAppIllustration} alt="Mobile App" className="max-w-full h-auto" />
+                        <img src={mobileAppIllustration} alt="Mobile App" className="max-w-full h-auto"/>
                     </div>
                 </div>
             </div>
@@ -180,20 +186,21 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
             <div className="mb-6 sm:mb-8">
                 <h2 className="text-lg sm:text-xl font-bold mb-4">As featured in</h2>
                 <div className="flex flex-wrap justify-between items-center">
-                    <img src={featuredInLogo1} alt="USA Today" className="w-1/2 sm:w-auto mb-2 sm:mb-0" />
-                    <img src={featuredInLogo2} alt="Forbes" className="w-1/2 sm:w-auto mb-2 sm:mb-0" />
-                    <img src={featuredInLogo3} alt="WSJ" className="w-1/2 sm:w-auto mb-2 sm:mb-0" />
-                    <img src={featuredInLogo4} alt="New York Post" className="w-1/2 sm:w-auto mb-2 sm:mb-0" />
-                    <img src={featuredInLogo5} alt="Mashable" className="w-1/2 sm:w-auto" />
+                    <img src={featuredInLogo1} alt="USA Today" className="w-1/2 sm:w-auto mb-2 sm:mb-0"/>
+                    <img src={featuredInLogo2} alt="Forbes" className="w-1/2 sm:w-auto mb-2 sm:mb-0"/>
+                    <img src={featuredInLogo3} alt="WSJ" className="w-1/2 sm:w-auto mb-2 sm:mb-0"/>
+                    <img src={featuredInLogo4} alt="New York Post" className="w-1/2 sm:w-auto mb-2 sm:mb-0"/>
+                    <img src={featuredInLogo5} alt="Mashable" className="w-1/2 sm:w-auto"/>
                 </div>
             </div>
 
             <div className="mb-6 sm:mb-8">
                 <h2 className="text-xl sm:text-2xl font-bold mb-4">Results that make us proud</h2>
                 <div className="bg-white p-4 rounded-lg shadow-md">
-                    <img src={testimonialImage} alt="Testimonial" className="w-full mb-2 rounded" />
+                    <img src={testimonialImage} alt="Testimonial" className="w-full mb-2 rounded"/>
                     <h3 className="font-bold">Eun, -5 kg</h3>
-                    <p className="text-sm">It helps you track everything you need when you want to help yourself lower weight or keep it, from water to food and calories...</p>
+                    <p className="text-sm">It helps you track everything you need when you want to help yourself lower
+                        weight or keep it, from water to food and calories...</p>
                     <a href="#" className="text-blue-500 text-sm">Read more</a>
                 </div>
             </div>
@@ -217,15 +224,16 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
             {/* Choose Your Plan section (repeated) */}
             <h2 className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">Choose Your Plan</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 sm:mb-8">
-                <PlanOption duration="1-Week Trial" price={9.90} perDay={1.41} onSelect={handlePlanSelection} />
-                <PlanOption duration="4-Week Plan" price={15.00} perDay={0.53} popular={true} onSelect={handlePlanSelection} />
-                <PlanOption duration="12-Week Plan" price={30.00} perDay={0.35} onSelect={handlePlanSelection} />
+                <PlanOption duration="1-Week Trial" price={9.90} perDay={1.41} onSelect={handlePlanSelection}/>
+                <PlanOption duration="4-Week Plan" price={15.00} perDay={0.53} popular={true}
+                            onSelect={handlePlanSelection}/>
+                <PlanOption duration="12-Week Plan" price={30.00} perDay={0.35} onSelect={handlePlanSelection}/>
             </div>
 
             {/* 30-day money-back guarantee section */}
             <div className="bg-gray-100 p-4 sm:p-6 rounded-lg mb-6 sm:mb-8">
                 <div className="flex items-center justify-center mb-4">
-                    <img src={shieldIcon} alt="Shield" className="w-8 h-8 mr-2" />
+                    <img src={shieldIcon} alt="Shield" className="w-8 h-8 mr-2"/>
                     <h2 className="text-xl sm:text-2xl font-bold">30-day money-back guarantee</h2>
                 </div>
                 <p className="text-center mb-4">
@@ -234,7 +242,8 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
                     can demonstrate that you followed our plan.
                 </p>
                 <p className="text-center text-sm text-blue-600">
-                    Find more about applicable limitations in our <a href="#" className="underline">money-back policy</a>.
+                    Find more about applicable limitations in our <a href="#" className="underline">money-back
+                    policy</a>.
                 </p>
             </div>
 
@@ -242,22 +251,25 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
             <div className="mb-6 sm:mb-8">
                 <h2 className="text-lg sm:text-xl font-bold mb-4 text-center">As featured in</h2>
                 <div className="flex justify-center items-center">
-                    <img src={logos[currentLogoIndex]} alt="Featured In" className="w-32 h-auto" />
+                    <img src={logos[currentLogoIndex]} alt="Featured In" className="w-32 h-auto"/>
                 </div>
             </div>
 
             <div className="mb-6 sm:mb-8">
                 <h2 className="text-xl sm:text-2xl font-bold mb-4">Results that make us proud</h2>
                 <div className="bg-white p-4 rounded-lg shadow-md">
-                    <img src={testimonialImage} alt="Testimonial" className="w-full mb-2 rounded" />
-                    <h3 className="font-bold">Baby Olivia, -5 kg</h3>
-                    <p className="text-sm">It helps you track everything you need when you want to help yourself lower weight or keep it, from water to food and calories...</p>
+                    <img src={testimonialImage2} alt="Testimonial" className="w-full mb-2 rounded"/>
+                    <h3 className="font-bold">Jane, mother of Emma</h3>
+                    <p className="text-sm">"Since we started using the app, bedtime has become a breeze for Emma and me.
+                        The soothing sounds and bedtime stories work like a charm, helping her drift off
+                        peacefully."</p>
                     <a href="#" className="text-blue-500 text-sm">Read more</a>
                 </div>
             </div>
 
             <p className="text-xs text-gray-500 text-center">
-                By selecting a plan, you agree to our Terms of Service and Privacy Policy. You can cancel anytime through your account settings.
+                By selecting a plan, you agree to our Terms of Service and Privacy Policy. You can cancel anytime
+                through your account settings.
             </p>
         </div>
     );
