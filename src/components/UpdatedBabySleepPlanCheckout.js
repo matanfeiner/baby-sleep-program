@@ -103,8 +103,21 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
     }, []);
 
     const handlePlanSelection = (duration, price) => {
-        // onPlanSelect({ duration, price }); // No longer needed if you only want to redirect
-        window.location.href = 'https://plan.mytinymilestones.com/something-went-wrong/';
+        let url;
+        switch(duration) {
+            case "1-Week Trial":
+                url = 'https://dididesk.com/cart/49247434670360:1';
+                break;
+            case "4-Week Plan":
+                url = 'https://dididesk.com/checkouts/cn/Z2NwLWV1cm9wZS13ZXN0MTowMUpBUTVLTk1NNDJZV0FEWlBUTUc1ODNSUQ';
+                break;
+            case "12-Week Plan":
+                url = 'https://dididesk.com/checkouts/cn/Z2NwLWV1cm9wZS13ZXN0MTowMUpBUTVLTk1NNDJZV0FEWlBUTUc1ODNSUQ';
+                break;
+            default:
+                url = 'https://plan.mytinymilestones.com/something-went-wrong/';
+        }
+        window.location.href = url;
     };
 
     return (
@@ -159,10 +172,10 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
             <h2 className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">Choose Your Plan</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 sm:mb-8">
-                <PlanOption duration="1-Week Trial" price={9.90} perDay={1.41} onSelect={handlePlanSelection}/>
-                <PlanOption duration="4-Week Plan" price={15.00} perDay={0.53} popular={true}
+                <PlanOption duration="1-Week Trial" price={9.99} perDay={1.43} onSelect={handlePlanSelection}/>
+                <PlanOption duration="4-Week Plan" price={19.99} perDay={0.71} popular={true}
                             onSelect={handlePlanSelection}/>
-                <PlanOption duration="12-Week Plan" price={30.00} perDay={0.35} onSelect={handlePlanSelection}/>
+                <PlanOption duration="12-Week Plan" price={29.99} perDay={0.35} onSelect={handlePlanSelection}/>
             </div>
 
             <div className="bg-gray-100 p-4 sm:p-6 rounded-lg mb-6 sm:mb-8">
