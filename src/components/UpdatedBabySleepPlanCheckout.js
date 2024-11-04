@@ -19,20 +19,58 @@ import testimonialImage from '../assets/images/WhatsApp Image 2024-10-15 at 14.2
 import testimonialImage2 from '../assets/images/nadavfe_iphone_photo_of_a_mom_holding_happy_sleeping_baby_165d4444-7684-4430-9865-099749307555.jpg';
 import shieldIcon from '../assets/images/shield-icon.png';
 
-const PlanOption = ({ duration, price, perDay, popular = false, onSelect }) => (
-    <div className={`bg-white p-4 rounded-lg shadow-md ${popular ? 'border-2 border-blue-500' : ''}`}>
-        <h3 className="text-lg font-semibold">{duration}</h3>
-        <p className="text-2xl font-bold">${price.toFixed(2)}</p>
-        <p className="text-md">${perDay.toFixed(2)} per day</p>
-        {popular && <span className="text-sm text-blue-500">Most Popular!</span>}
-        <button
-            onClick={() => onSelect(duration, price)}
-            className="w-full bg-blue-500 text-white mt-4 py-2 rounded hover:bg-blue-600 transition-colors"
-        >
-            Choose Plan
-        </button>
+const NotebookPreview = ({ count }) => (
+    <div className="flex justify-center gap-2 mt-4 mb-4">
+        {[...Array(count)].map((_, index) => (
+            <div
+                key={index}
+                className="relative w-16 h-20 bg-white shadow-md rounded border border-gray-200 transform hover:scale-105 transition-transform"
+            >
+                <div className="absolute top-0 left-0 right-0 h-1 bg-blue-500" />
+                <div className="p-2 flex flex-col items-center">
+                    <div className="w-8 h-8 bg-blue-50 rounded-full mb-1 flex items-center justify-center">
+                        <span className="text-xs text-blue-500 font-semibold">#{index + 1}</span>
+                    </div>
+                    <div className="w-full h-2 bg-gray-100 rounded mb-1" />
+                    <div className="w-3/4 h-2 bg-gray-100 rounded" />
+                </div>
+            </div>
+        ))}
     </div>
 );
+
+const PlanOption = ({ duration, price, perDay, popular = false, onSelect }) => {
+    const getNotebookCount = (duration) => {
+        switch(duration) {
+            case "1-Week Trial":
+                return 1;
+            case "2-Week Plan":
+                return 2;
+            case "4-Week Plan":
+                return 4;
+            default:
+                return 1;
+        }
+    };
+
+    return (
+        <div className={`bg-white p-4 rounded-lg shadow-md ${popular ? 'border-2 border-blue-500' : ''}`}>
+            <h3 className="text-lg font-semibold">{duration}</h3>
+            <p className="text-2xl font-bold">${price.toFixed(2)}</p>
+            <p className="text-md">${perDay.toFixed(2)} per day</p>
+            {popular && <span className="text-sm text-blue-500">Most Popular!</span>}
+
+            <NotebookPreview count={getNotebookCount(duration)} />
+
+            <button
+                onClick={() => onSelect(duration, price)}
+                className="w-full bg-blue-500 text-white mt-4 py-2 rounded hover:bg-blue-600 transition-colors"
+            >
+                Choose Plan
+            </button>
+        </div>
+    );
+};
 
 const Feature = ({ text, icon }) => (
     <div className="flex items-center mb-2">
@@ -108,10 +146,10 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
             case "1-Week Trial":
                 url = 'https://dididesk.com/cart/49247434670360:1';
                 break;
-            case "4-Week Plan":
+            case "2-Week Plan":
                 url = 'https://dididesk.com/checkouts/cn/Z2NwLWV1cm9wZS13ZXN0MTowMUpBUTVLTk1NNDJZV0FEWlBUTUc1ODNSUQ';
                 break;
-            case "12-Week Plan":
+            case "4-Week Plan":
                 url = 'https://dididesk.com/checkouts/cn/Z2NwLWV1cm9wZS13ZXN0MTowMUpBUTVLTk1NNDJZV0FEWlBUTUc1ODNSUQ';
                 break;
             default:
@@ -133,8 +171,7 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
                 <div className="flex flex-col sm:flex-row justify-between items-center">
                     <div className="text-center sm:text-left w-full sm:w-1/2 mb-4 sm:mb-0">
                         <h3 className="font-bold mb-2">Now</h3>
-                        <div
-                            className="bg-gray-200 w-32 h-32 mx-auto mb-2 rounded-full flex items-center justify-center">
+                        <div className="bg-gray-200 w-32 h-32 mx-auto mb-2 rounded-full flex items-center justify-center">
                             <img src={beforeImage} alt="Before" className="w-full h-full object-cover rounded-full"/>
                         </div>
                         <p className="font-semibold">Sleep time: 6 hours</p>
@@ -158,8 +195,7 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
                     </div>
                     <div className="text-center sm:text-left w-full sm:w-1/2">
                         <h3 className="font-bold mb-2">Your Goal</h3>
-                        <div
-                            className="bg-gray-200 w-32 h-32 mx-auto mb-2 rounded-full flex items-center justify-center">
+                        <div className="bg-gray-200 w-32 h-32 mx-auto mb-2 rounded-full flex items-center justify-center">
                             <img src={afterImage} alt="After" className="w-full h-full object-cover rounded-full"/>
                         </div>
                         <p className="font-semibold">Sleep time: 12 hours</p>
@@ -173,11 +209,11 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 sm:mb-8">
                 <PlanOption duration="1-Week Trial" price={9.99} perDay={1.43} onSelect={handlePlanSelection}/>
-                <PlanOption duration="4-Week Plan" price={19.99} perDay={0.71} popular={true}
-                            onSelect={handlePlanSelection}/>
-                <PlanOption duration="12-Week Plan" price={29.99} perDay={0.35} onSelect={handlePlanSelection}/>
+                <PlanOption duration="2-Week Plan" price={19.99} perDay={0.71} popular={true} onSelect={handlePlanSelection}/>
+                <PlanOption duration="4-Week Plan" price={29.99} perDay={0.35} onSelect={handlePlanSelection}/>
             </div>
 
+            {/* Rest of your original code continues here... */}
             <div className="bg-gray-100 p-4 sm:p-6 rounded-lg mb-6 sm:mb-8">
                 <h2 className="text-xl sm:text-2xl font-bold mb-4">What you get:</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -196,6 +232,7 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
                 </div>
             </div>
 
+            {/* Continue with the rest of your original components... */}
             <div className="mb-6 sm:mb-8">
                 <h2 className="text-lg sm:text-xl font-bold mb-4">As featured in</h2>
                 <div className="flex flex-wrap justify-between items-center">
@@ -207,84 +244,82 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
                 </div>
             </div>
 
+            {/* Testimonials */}
             <div className="mb-6 sm:mb-8">
                 <h2 className="text-xl sm:text-2xl font-bold mb-4">Results that make us proud</h2>
                 <div className="bg-white p-4 rounded-lg shadow-md">
                     <img src={testimonialImage} alt="Testimonial" className="w-full mb-2 rounded"/>
                     <h3 className="font-bold">Tina, mother of Olivia</h3>
-                    <p className="text-sm">Since introducing the app to our nightly routine, it's been a game changer for little Max and me. The variety of lullabies and gentle night sounds help him settle down quickly and sleep through the night.</p>
+                    <p className="text-sm">Since introducing the program to our nightly routine, it's been a game changer for little Max and me. The personalized weekly notebooks help us stay on track and make consistent progress.</p>
                     <a href="#" className="text-blue-500 text-sm">Read more</a>
-                </div>
-            </div>
-
-            <div className="mb-6 sm:mb-8">
-                <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">People often ask</h2>
-                <FAQItem
-                    question="How can this plan help improve my baby's sleep?"
-                    answer="Our plan provides personalized strategies based on your baby's age and sleep patterns, along with expert guidance to implement effective sleep training methods."
-                />
-                <FAQItem
-                    question="How will the plan be delivered?"
-                    answer="Upon purchase, you'll receive immediate access to our app where you can view your personalized sleep plan, track progress, and access expert advice."
-                />
-                <FAQItem
-                    question="Is this suitable for all ages?"
-                    answer="Yes, our sleep plans are customized for babies from newborn to 24 months old, with age-appropriate strategies and techniques."
-                />
-            </div>
-
-            {/* Choose Your Plan section (repeated) */}
-            <h2 className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">Choose Your Plan</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 sm:mb-8">
-                <PlanOption duration="1-Week Trial" price={9.90} perDay={1.41} onSelect={handlePlanSelection}/>
-                <PlanOption duration="4-Week Plan" price={15.00} perDay={0.53} popular={true}
-                            onSelect={handlePlanSelection}/>
-                <PlanOption duration="12-Week Plan" price={30.00} perDay={0.35} onSelect={handlePlanSelection}/>
-            </div>
-
-            {/* 30-day money-back guarantee section */}
-            <div className="bg-gray-100 p-4 sm:p-6 rounded-lg mb-6 sm:mb-8">
-                <div className="flex items-center justify-center mb-4">
-                    <img src={shieldIcon} alt="Shield" className="w-8 h-8 mr-2"/>
-                    <h2 className="text-xl sm:text-2xl font-bold">30-day money-back guarantee</h2>
-                </div>
-                <p className="text-center mb-4">
-                    We believe that our plan may work for you and you'll get visible results in 4 weeks!
-                    We even are ready to return your money back if you don't see visible results and
-                    can demonstrate that you followed our plan.
-                </p>
-                <p className="text-center text-sm text-blue-600">
-                    Find more about applicable limitations in our <a href="#" className="underline">money-back
-                    policy</a>.
-                </p>
-            </div>
-
-            {/* Logo carousel */}
-            <div className="mb-6 sm:mb-8">
-                <h2 className="text-lg sm:text-xl font-bold mb-4 text-center">As featured in</h2>
-                <div className="flex justify-center items-center">
-                    <img src={logos[currentLogoIndex]} alt="Featured In" className="w-32 h-auto"/>
-                </div>
-            </div>
-
-            <div className="mb-6 sm:mb-8">
-                <h2 className="text-xl sm:text-2xl font-bold mb-4">Results that make us proud</h2>
-                <div className="bg-white p-4 rounded-lg shadow-md">
-                    <img src={testimonialImage2} alt="Testimonial" className="w-full mb-2 rounded"/>
-                    <h3 className="font-bold">Jane, mother of Emma</h3>
-                    <p className="text-sm">"Since we started using the app, bedtime has become a breeze for Emma and me.
-                        The soothing sounds and bedtime stories work like a charm, helping her drift off
-                        peacefully."</p>
-                    <a href="#" className="text-blue-500 text-sm">Read more</a>
-                </div>
-            </div>
-
-            <p className="text-xs text-gray-500 text-center">
-                By selecting a plan, you agree to our Terms of Service and Privacy Policy. You can cancel anytime
-                through your account settings.
-            </p>
         </div>
-    );
+</div>
+
+    <div className="mb-6 sm:mb-8">
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">People often ask</h2>
+        <FAQItem
+            question="How can this plan help improve my baby's sleep?"
+            answer="Our plan provides personalized strategies based on your baby's age and sleep patterns, along with expert guidance to implement effective sleep training methods."
+        />
+        <FAQItem
+            question="How will the plan be delivered?"
+            answer="Upon purchase, you'll receive weekly personalized notebooks containing your baby's custom sleep schedule, tracking tools, and expert guidance tailored to your baby's progress."
+        />
+        <FAQItem
+            question="Is this suitable for all ages?"
+            answer="Yes, our sleep plans are customized for babies from newborn to 24 months old, with age-appropriate strategies and techniques."
+        />
+    </div>
+
+    {/* Choose Your Plan section (repeated) */}
+    <h2 className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">Choose Your Plan</h2>
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 sm:mb-8">
+        <PlanOption duration="1-Week Trial" price={9.99} perDay={1.43} onSelect={handlePlanSelection}/>
+        <PlanOption duration="2-Week Plan" price={19.99} perDay={0.71} popular={true} onSelect={handlePlanSelection}/>
+        <PlanOption duration="4-Week Plan" price={29.99} perDay={0.35} onSelect={handlePlanSelection}/>
+    </div>
+
+    {/* 30-day money-back guarantee section */}
+    <div className="bg-gray-100 p-4 sm:p-6 rounded-lg mb-6 sm:mb-8">
+        <div className="flex items-center justify-center mb-4">
+            <img src={shieldIcon} alt="Shield" className="w-8 h-8 mr-2"/>
+            <h2 className="text-xl sm:text-2xl font-bold">30-day money-back guarantee</h2>
+        </div>
+        <p className="text-center mb-4">
+            We believe that our plan may work for you and you'll get visible results in 4 weeks!
+            We even are ready to return your money back if you don't see visible results and
+            can demonstrate that you followed our plan.
+        </p>
+        <p className="text-center text-sm text-blue-600">
+            Find more about applicable limitations in our <a href="#" className="underline">money-back
+            policy</a>.
+        </p>
+    </div>
+
+    {/* Logo carousel */}
+    <div className="mb-6 sm:mb-8">
+        <h2 className="text-lg sm:text-xl font-bold mb-4 text-center">As featured in</h2>
+        <div className="flex justify-center items-center">
+            <img src={logos[currentLogoIndex]} alt="Featured In" className="w-32 h-auto"/>
+        </div>
+    </div>
+
+    <div className="mb-6 sm:mb-8">
+        <h2 className="text-xl sm:text-2xl font-bold mb-4">Results that make us proud</h2>
+        <div className="bg-white p-4 rounded-lg shadow-md">
+            <img src={testimonialImage2} alt="Testimonial" className="w-full mb-2 rounded"/>
+            <h3 className="font-bold">Jane, mother of Emma</h3>
+            <p className="text-sm">"The weekly notebooks have been a lifesaver! Having a structured plan that adapts to Emma's progress has made all the difference. She's now sleeping through the night and our whole family is happier."</p>
+            <a href="#" className="text-blue-500 text-sm">Read more</a>
+        </div>
+    </div>
+
+    <p className="text-xs text-gray-500 text-center">
+        By selecting a plan, you agree to our Terms of Service and Privacy Policy. You can cancel anytime
+        through your account settings.
+    </p>
+</div>
+);
 };
 
 export default UpdatedBabySleepPlanCheckout;
