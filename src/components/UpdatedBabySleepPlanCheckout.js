@@ -18,6 +18,9 @@ import afterImage from '../assets/images/after.jpg';
 import testimonialImage from '../assets/images/WhatsApp Image 2024-10-15 at 14.21.41.jpeg';
 import testimonialImage2 from '../assets/images/nadavfe_iphone_photo_of_a_mom_holding_happy_sleeping_baby_165d4444-7684-4430-9865-099749307555.jpg';
 import shieldIcon from '../assets/images/shield-icon.png';
+import planImage1Week from 'src/assets/images/Firstcovercentered01.png';
+import planImage2Weeks from 'src/assets/images/Firstcovercentered02.png';
+import planImage4Weeks from 'src/assets/images/Firstcovercentered04.png';
 
 const NotebookPreview = ({ count }) => (
     <div className="flex justify-center gap-2 mt-4 mb-4">
@@ -39,7 +42,7 @@ const NotebookPreview = ({ count }) => (
     </div>
 );
 
-const PlanOption = ({ duration, price, perDay, popular = false, onSelect }) => {
+const PlanOption = ({ duration, price, perDay, popular = false, onSelect, planImage }) => {
     const getNotebookCount = (duration) => {
         switch(duration) {
             case "1-Week Trial":
@@ -55,6 +58,13 @@ const PlanOption = ({ duration, price, perDay, popular = false, onSelect }) => {
 
     return (
         <div className={`bg-white p-4 rounded-lg shadow-md ${popular ? 'border-2 border-blue-500' : ''}`}>
+            {planImage && (
+                <img
+                    src={planImage}
+                    alt={`${duration} Plan`}
+                    className="w-full h-auto mb-4 rounded"
+                />
+            )}
             <h3 className="text-lg font-semibold">{duration}</h3>
             <p className="text-2xl font-bold">${price.toFixed(2)}</p>
             <p className="text-md">${perDay.toFixed(2)} per day</p>
@@ -208,13 +218,31 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect }) => {
             <h2 className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">Choose Your Plan</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 sm:mb-8">
-                <PlanOption duration="1-Week Trial" price={9.99} perDay={1.43} onSelect={handlePlanSelection}/>
-                <PlanOption duration="2-Week Plan" price={19.99} perDay={0.71} popular={true} onSelect={handlePlanSelection}/>
-                <PlanOption duration="4-Week Plan" price={29.99} perDay={0.35} onSelect={handlePlanSelection}/>
+                <PlanOption
+                    duration="1-Week Trial"
+                    price={9.99}
+                    perDay={1.43}
+                    onSelect={handlePlanSelection}
+                    planImage={planImage1Week}
+                />
+                <PlanOption
+                    duration="2-Week Plan"
+                    price={19.99}
+                    perDay={0.71}
+                    popular={true}
+                    onSelect={handlePlanSelection}
+                    planImage={planImage2Weeks}
+                />
+                <PlanOption
+                    duration="4-Week Plan"
+                    price={29.99}
+                    perDay={0.35}
+                    onSelect={handlePlanSelection}
+                    planImage={planImage4Weeks}
+                />
             </div>
 
-            {/* Rest of your original code continues here... */}
-            <div className="bg-gray-100 p-4 sm:p-6 rounded-lg mb-6 sm:mb-8">
+<div className="bg-gray-100 p-4 sm:p-6 rounded-lg mb-6 sm:mb-8">
                 <h2 className="text-xl sm:text-2xl font-bold mb-4">What you get:</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
