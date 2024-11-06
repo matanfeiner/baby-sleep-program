@@ -18,9 +18,9 @@ import afterImage from '../assets/images/after.jpg';
 import testimonialImage from '../assets/images/WhatsApp Image 2024-10-15 at 14.21.41.jpeg';
 import testimonialImage2 from '../assets/images/nadavfe_iphone_photo_of_a_mom_holding_happy_sleeping_baby_165d4444-7684-4430-9865-099749307555.jpg';
 import shieldIcon from '../assets/images/shield-icon.png';
-import planImage1Week from 'src/assets/images/Firstcovercentered01.png';
-import planImage2Weeks from 'src/assets/images/Firstcovercentered02.png';
-import planImage4Weeks from 'src/assets/images/Firstcovercentered04.png';
+import planImage1Week from '../assets/images/Firstcovercentered01.png';
+import planImage2Weeks from '../assets/images/Firstcovercentered02.png';
+import planImage4Weeks from '../assets/images/Firstcovercentered04.png';
 
 const NotebookPreview = ({ count }) => (
     <div className="flex justify-center gap-2 mt-4 mb-4">
