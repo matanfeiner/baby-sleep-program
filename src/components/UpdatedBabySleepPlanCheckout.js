@@ -22,61 +22,33 @@ import planImage1Week from '../assets/images/Firstcovercentered01.png';
 import planImage2Weeks from '../assets/images/Firstcovercentered02.png';
 import planImage4Weeks from '../assets/images/Firstcovercentered04.png';
 
-const NotebookPreview = ({ count, babyName, sleepGoal }) => (
-    <div className="flex justify-center gap-2 mt-4 mb-4">
-        {[...Array(count)].map((_, index) => (
-            <div
-                key={index}
-                className="relative w-16 h-20 bg-white shadow-md rounded border border-gray-200 transform hover:scale-105 transition-transform"
-            >
-                <div className="absolute top-0 left-0 right-0 h-1 bg-blue-500" />
-                <div className="p-2 flex flex-col items-center justify-center">
-                    <div className="text-xs text-center text-blue-800 font-semibold leading-tight">
-                        {babyName}'s
-                        <br />
-                        {sleepGoal}h
-                        <br />
-                        Sleep Plan
-                    </div>
-                </div>
-            </div>
-        ))}
-    </div>
-);
-
-const PlanOption = ({ duration, price, perDay, popular = false, onSelect, planImage, babyName, sleepGoal }) => {
-    const getNotebookCount = (duration) => {
-        switch(duration) {
-            case "1-Week Trial":
-                return 1;
-            case "2-Week Plan":
-                return 2;
-            case "4-Week Plan":
-                return 4;
-            default:
-                return 1;
-        }
-    };
-
+const PlanOption = ({ duration, price, perDay, popular = false, onSelect, planImage, babyName = "", sleepGoal = 12 }) => {
     return (
         <div className={`bg-white p-4 rounded-lg shadow-md ${popular ? 'border-2 border-blue-500' : ''}`}>
-            {planImage && (
-                <img
-                    src={planImage}
-                    alt={`${duration} Plan`}
-                    className="w-full h-auto mb-4 rounded"
-                />
-            )}
+            <div className="relative">
+                {planImage && (
+                    <div className="relative">
+                        <img
+                            src={planImage}
+                            alt={`${duration} Plan`}
+                            className="w-full h-auto mb-4 rounded"
+                        />
+                        <div className="absolute top-[15%] left-0 right-0 text-center">
+                            <div className="text-blue-800 font-semibold leading-tight">
+                                {babyName}'s
+                                <br />
+                                {sleepGoal}h
+                                <br />
+                                Sleep Plan
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
             <h3 className="text-lg font-semibold">{duration}</h3>
             <p className="text-2xl font-bold">${price.toFixed(2)}</p>
             <p className="text-md">${perDay.toFixed(2)} per day</p>
             {popular && <span className="text-sm text-blue-500">Most Popular!</span>}
-
-            <NotebookPreview
-                count={getNotebookCount(duration)}
-                babyName={babyName}
-                sleepGoal={sleepGoal}
-            />
 
             <button
                 onClick={() => onSelect(duration, price)}
@@ -318,6 +290,7 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect, babyName = "", sleepGoal =
                     price={9.99}
                     perDay={1.43}
                     onSelect={handlePlanSelection}
+                    planImage={planImage1Week}
                     babyName={babyName}
                     sleepGoal={sleepGoal}
                 />
@@ -327,6 +300,7 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect, babyName = "", sleepGoal =
                     perDay={0.71}
                     popular={true}
                     onSelect={handlePlanSelection}
+                    planImage={planImage2Weeks}
                     babyName={babyName}
                     sleepGoal={sleepGoal}
                 />
@@ -335,6 +309,7 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect, babyName = "", sleepGoal =
                     price={29.99}
                     perDay={0.35}
                     onSelect={handlePlanSelection}
+                    planImage={planImage4Weeks}
                     babyName={babyName}
                     sleepGoal={sleepGoal}
                 />
