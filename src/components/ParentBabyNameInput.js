@@ -7,6 +7,7 @@ const ParentBabyNameInput = ({ onNameChange }) => {
     const [activeInput, setActiveInput] = useState(null);
 
     useEffect(() => {
+        console.log("Names updated:", { parentName, babyName }); // Debug log
         onNameChange({ parentName, babyName });
     }, [parentName, babyName, onNameChange]);
 

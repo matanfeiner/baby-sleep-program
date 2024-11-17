@@ -23,6 +23,7 @@ import planImage2Weeks from '../assets/images/Firstcovercentered02.png';
 import planImage4Weeks from '../assets/images/Firstcovercentered04.png';
 
 const PlanOption = ({ duration, price, perDay, popular = false, onSelect, planImage, babyName = "", sleepGoal = 12 }) => {
+    console.log("PlanOption received:", { babyName, sleepGoal }); // Debug log
     return (
         <div className={`bg-white p-4 rounded-lg shadow-md ${popular ? 'border-2 border-blue-500' : ''}`}>
             <div className="relative">
@@ -33,9 +34,9 @@ const PlanOption = ({ duration, price, perDay, popular = false, onSelect, planIm
                             alt={`${duration} Plan`}
                             className="w-full h-auto mb-4 rounded"
                         />
-                        <div className="absolute top-[15%] left-0 right-0 text-center">
-                            <div className="text-blue-800 font-semibold leading-tight">
-                                {babyName}'s
+                        <div className="absolute top-[15%] left-10 right-0 text-left">
+                            <div className="text-white font-serif leading-tight text-lg">
+                                {babyName ? `${babyName}'s` : 'Your'}
                                 <br />
                                 {sleepGoal}h
                                 <br />
@@ -105,17 +106,10 @@ const FAQItem = ({ question, answer }) => {
 };
 
 const UpdatedBabySleepPlanCheckout = ({ onPlanSelect, babyName = "", sleepGoal = 12 }) => {
-    const [timeLeft, setTimeLeft] = useState(600);
+    console.log("UpdatedBabySleepPlanCheckout received:", { babyName, sleepGoal }); // Debug log
     const [progress, setProgress] = useState(0);
     const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
     const logos = [featuredInLogo1, featuredInLogo2, featuredInLogo3, featuredInLogo4, featuredInLogo5];
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
-        }, 1000);
-        return () => clearInterval(timer);
-    }, []);
 
     useEffect(() => {
         setProgress(25);
@@ -255,7 +249,6 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect, babyName = "", sleepGoal =
                 </div>
             </div>
 
-            {/* Testimonials */}
             <div className="mb-6 sm:mb-8">
                 <h2 className="text-xl sm:text-2xl font-bold mb-4">Results that make us proud</h2>
                 <div className="bg-white p-4 rounded-lg shadow-md">
@@ -282,40 +275,6 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect, babyName = "", sleepGoal =
                 />
             </div>
 
-            {/* Choose Your Plan section (repeated) */}
-            <h2 className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">Choose Your Plan</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 sm:mb-8">
-                <PlanOption
-                    duration="1-Week Trial"
-                    price={9.99}
-                    perDay={1.43}
-                    onSelect={handlePlanSelection}
-                    planImage={planImage1Week}
-                    babyName={babyName}
-                    sleepGoal={sleepGoal}
-                />
-                <PlanOption
-                    duration="2-Week Plan"
-                    price={19.99}
-                    perDay={0.71}
-                    popular={true}
-                    onSelect={handlePlanSelection}
-                    planImage={planImage2Weeks}
-                    babyName={babyName}
-                    sleepGoal={sleepGoal}
-                />
-                <PlanOption
-                    duration="4-Week Plan"
-                    price={29.99}
-                    perDay={0.35}
-                    onSelect={handlePlanSelection}
-                    planImage={planImage4Weeks}
-                    babyName={babyName}
-                    sleepGoal={sleepGoal}
-                />
-            </div>
-
-            {/* 30-day money-back guarantee section */}
             <div className="bg-gray-100 p-4 sm:p-6 rounded-lg mb-6 sm:mb-8">
                 <div className="flex items-center justify-center mb-4">
                     <img src={shieldIcon} alt="Shield" className="w-8 h-8 mr-2"/>
@@ -332,7 +291,6 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect, babyName = "", sleepGoal =
                 </p>
             </div>
 
-            {/* Logo carousel */}
             <div className="mb-6 sm:mb-8">
                 <h2 className="text-lg sm:text-xl font-bold mb-4 text-center">As featured in</h2>
                 <div className="flex justify-center items-center">

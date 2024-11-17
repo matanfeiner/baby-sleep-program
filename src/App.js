@@ -57,11 +57,13 @@ function AppContent() {
 
     const handleNextStep = () => {
         if (step < totalSteps - 1) {
-            if (step === questions.length + 3) { // Email input step
-                updateFormData({ email: email });
-            }
             if (step === questions.length + 4) { // Name input step
-                updateFormData({ parentName: names.parentName, babyName: names.babyName });
+                console.log("Updating names in form data:", names);
+                updateFormData({
+                    parentName: names.parentName,
+                    babyName: names.babyName
+                });
+                console.log("Form data after name update:", formData);
             }
             setStep(step + 1);
             setClickedOption(null);
@@ -191,9 +193,13 @@ function AppContent() {
                 case 5:
                     return <BabySleepPlanReady parentName={formData.parentName} babyName={formData.babyName} />;
                 case 6:
-                    return <UpdatedBabySleepPlanCheckout onPlanSelect={handlePlanSelection} />;
-                default:
-                    return null;
+                    return (
+                        <UpdatedBabySleepPlanCheckout
+                            onPlanSelect={handlePlanSelection}
+                            babyName={formData.babyName}
+                            sleepGoal={formData.sleepDurationGoal?.hours || 12}
+                        />
+                    );
             }
         }
     };
