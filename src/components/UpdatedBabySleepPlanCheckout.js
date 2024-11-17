@@ -50,18 +50,18 @@ const PlanOption = ({ duration, price, perDay, popular = false, onSelect, planIm
                         />
                         <div className="absolute top-[15%] left-[45%] right-0 text-left">
                             <div
-                                className="text-white font-serif leading-tight text-lg mix-blend-multiply"
+                                className="text-white font-serif leading-tight text-lg"
                                 style={{
-                                    textShadow: '0 1px 1px rgba(0,0,0,0.1)',
-                                    opacity: '0.95',
+                                    textShadow: '1px 1px 2px rgba(0,0,0,0.3)',
+                                    fontWeight: '500',
                                     letterSpacing: '0.02em',
-                                    filter: 'brightness(1.1) contrast(0.95)',
+                                    filter: 'brightness(1.2)',
                                     transform: 'perspective(500px) rotateY(5deg)',
                                 }}
                             >
                                 {babyName ? `${babyName}'s` : 'Your'}
                                 <br />
-                                {displayedSleepGoal}h
+                                {displayedSleepGoal}Hr
                                 <br />
                                 Sleep Plan
                             </div>
