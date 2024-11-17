@@ -23,7 +23,21 @@ import planImage2Weeks from '../assets/images/Firstcovercentered02.png';
 import planImage4Weeks from '../assets/images/Firstcovercentered04.png';
 
 const PlanOption = ({ duration, price, perDay, popular = false, onSelect, planImage, babyName = "", sleepGoal = 12 }) => {
-    console.log("PlanOption received:", { babyName, sleepGoal }); // Debug log
+    const getDisplayedSleepGoal = (duration, sleepGoal) => {
+        switch(duration) {
+            case "1-Week Trial":
+                return Math.round(sleepGoal / 4);
+            case "2-Week Plan":
+                return Math.round(sleepGoal / 2);
+            case "4-Week Plan":
+                return Math.round(sleepGoal);
+            default:
+                return Math.round(sleepGoal);
+        }
+    };
+
+    const displayedSleepGoal = getDisplayedSleepGoal(duration, sleepGoal);
+
     return (
         <div className={`bg-white p-4 rounded-lg shadow-md ${popular ? 'border-2 border-blue-500' : ''}`}>
             <div className="relative">
@@ -34,11 +48,11 @@ const PlanOption = ({ duration, price, perDay, popular = false, onSelect, planIm
                             alt={`${duration} Plan`}
                             className="w-full h-auto mb-4 rounded"
                         />
-                        <div className="absolute top-[15%] left-10 right-0 text-left">
+                        <div className="absolute top-[15%] left-[30%] right-0 text-left">
                             <div className="text-white font-serif leading-tight text-lg">
                                 {babyName ? `${babyName}'s` : 'Your'}
                                 <br />
-                                {sleepGoal}h
+                                {displayedSleepGoal}h
                                 <br />
                                 Sleep Plan
                             </div>
@@ -106,7 +120,6 @@ const FAQItem = ({ question, answer }) => {
 };
 
 const UpdatedBabySleepPlanCheckout = ({ onPlanSelect, babyName = "", sleepGoal = 12 }) => {
-    console.log("UpdatedBabySleepPlanCheckout received:", { babyName, sleepGoal }); // Debug log
     const [progress, setProgress] = useState(0);
     const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
     const logos = [featuredInLogo1, featuredInLogo2, featuredInLogo3, featuredInLogo4, featuredInLogo5];
@@ -143,7 +156,9 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect, babyName = "", sleepGoal =
     return (
         <div className="max-w-4xl mx-auto p-4 sm:p-6">
             <div className="bg-blue-100 text-blue-800 p-2 rounded-lg mb-4 relative">
-                <span className="absolute top-0 right-0 bg-blue-500 text-white px-2 py-1 text-xs rounded-bl">Limited Offer: 50% Off</span>
+                <span className="absolute top-0 right-0 bg-blue-500 text-white px-2 py-1 text-xs rounded-bl">
+                    Limited Offer: 50% Off
+                </span>
                 <p className="font-semibold">Get your personalized sleep plan now</p>
             </div>
 
