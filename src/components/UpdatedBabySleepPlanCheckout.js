@@ -48,11 +48,11 @@ const PlanOption = ({ duration, price, perDay, popular = false, onSelect, planIm
                             alt={`${duration} Plan`}
                             className="w-full h-auto mb-4 rounded"
                         />
-                        <div className="absolute top-[15%] left-[30%] right-0 text-left">
+                        <div className="absolute top-[15%] left-[55%] right-0 text-left">
                             <div className="text-white font-serif leading-tight text-lg">
                                 {babyName ? `${babyName}'s` : 'Your'}
                                 <br />
-                                {displayedSleepGoal}h
+                                {displayedSleepGoal}Hr
                                 <br />
                                 Sleep Plan
                             </div>
