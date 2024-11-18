@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 
-const PlanOption = ({ duration, price, perDay, popular = false, planImage, babyName = "", sleepGoal = 12 }) => {
+// PlanOption Component
+const PlanOption = ({
+                        duration,
+                        price,
+                        perDay,
+                        popular = false,
+                        planImage,
+                        babyName = "",
+                        sleepGoal = 12,
+                    }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -27,8 +36,17 @@ const PlanOption = ({ duration, price, perDay, popular = false, planImage, babyN
             setIsLoading(true);
             setError(null);
 
-            // Initialize Stripe with publishable key
+            // Check for missing Stripe key
+            if (!process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY) {
+                throw new Error("Stripe publishable key is not configured.");
+            }
+
+            // Initialize Stripe
             const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+
+            if (!stripe) {
+                throw new Error("Stripe failed to initialize.");
+            }
 
             // Create a checkout session
             const response = await fetch('/api/create-checkout-session', {
@@ -45,7 +63,7 @@ const PlanOption = ({ duration, price, perDay, popular = false, planImage, babyN
             });
 
             if (!response.ok) {
-                throw new Error('Payment setup failed');
+                throw new Error('Failed to create checkout session.');
             }
 
             const { sessionId } = await response.json();
@@ -56,9 +74,9 @@ const PlanOption = ({ duration, price, perDay, popular = false, planImage, babyN
             if (result.error) {
                 throw new Error(result.error.message);
             }
-        } catch (error) {
-            console.error('Error:', error);
-            setError('Payment setup failed. Please try again.');
+        } catch (err) {
+            console.error('Error during checkout:', err);
+            setError(err.message || 'An unexpected error occurred.');
         } finally {
             setIsLoading(false);
         }
@@ -101,9 +119,7 @@ const PlanOption = ({ duration, price, perDay, popular = false, planImage, babyN
             {popular && <span className="text-sm text-blue-500">Most Popular!</span>}
 
             {error && (
-                <div className="text-red-500 text-sm mt-2 mb-2">
-                    {error}
-                </div>
+                <div className="text-red-500 text-sm mt-2 mb-2">{error}</div>
             )}
 
             <button
