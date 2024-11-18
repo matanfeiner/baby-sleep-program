@@ -1,5 +1,5 @@
 {
-  "name": "my-tiny-milestones",
+  "name": "baby-sleep-program",
   "version": "1.0.0",
   "description": "An app with a backend server for handling Stripe payments and a React frontend for baby milestone tracking",
   "main": "server/index.js",
@@ -12,6 +12,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@stripe/react-stripe-js": "^2.9.0",
     "@stripe/stripe-js": "^4.10.0",
     "@testing-library/jest-dom": "^5.17.0",
@@ -37,7 +38,6 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "typescript": "^4.9.5"
   },
   "engines": {
