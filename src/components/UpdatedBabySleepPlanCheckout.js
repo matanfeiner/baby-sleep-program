@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Star, Check, ChevronDown, ChevronUp } from 'lucide-react';
+import { loadStripe } from '@stripe/stripe-js';
 
 // Import images and icons
 import mobileAppIllustration from '../assets/images/app-without-background.png';
@@ -22,7 +23,13 @@ import planImage1Week from '../assets/images/Firstcovercentered01.png';
 import planImage2Weeks from '../assets/images/Firstcovercentered02.png';
 import planImage4Weeks from '../assets/images/Firstcovercentered04.png';
 
-const PlanOption = ({ duration, price, perDay, popular = false, onSelect, planImage, babyName = "", sleepGoal = 12 }) => {
+// Initialize Stripe
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+
+const PlanOption = ({ duration, price, perDay, popular = false, planImage, babyName = "", sleepGoal = 12 }) => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+
     const getDisplayedSleepGoal = (duration, sleepGoal) => {
         switch(duration) {
             case "1-Week Trial":
@@ -37,6 +44,53 @@ const PlanOption = ({ duration, price, perDay, popular = false, onSelect, planIm
     };
 
     const displayedSleepGoal = getDisplayedSleepGoal(duration, sleepGoal);
+
+    const handleClick = async () => {
+        try {
+            setIsLoading(true);
+            setError(null);
+
+            const stripe = await stripePromise;
+
+            const response = await fetch('/api/create-checkout-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    duration,
+                    price,
+                    babyName,
+                    displayedSleepGoal,
+                    metadata: {
+                        customerName: babyName,
+                        planDuration: duration,
+                        sleepGoal: displayedSleepGoal
+                    }
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Payment setup failed');
+            }
+
+            const { sessionId } = await response.json();
+
+            const result = await stripe.redirectToCheckout({
+                sessionId,
+            });
+
+            if (result.error) {
+                throw new Error(result.error.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            setError('Payment setup failed. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <div className={`bg-white p-4 rounded-lg shadow-md ${popular ? 'border-2 border-blue-500' : ''}`}>
@@ -74,16 +128,24 @@ const PlanOption = ({ duration, price, perDay, popular = false, onSelect, planIm
             <p className="text-md">${perDay.toFixed(2)} per day</p>
             {popular && <span className="text-sm text-blue-500">Most Popular!</span>}
 
+            {error && (
+                <div className="text-red-500 text-sm mt-2 mb-2">
+                    {error}
+                </div>
+            )}
+
             <button
-                onClick={() => onSelect(duration, price)}
-                className="w-full bg-blue-500 text-white mt-4 py-2 rounded hover:bg-blue-600 transition-colors"
+                onClick={handleClick}
+                disabled={isLoading}
+                className={`w-full bg-blue-500 text-white mt-4 py-2 rounded 
+                    ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'} 
+                    transition-colors`}
             >
-                Choose Plan
+                {isLoading ? 'Processing...' : 'Choose Plan'}
             </button>
         </div>
     );
 };
-
 const Feature = ({ text, icon }) => (
     <div className="flex items-center mb-2">
         <img src={icon} alt="Feature Icon" className="w-6 h-6 mr-2" />
@@ -128,7 +190,7 @@ const FAQItem = ({ question, answer }) => {
     );
 };
 
-const UpdatedBabySleepPlanCheckout = ({ onPlanSelect, babyName = "", sleepGoal = 12 }) => {
+const UpdatedBabySleepPlanCheckout = ({ babyName = "", sleepGoal = 12 }) => {
     const [progress, setProgress] = useState(0);
     const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
     const logos = [featuredInLogo1, featuredInLogo2, featuredInLogo3, featuredInLogo4, featuredInLogo5];
@@ -143,24 +205,6 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect, babyName = "", sleepGoal =
         }, 3000);
         return () => clearInterval(interval);
     }, []);
-
-    const handlePlanSelection = (duration, price) => {
-        let url;
-        switch(duration) {
-            case "1-Week Trial":
-                url = 'https://dididesk.com/cart/49247434670360:1';
-                break;
-            case "2-Week Plan":
-                url = 'https://dididesk.com/checkouts/cn/Z2NwLWV1cm9wZS13ZXN0MTowMUpBUTVLTk1NNDJZV0FEWlBUTUc1ODNSUQ';
-                break;
-            case "4-Week Plan":
-                url = 'https://dididesk.com/checkouts/cn/Z2NwLWV1cm9wZS13ZXN0MTowMUpBUTVLTk1NNDJZV0FEWlBUTUc1ODNSUQ';
-                break;
-            default:
-                url = 'https://plan.mytinymilestones.com/something-went-wrong/';
-        }
-        window.location.href = url;
-    };
 
     return (
         <div className="max-w-4xl mx-auto p-4 sm:p-6">
@@ -218,7 +262,6 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect, babyName = "", sleepGoal =
                     duration="1-Week Trial"
                     price={9.99}
                     perDay={1.43}
-                    onSelect={handlePlanSelection}
                     planImage={planImage1Week}
                     babyName={babyName}
                     sleepGoal={sleepGoal}
@@ -228,7 +271,6 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect, babyName = "", sleepGoal =
                     price={19.99}
                     perDay={0.71}
                     popular={true}
-                    onSelect={handlePlanSelection}
                     planImage={planImage2Weeks}
                     babyName={babyName}
                     sleepGoal={sleepGoal}
@@ -237,7 +279,6 @@ const UpdatedBabySleepPlanCheckout = ({ onPlanSelect, babyName = "", sleepGoal =
                     duration="4-Week Plan"
                     price={29.99}
                     perDay={0.35}
-                    onSelect={handlePlanSelection}
                     planImage={planImage4Weeks}
                     babyName={babyName}
                     sleepGoal={sleepGoal}
