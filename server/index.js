@@ -1,9 +1,13 @@
-const PlanOption = ({ duration, price, perDay, popular = false, onSelect, planImage, babyName = "", sleepGoal = 12 }) => {
+import React, { useState } from 'react';
+import { loadStripe } from '@stripe/stripe-js';
+
+const PlanOption = ({ duration, price, perDay, popular = false, planImage, babyName = "", sleepGoal = 12 }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    // Helper function to calculate displayed sleep goal
     const getDisplayedSleepGoal = (duration, sleepGoal) => {
-        switch(duration) {
+        switch (duration) {
             case "1-Week Trial":
                 return Math.round(sleepGoal / 4);
             case "2-Week Plan":
@@ -17,15 +21,16 @@ const PlanOption = ({ duration, price, perDay, popular = false, onSelect, planIm
 
     const displayedSleepGoal = getDisplayedSleepGoal(duration, sleepGoal);
 
+    // Handle Stripe checkout
     const handleClick = async () => {
         try {
             setIsLoading(true);
             setError(null);
 
-            // Initialize Stripe
+            // Initialize Stripe with publishable key
             const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
-            // Create checkout session
+            // Create a checkout session
             const response = await fetch('/api/create-checkout-session', {
                 method: 'POST',
                 headers: {
@@ -35,7 +40,7 @@ const PlanOption = ({ duration, price, perDay, popular = false, onSelect, planIm
                     duration,
                     price,
                     babyName,
-                    displayedSleepGoal
+                    displayedSleepGoal,
                 }),
             });
 
@@ -45,10 +50,8 @@ const PlanOption = ({ duration, price, perDay, popular = false, onSelect, planIm
 
             const { sessionId } = await response.json();
 
-            // Open Stripe checkout modal
-            const result = await stripe.redirectToCheckout({
-                sessionId,
-            });
+            // Redirect to Stripe Checkout
+            const result = await stripe.redirectToCheckout({ sessionId });
 
             if (result.error) {
                 throw new Error(result.error.message);
@@ -115,3 +118,5 @@ const PlanOption = ({ duration, price, perDay, popular = false, onSelect, planIm
         </div>
     );
 };
+
+export default PlanOption;
